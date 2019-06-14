@@ -31,7 +31,7 @@ export default class URLValidate{
         if (parsedURL[0]===""){
             parsedURL.splice(0,1);
         }
-        console.log(parsedURL);
+        //console.log(parsedURL);
 
         //declare an order map, mapping the abbreviation of each element to its order
         let orderMap = new Map<String,number>();
@@ -69,7 +69,7 @@ export default class URLValidate{
             console.log("Requirements not met in URL");
             return false;
         }
-        console.log(orderList);
+        //console.log(orderList);
         
         //Validate each element has a correct version and that following elements do not include
         //any of the excludes for the current element.
