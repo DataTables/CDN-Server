@@ -1,11 +1,12 @@
 export default {
-        filename:['datatables'],
+        fileNames:['datatables'],
         buildMessage:"",//*Generated File from BuildFile.ts\n*/\n",
         requires:[10],
+        buildLocation:"cache/",
         elements:[
             {
                 folderName:"DataTables",
-                fileName:"dataTables",
+                fileNames:[],
                 abbr: "dt",
                 versions: [
                     ''
@@ -22,13 +23,13 @@ export default {
                     'zf-'
                 ],
                 order:10,
-                includes:[
-                    'jquery.dataTables.js'
-                ],
+                fileIncludes:{
+                    styling:"dataTables"
+                },
                 position:0        
             },{
                 folderName:"SemanticUI",
-                fileName:"semanticui",
+                fileNames:["semantic"],
                 abbr: "se-",
                 versions: [
                     '',
@@ -45,13 +46,14 @@ export default {
                     'zf',
                     'zf-'
                 ],
-                includes:[
-                    'semantic.js'
-                ],
+                fileIncludes:{
+                    styling:"semanic",
+                    qwerty:'ytrewq'
+                },
                 order:10 
             },{
                 folderName:"SemanticUI",
-                fileName:"semanticui",
+                fileNames:[],
                 abbr: "se",
                 versions: [
                     ''
@@ -67,14 +69,13 @@ export default {
                     'zf',
                     'zf-'
                 ],
-                includes:[
-                    'jquery.dataTables.js',
-                    'dataTables.semanticui.js'
-                ],
+                fileIncludes:{
+                    styling:"semantic"
+                },
                 order:10 
             },{
                 folderName:"Bootstrap-4",
-                fileName:"bootstrap",
+                fileNames:[],
                 abbr: "bs4",
                 versions: [
                     '',
@@ -90,14 +91,13 @@ export default {
                     'zf',
                     'zf-'
                 ],
-                includes:[
-                    'jquery.dataTables.js',
-                    'dataTables.bootstrap4.js'
-                ],
+                fileIncludes:{
+                    styling:"bootstrap4"
+                },
                 order:10 
             },{
                 folderName:"Bootstrap-4",
-                fileName:"bootstrap",
+                fileNames:["bootstrap"],
                 abbr: "bs4-",
                 versions:[
                     '',
@@ -115,13 +115,13 @@ export default {
                     'zf',
                     'zf-'
                 ],
-                includes:[
-                    'bootstrap.js'
-                ],
+                fileIncludes:{
+
+                },
                 order:10 
             },{
                 folderName:"Bootstrap",
-                fileName:"bootstrap",
+                fileNames:[],
                 abbr: "bs",
                 versions: [
                     '',
@@ -137,14 +137,13 @@ export default {
                     'zf',
                     'zf-'
                 ],
-                includes:[
-                    'jquery.dataTables.js',
-                    '*.bootstrap.js'
-                ],
+                fileIncludes:{
+                    styling:"bootstrap"
+                },
                 order:10 
             },{
                 folderName:"Bootstrap",
-                fileName:"bootstrap",
+                fileNames:["bootstrap"],
                 abbr:"bs-",
                 versions:[
                     '',
@@ -163,13 +162,13 @@ export default {
                     'zf',
                     'zf-'
                 ],
-                includes:[
-                    'bootstrap.js'
-                ],
+                fileIncludes:{
+                    styling:'bootstrap'
+                },
                 order:10 
             },{
                 folderName:"Foundation",
-                fileName:"foundation",
+                fileNames:[],
                 abbr: "zf",
                 versions: [
                     '',
@@ -185,14 +184,13 @@ export default {
                     'zf',
                     'zf-'
                 ],
-                includes:[
-                    'jquery.dataTables.js',
-                    '*.foundation.*'
-                ],
+                fileIncludes:{
+                    
+                },
                 order:10 
             },{
                 folderName:"Foundation",
-                fileName:"foundation",
+                fileNames:["foundation"],
                 abbr:"zf-",
                 versions:[
                     '',
@@ -210,11 +208,16 @@ export default {
                     'zf',
                     'zf-'
                 ],
-                includes:[],
+                fileIncludes:{
+                    styling:'foundation'
+                },
                 order:10 
             },{
                 folderName:"DataTables",
-                fileName:"jquery.dataTables",
+                fileNames:[
+                    "jquery.dataTables",
+                    "dataTables.{styling}"
+                ],
                 abbr: "dt-",
                 versions: [
                     '1.10.1',
@@ -241,11 +244,11 @@ export default {
                 excludes:[
                     'dt-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:30 
             },{
                 folderName:"jQuery",
-                fileName:"",
+                fileNames:["jquery-{version}"],
                 abbr: "jqc-",
                 versions:[
                     '1.12.4',
@@ -257,11 +260,11 @@ export default {
                     "jqc-",
                     'jq-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:20 
             },{
                 folderName:"jQuery",
-                fileName:"jquery",
+                fileNames:["jquery-{version}"],
                 abbr: "jq-",
                 versions:[
                     '3.3.1',
@@ -275,11 +278,14 @@ export default {
                     "jq-",
                     'jqc-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:20 
             },{
                 folderName:"AutoFill",
-                fileName:"autoFill",
+                fileNames:[
+                    'dataTables.autoFill',
+                    "autoFill.{styling}"
+                    ],
                 abbr:"af-",
                 versions:[
                     '2.3.3',
@@ -302,11 +308,16 @@ export default {
                 excludes:[
                     'af'
                 ],
-                includes:[],
+                fileIncludes:{
+                    
+                },
                 order:40 
             },{
                 folderName:"Buttons",
-                fileName:"buttons",
+                fileNames:[
+                    'dataTables.buttons',
+                    "buttons.{styling}"
+                ],
                 abbr:"b-",
                 versions:[
                     '1.5.6',
@@ -335,11 +346,14 @@ export default {
                 excludes:[
                     'b-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"ColReorder",
-                fileName:"colReorder",
+                fileNames:[
+                    'dataTables.colReorder',
+                    "colReorder.{styling}"
+                ],
                 abbr:"cr-",
                 versions: [
                     '1.5.0',
@@ -367,11 +381,14 @@ export default {
                 excludes:[
                     'cr-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"FixedColumns",
-                fileName:"fixedColumns",
+                fileNames:[
+                    'dataTables.fixedColumns',
+                    "fixedColumns.{styling}"
+                ],
                 abbr:"fc-",
                 versions:[
                     '3.2.5',
@@ -396,11 +413,14 @@ export default {
                 excludes:[
                     'fc-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"FixedHeader",
-                fileName:"fixedHeader",
+                fileNames:[
+                    'dataTables.fixedHeader',
+                    "fixedHeader.{styling}"
+                ],
                 abbr:"fh-",
                 versions:[
                     '3.1.4',
@@ -423,11 +443,14 @@ export default {
                 excludes:[
                     'fh-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"KeyTable",
-                fileName:"keyTable",
+                fileNames:[
+                    'dataTables.keyTable',
+                    "keyTable.{styling}"
+                ],
                 abbr:"kt-",
                 versions:[
                     '2.5.0',
@@ -462,11 +485,14 @@ export default {
                 excludes:[
                     'kt-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"Responsive",
-                fileName:"responsive",
+                fileNames:[
+                    'dataTables.responsive',
+                    "responsive.{styling}"
+                ],
                 abbr:"r-",
                 versions:[
                     '2.2.2',
@@ -489,11 +515,14 @@ export default {
                 excludes:[
                     'r-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"RowGroup",
-                fileName:"rowGroup",
+                fileNames:[
+                    'dataTables.rowGroup',
+                    "rowGroup.{styling}"
+                ],
                 abbr:"rg-",
                 versions:[
                     '1.1.0',
@@ -506,11 +535,14 @@ export default {
                 excludes:[
                     'rg-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"RowReorder",
-                fileName:"rowReorder",
+                fileNames:[
+                    'dataTables.rowReorder',
+                    "rowReorder.{styling}"
+                ],
                 abbr:"rr-",
                 versions:[
                     '1.2.4',
@@ -526,11 +558,14 @@ export default {
                 excludes:[
                     'rr-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"Scroller",
-                fileName:"scroller",
+                fileNames:[
+                    'dataTables.scroller',
+                    "scroller.{styling}"
+                ],
                 abbr:"sc-",
                 versions:[
                     '2.0.0',
@@ -552,11 +587,15 @@ export default {
                 excludes:[
                     'sc-'
                 ],
-                includes:[],
+                fileIncludes:{
+                },
                 order:40
             },{
                 folderName:"Select",
-                fileName:"select",
+                fileNames:[
+                    'dataTables.select',
+                    "select.{styling}"
+                ],
                 abbr:"sl-",
                 versions:[
                     '1.3.0',
@@ -576,11 +615,13 @@ export default {
                 excludes:[
                     'sl-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"Buttons",
-                fileName:"buttons.colVis",
+                fileNames:[
+                    "buttons.colVis"
+                ],
                 abbr:"b-colvis-",
                 versions:[
                     '1.5.6',
@@ -609,11 +650,13 @@ export default {
                 excludes:[
                     'b-colvis-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"Buttons",
-                fileName:"buttons.flash",
+                fileNames:[
+                    "buttons.flash"
+                ],
                 abbr:"b-flash-",
                 versions:[
                     '1.5.6',
@@ -642,11 +685,13 @@ export default {
                 excludes:[
                     'b-flash-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"HTML5",
-                fileName:"buttons.html5",
+                fileNames:[
+                    "buttons.html5"
+                ],
                 abbr:"b-html5-",
                 versions:[
                     '1.5.6',
@@ -675,11 +720,13 @@ export default {
                 excludes:[
                     'b-html5-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"Print",
-                fileName:"buttons.print",
+                fileNames:[
+                    "buttons.print"
+                ],
                 abbr:"b-print-",
                 versions:[
                     '1.5.6',
@@ -708,11 +755,13 @@ export default {
                 excludes:[
                     'b-print-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:40
             },{
                 folderName:"JSZip",
-                fileName:"jszip",
+                fileNames:[
+                    "jszip"
+                ],
                 abbr:"jszip-",
                 versions:[
                     '2.5.0',
@@ -721,11 +770,13 @@ export default {
                 excludes:[
                     'jszip-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:20
             },{
                 folderName:"pdfmake",
-                fileName:"pdfmake",
+                fileNames:[
+                    "pdfmake"
+                ],
                 abbr:"pdfmake-",
                 versions:[
                     '0.1.18',
@@ -736,11 +787,13 @@ export default {
                 excludes:[
                     'pdfmake-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:20
             },{
                 folderName:"Moment",
-                fileName:"moment",
+                fileNames:[
+                    "moment"
+                ],
                 abbr:"moment-",
                 versions:[
                     '2.18.1'
@@ -749,11 +802,13 @@ export default {
                     'moment-',
                     'momentjs-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:20
             },{
                 folderName:"MomentJS",
-                fileName:"moment",
+                fileNames:[
+                    "moment"
+                ],
                 abbr:"momentjs-",
                 versions:[
                     '2.10.6',
@@ -765,11 +820,13 @@ export default {
                     'momentjs-',
                     'moment-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:20
             },{
                 folderName:"Selectize",
-                fileName:"selectize",
+                fileNames:[
+                    "selectize"
+                ],
                 abbr:"selectize-",
                 versions:[
                     '0.12.1'
@@ -777,11 +834,13 @@ export default {
                 excludes:[
                     'selectize-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:20
             },{
                 folderName:"Select2",
-                fileName:"select2",
+                fileNames:[
+                    "select2"
+                ],
                 abbr:'select2-',
                 versions:[
                     '4.0.0',
@@ -790,11 +849,13 @@ export default {
                 excludes:[
                     'select2-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:20
             },{
                 folderName:"Quill",
-                fileName:"quill",
+                fileNames:[
+                    "quill"
+                ],
                 //quill.snow for css!!!!
                 abbr:'quill-',
                 versions:[
@@ -805,11 +866,13 @@ export default {
                 excludes:[
                     'quill-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:20
             },{
                 folderName:"FieldType-Mask",
-                fileName:"editor.mask",
+                fileNames:[
+                    "editor.mask"
+                ],
                 abbr:'mask-',
                 versions:[
                     '1.13.4'
@@ -817,11 +880,13 @@ export default {
                 excludes:[
                     'mask-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:20
             },{
                 folderName:"bootstrap-datepicker-4.15.35",
-                fileName:"bootstrap-datetimepicker",
+                fileNames:[
+                    "bootstrap-datetimepicker"
+                ],
                 abbr:'date-',
                 versions:[
                     '4.15.35'
@@ -829,7 +894,7 @@ export default {
                 excludes:[
                     'date-'
                 ],
-                includes:[],
+                fileIncludes:{},
                 order:20
             }
     ]
