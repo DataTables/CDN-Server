@@ -103,7 +103,7 @@ export default class URLValidate{
 
     validateFilename(filename:String){
         //Validate that the ending of the URL is valid
-        if(filename.search(new RegExp("("+config.filename.join("|")+")(\.min)?\.(js|css)$")) <0){
+        if(filename.search(new RegExp("("+config.fileNames.join("|")+")(\.min)?\.(js|css)$")) <0){
            console.log("Invalid Input End");
            return false;
        }
