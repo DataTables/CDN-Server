@@ -1,165 +1,200 @@
 import config from './config';
 export default class BuildFile {
-    private fs = require('fs');
+	private fs = require('fs');
 
-    constructor() {};
+	public buildFile(filePath: string) {
+		// Split URL into useful chunks and remove the first element if it is empty.
+		let parsedURL: string[] = filePath.split('/');
 
-    buildFile(filePath: String) {
-        // Split URL into useful chunks and remove the first element if it is empty.
-        var parsedURL: string[] = filePath.split("/");
+		if (parsedURL[0] === '') {
+			parsedURL.splice(0, 1);
+		}
 
-        if (parsedURL[0] === "") {
-            parsedURL.splice(0, 1);
-        }
+		// Create a mapping between the URL Abbreviations, folder names, file names, order and includes
+		let folderNameMap = new Map < string, string > ();
+		let fileNameMap = new Map<string, Map<string, string[]>>();
+		let orderMap = new Map < string, number > ();
+		let includesMap = new Map < string, {} > ();
 
-        // Create a mapping between the URL Abbreviations, folder names, file names, order and includes 
-        var folderNameMap = new Map < String, String > ();
-        var fileNameMap = new Map < String, String[] > ();
-        var orderMap = new Map < String, number > ();
-        var includesMap = new Map < String, {} > ();
+		for (let element of config.elements) {
+			let fileKeys: string[] = Object.keys(element.fileNames);
+			let fileValues: string[][] = Object.values(element.fileNames);
+			let tempMap = new Map <string, string[]>();
+			for (let j = 0; j < fileKeys.length; j++) {
+				tempMap.set(fileKeys[j], fileValues[j]);
+			}
+			folderNameMap.set(element.abbr, element.folderName);
+			orderMap.set(element.abbr, element.order);
+			if (fileKeys.length > 0) {
+				fileNameMap.set(element.abbr, tempMap);
+			}
 
-        for (var i = 0; i < config.elements.length; i++) {
+			// Only create mapping if the includes contains at least one property
+			if (Object.keys(element.fileIncludes).length > 0) {
+				includesMap.set(element.abbr, element.fileIncludes);
+			}
+		}
 
-            folderNameMap.set(config.elements[i].abbr, config.elements[i].folderName);
-            fileNameMap.set(config.elements[i].abbr, config.elements[i].fileNames);
-            orderMap.set(config.elements[i].abbr, config.elements[i].order);
+		// Grab the Folder names, File names, versions, orders and includes and add them to a list.
+		let folderNameList: string[] = [];
+		let fileNameList: Array < Map < string, string [] > > = [];
+		let versionList: string[] = [];
+		let orderList: number[] = [];
+		let extensionsList: string = '';
+		let includesList: {
+			[key: string]: string
+		} = {};
 
-            //Only create mapping if the includes contains at least one property
-            if (Object.keys(config.elements[i].fileIncludes).length > 0) {
+		let start: number = 0;
+		for (let i = 0; i < parsedURL.length; i++) {
+			let str: string[] = parsedURL[i].split('-');
+			// If the URL includes a version add a '-' to the abbreviation as in config,
+			// otherwise no version is associated with this element so push an empty string
+			if (str.length > 1) {
+				str[0] += '-';
+				versionList.push(str[str.length - 1]);
+			}
+			else {
+				start = 1;
+				versionList.push('');
+			}
 
-                includesMap.set(config.elements[i].abbr, config.elements[i].fileIncludes);
+			// If the URL splits to 3 it must be a Sub-Extension, so add the second part of the abbreviation
+			if (str.length > 2) {
+				for (let j = 1; j < str.length - 1; j++) {
+					str[0] = str[0] += str[j];
+					str[0] += '-';
+				}
+			}
 
-            }
-        }
+			orderList.push(orderMap.get(str[0]));
+			folderNameList.push(folderNameMap.get(str[0]));
+			if (i > 0 && i < parsedURL.length - 1) {
+				if (i > 1) {
+					extensionsList += ',';
+				}
+				extensionsList += ' ' + folderNameMap.get(str[0]) + ' ' + str[str.length - 1];
+			}
+			if (fileNameMap.get(str[0]) !== undefined) {
+				fileNameList.push(fileNameMap.get(str[0]));
+			}
+			else {
+				fileNameList.push(null);
+			}
+			if (includesMap.get(str[0]) !== undefined) {
+				let keys: string[] = Object.keys(includesMap.get(str[0]));
+				let vals: string[] = Object.values(includesMap.get(str[0]));
+				for (let j = 0; j < keys.length; j++) {
+					includesList[keys[j]] = vals[j];
+				}
+			}
+		}
 
-        // Grab the Folder names, File names, versions, orders and includes and add them to a list.
-        var folderNameList: String[] = [];
-        var fileNameList: String[][] = [];
-        var versionList: String[] = [];
-        var orderList: number[] = [];
-        var includesList: {
-            [key: string]: string
-        } = {};
+		// From the file name, identify filetype, and whether the minified version is to be built
+		let splitFileName: string[] = parsedURL[parsedURL.length - 1].split('.');
+		let file;
+		let type: string = '.' + splitFileName[splitFileName.length - 1];
+		let min: boolean = false;
 
-        var start: number = 0;
-        for (var i = 0; i < parsedURL.length; i++) {
-            var str: String[] = parsedURL[i].split("-");
-            // If the URL includes a version add a "-" to the abbreviation as in config,
-            // otherwise no version is associated with this element so push an empty string
-            if (str.length > 1) {
-                str[0] += "-";
-                versionList.push(str[str.length - 1]);
-            } else {
-                start = 1;
-                versionList.push("");
-            }
+		if (splitFileName.length > 2) {
+			min = true;
+		}
 
-            // If the URL splits to 3 it must be a Sub-Extension, so add the second part of the abbreviation
-            if (str.length > 2) {
-                str[0].concat(str[1].toString());
-            }
+		// Call function to build the required file
+		file = this.build(parsedURL, type, min, folderNameList, fileNameList, versionList, includesList, start);
 
-            orderList.push(orderMap.get(str[0]));
-            folderNameList.push(folderNameMap.get(str[0]));
-            fileNameList.push(fileNameMap.get(str[0]));
+		file = file.replace('{extensionsURL}', filePath);
+		file = file.replace('{extensionsList}', extensionsList);
 
-            if (includesMap.get(str[0]) !== undefined) {
-                var keys: string[] = Object.keys(includesMap.get(str[0]));
-                var vals: string[] = Object.values(includesMap.get(str[0]));
-                for (var j = 0; j < keys.length; j++) {
-                    includesList[keys[j]] = vals[j];
-                }
-            }
-        }
+		return file;
 
-        // From the file name, identify filetype, and whether the minified version is to be built
-        var splitFileName: String[] = parsedURL[parsedURL.length - 1].split(".");
-        var file;
-        var type: String = "." + splitFileName[splitFileName.length - 1]
-        var min: boolean = false;
+	}
 
-        if (splitFileName.length > 2) {
-            min = true;
-        }
+	private fetchFile(filename: string) {
+		// Try to find the file and return it, if it's not found then return an empty string,
+		// If an error occurs return '500' and log it.
+		try {
+			if (this.fs.existsSync(filename)) {
+				// console.log('found:', filename);
+				return this.fs.readFileSync(filename);
+			}
+			else {
+				// console.log('not found:', filename);
+				return '';
+			}
+		}
+		catch (error) {
+			return '500';
+		}
+	}
 
-        // Call function to build the required file
-        file = this.build(parsedURL, type, min, folderNameList, fileNameList, versionList, orderList, includesList, start);
+	private build(
+		parsedURL: string[],
+		type: string,
+		min: boolean,
+		folderNameList: string[],
+		fileNameList: Array<Map<string, string[]>>,
+		versionList: string[],
+		includesList: { [key: string]: string },
+		start: number
+		) {
+		// Add build message from the config file to the top of the file
+		let fileContent: string = config.buildMessage;
 
-        return file;
+		// Set minify to the correct value dependant on parameters
+		let minify: string = '';
 
-    }
+		if (min) {
+			minify = '.min';
+		}
 
-    build(parsedURL: String[], type: String, min: boolean, folderNameList: String[], fileNameList: String[][], versionList: String[], orderList: number[], includesList: { [key: string]: string }, start: number) {
-        // Add build message from the config file to the top of the file
-        var fileContent: String = config.buildMessage;
+		// Folders are not prefixed by a '.', therefore if there is one included in the type ignore it
+		let folderType: string[] = type.split('.');
+		let folder: string = folderType[folderType.length - 1];
 
-        //Set minify to the correct value dependant on parameters
-        var minify: String = "";
+		// Work through URL adding all of the files for each element
+		for (let i = start; i < parsedURL.length - 1; i++) {
 
-        if (min) {
-            minify = ".min";
-        }
+			// Create arrays of both the keys and values from the includesList
+			let includesKeys: string[] = Object.keys(includesList);
+			let includesValues: string[] = Object.values(includesList);
 
-        // Work through URL adding all of the files for each element
-        for (var i = start; i < parsedURL.length - 1; i++) {
-            for (var j = 0; j < fileNameList[i].length; j++) {
+			// Replace Macros defined in includes with the corresponding value
+			let updateFile: string[] = [];
+			if (fileNameList[i] !== null && fileNameList[i].get(folder) !== undefined) {
+				let fileNameArray: string[] = fileNameList[i].get(folder);
+				for (let name of fileNameArray) {
+					let updatestring: string = name;
+					for (let l = 0; l < includesKeys.length; l++) {
+						updatestring = updatestring.replace('{' + includesKeys[l] + '}', includesValues[l]);
+					}
+					updatestring = updatestring.replace('{version}', versionList[i]);
+					updateFile.push(updatestring);
+				}
+				fileNameList[i].set(folder, updateFile);
+				fileNameArray = fileNameList[i].get(folder);
+				for (let j = 0; j < fileNameList[i].get(folder).length; j++) {
 
-                // Create arrays of both the keys and values from the includesList
-                var filename: String;
-                var includesKeys: String[] = Object.keys(includesList);
-                var includesValues: String[] = Object.values(includesList);
+					// Append the minify and type to the filename
+					let filename: string = fileNameArray[j] + minify + type;
 
-                // Replace Macros defined in includes with the corresponding value 
-                for (var k = 0; k < includesKeys.length; k++) {
-                    fileNameList[i][j] = fileNameList[i][j].replace("{" + includesKeys[k] + "}", includesValues[k].toString());
-                    fileNameList[i][j] = fileNameList[i][j].replace("{version}", versionList[i].toString());
-                }
+					// Create path based on order of the element
+					let path: string = config.buildLocation + folderNameList[i] + '-' + versionList[i] +  '/' + filename;
 
-                // Append the minify and type to the filename
-                var filename: String = fileNameList[i][j].concat(minify.toString(), type.toString());
-                
-                // Folders are not prefixed by a ".", therefore if there is one included in the type ignore it
-                var folderType: String[] = type.split(".");
+					// Get the new bit of file
+					let fileAddition = this.fetchFile(path);
 
-                // Create path based on order of the element
-                if (orderList[i] != 20) {
-                    var path: String = config.buildLocation.concat(folderNameList[i].toString(), "-", versionList[i].toString(), "/", folderType[folderType.length - 1].toString(), "/", filename.toString());
-                } else {
-                    var path: String = config.buildLocation.concat(folderNameList[i].toString(), "-", versionList[i].toString(), "/", filename.toString());
-                }
+					// If '500' is returned then a server error has occured so return false
+					if (fileAddition === '500') {
+						return false;
+					}
 
-                // Get the new bit of file
-                var fileAddition = this.fetchFile(path);
-
-                // If "500" is returned then a server error has occured so return false
-                if (fileAddition === "500") {
-                    return false;
-                }
-
-                // Add the new addition to the final file
-                fileContent = fileContent.concat(fileAddition.toString());
-            }
-
-        }
-
-        // Return the finished product
-        return fileContent;
-    }
-
-    fetchFile(filename: String) {
-        // Try to find the file and return it, if it's not found then return an empty string,
-        // If an error occurs return "500" and log it.
-        try {
-            if (this.fs.existsSync(filename)) {
-                console.log("found:", filename);
-                return this.fs.readFileSync(filename).toString();
-            } else {
-                console.log("not found:", filename);
-                return "";
-            }
-        } catch {
-            console.log("Error 500. Internal Server Error");
-            return "500";
-        }
-    }
+					// Add the new addition to the final file
+					fileContent += fileAddition;
+				}
+			}
+		}
+		// Return the finished product
+		return fileContent;
+	}
 }

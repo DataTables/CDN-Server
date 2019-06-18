@@ -1,34 +1,38 @@
-import { request } from "https";
+import { request } from 'https';
 
-const http = require('http');
-const URLValidate = require('./URLValidate').default;
-const BuildFile = require('./BuildFile').default;
+import fileExtension from 'file-extension';
+import * as http from 'http';
+import mime from 'mime-types';
+import BuildFile from './BuildFile';
+import URLValidate from './URLValidate';
+http.createServer(function(req, res) {
+	let URL = new URLValidate();
+	if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
+		res.write('405 Bad Request');
+		res.statusCode = 405;
+	}
+	else if (URL.parseURL(req.url)) {
+		let Bui = new BuildFile();
+		let content = Bui.buildFile(req.url);
 
-http.createServer(function (req,res){
-    console.log(req.url);
-    var URL = new URLValidate();
-    console.log(req.method);
-    if(req.method === "POST"||req.method==="PUT"||req.method==="DELETE"){
-        res.write('405 Bad Request');
-        res.statusCode = 405;
-    }else if(URL.parseURL(req.url)){
-        var Bui = new BuildFile();
-        
-        //res.write(Bui.buildFile(req.url));
+		if (content === false) {
 
-        var content = Bui.buildFile(req.url);
+			res.write('Error 500. File not Found');
+			res.statusCode = 500;
 
-        if(content===false){
-            res.write("Error 500. File not Found");
-            res.statusCode = 500;
-            
-        } else {
-            res.write(content);
-            res.statusCode = 200;
-        }
-        res.end();
-    }else{
-        res.statusCode = 404;
-    }
-    res.end();
+		}
+		else {
+			let extension: string = fileExtension(req.url);
+			let type = mime.lookup(extension);
+			res.writeHead(200, {
+				'Content-Type': type + '; charset=utf-8'
+			});
+			res.write(content);
+		}
+		res.end();
+	}
+	else {
+		res.statusCode = 404;
+	}
+	res.end();
 }).listen(8080);
