@@ -1,4 +1,7 @@
 import config from './config';
+/**
+ * This class will return a file that contains all of the modules listed in the filePath.
+ */
 export default class BuildFile {
 	private fs = require('fs');
 
@@ -12,6 +15,8 @@ export default class BuildFile {
 
 		// Create a mapping between the URL Abbreviations, folder names, file names, order and includes
 		let folderNameMap = new Map < string, string > ();
+
+		// FileNameMap maps the abbreviation to a map of the file type(js,css,etc...) to an array of the files to be built
 		let fileNameMap = new Map<string, Map<string, string[]>>();
 		let orderMap = new Map < string, number > ();
 		let includesMap = new Map < string, {} > ();
@@ -19,12 +24,17 @@ export default class BuildFile {
 		for (let element of config.elements) {
 			let fileKeys: string[] = Object.keys(element.fileNames);
 			let fileValues: string[][] = Object.values(element.fileNames);
+
+			// This is the map between the file type and the array of files to be built
 			let tempMap = new Map <string, string[]>();
+
 			for (let j = 0; j < fileKeys.length; j++) {
 				tempMap.set(fileKeys[j], fileValues[j]);
 			}
+
 			folderNameMap.set(element.abbr, element.folderName);
 			orderMap.set(element.abbr, element.order);
+
 			if (fileKeys.length > 0) {
 				fileNameMap.set(element.abbr, tempMap);
 			}
@@ -59,7 +69,7 @@ export default class BuildFile {
 				versionList.push('');
 			}
 
-			// If the URL splits to 3 it must be a Sub-Extension, so add the second part of the abbreviation
+			// If the URL splits to 3 or more it must be a Sub-Extension, so add the second part of the abbreviation
 			if (str.length > 2) {
 				for (let j = 1; j < str.length - 1; j++) {
 					str[0] = str[0] += str[j];
@@ -69,18 +79,22 @@ export default class BuildFile {
 
 			orderList.push(orderMap.get(str[0]));
 			folderNameList.push(folderNameMap.get(str[0]));
+
+			// Create the string to replace the macro in the built file as defined in config
 			if (i > 0 && i < parsedURL.length - 1) {
 				if (i > 1) {
 					extensionsList += ',';
 				}
 				extensionsList += ' ' + folderNameMap.get(str[0]) + ' ' + str[str.length - 1];
 			}
+
 			if (fileNameMap.get(str[0]) !== undefined) {
 				fileNameList.push(fileNameMap.get(str[0]));
 			}
 			else {
 				fileNameList.push(null);
 			}
+
 			if (includesMap.get(str[0]) !== undefined) {
 				let keys: string[] = Object.keys(includesMap.get(str[0]));
 				let vals: string[] = Object.values(includesMap.get(str[0]));
@@ -103,8 +117,9 @@ export default class BuildFile {
 		// Call function to build the required file
 		file = this.build(parsedURL, type, min, folderNameList, fileNameList, versionList, includesList, start);
 
-		file = file.replace('{extensionsURL}', filePath);
-		file = file.replace('{extensionsList}', extensionsList);
+		// Replace macros in the file as defined in the config
+		file = file.replace(config.substitutions.extensionsURL, filePath);
+		file = file.replace(config.substitutions.extensionsList, extensionsList);
 
 		return file;
 
@@ -159,10 +174,11 @@ export default class BuildFile {
 			let includesKeys: string[] = Object.keys(includesList);
 			let includesValues: string[] = Object.values(includesList);
 
-			// Replace Macros defined in includes with the corresponding value
 			let updateFile: string[] = [];
 			if (fileNameList[i] !== null && fileNameList[i].get(folder) !== undefined) {
 				let fileNameArray: string[] = fileNameList[i].get(folder);
+
+				// Replace Macros defined in includes with the corresponding value
 				for (let name of fileNameArray) {
 					let updatestring: string = name;
 					for (let l = 0; l < includesKeys.length; l++) {
@@ -171,6 +187,7 @@ export default class BuildFile {
 					updatestring = updatestring.replace('{version}', versionList[i]);
 					updateFile.push(updatestring);
 				}
+
 				fileNameList[i].set(folder, updateFile);
 				fileNameArray = fileNameList[i].get(folder);
 				for (let j = 0; j < fileNameList[i].get(folder).length; j++) {

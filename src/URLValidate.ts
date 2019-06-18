@@ -1,4 +1,8 @@
 import config from './config';
+
+/**
+ * This class will validate that the URL given is a valid build path.
+ */
 export default class URLValidate {
 	private fs = require('fs');
 
