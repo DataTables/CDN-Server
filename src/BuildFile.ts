@@ -1,11 +1,22 @@
-import config from './config';
+import Cache from './Cache';
+
+import * as fs from 'fs';
+import * as util from 'util';
+
 /**
  * This class will return a file that contains all of the modules listed in the filePath.
  */
 export default class BuildFile {
-	private fs = require('fs');
 
-	public buildFile(filePath: string) {
+	private config;
+	private storedFiles: Cache;
+	private includedFiles: string[] = [];
+	constructor(cache: Cache, configIn) {
+		this.storedFiles = cache;
+		this.config = configIn;
+	}
+
+	public async buildFile(filePath: string) {
 		// Split URL into useful chunks and remove the first element if it is empty.
 		let parsedURL: string[] = filePath.split('/');
 
@@ -21,7 +32,7 @@ export default class BuildFile {
 		let orderMap = new Map < string, number > ();
 		let includesMap = new Map < string, {} > ();
 
-		for (let element of config.elements) {
+		for (let element of this.config.elements) {
 			let fileKeys: string[] = Object.keys(element.fileNames);
 			let fileValues: string[][] = Object.values(element.fileNames);
 
@@ -115,27 +126,45 @@ export default class BuildFile {
 		}
 
 		// Call function to build the required file
-		file = this.build(parsedURL, type, min, folderNameList, fileNameList, versionList, includesList, start);
-
-		// Replace macros in the file as defined in the config
-		file = file.replace(config.substitutions.extensionsURL, filePath);
-		file = file.replace(config.substitutions.extensionsList, extensionsList);
+		file = await this.build(parsedURL, type, min, folderNameList, fileNameList, versionList, includesList, start);
+		// Replace macros in the file as defined in the this.config
+		if (!file) {
+			return false;
+		}
+		else {
+			file = file.replace(this.config.substitutions.extensionsURL, filePath);
+			file = file.replace(this.config.substitutions.extensionsList, extensionsList);
+		}
 
 		return file;
 
 	}
 
-	private fetchFile(filename: string) {
+	public async getInclusions() {
+		return this.includedFiles;
+	}
+
+	private async fetchFile(filename: string) {
 		// Try to find the file and return it, if it's not found then return an empty string,
 		// If an error occurs return '500' and log it.
 		try {
-			if (this.fs.existsSync(filename)) {
+			let inCache = this.storedFiles.searchCache(filename);
+			if (await util.promisify(fs.exists)(filename) && !inCache) {
 				// console.log('found:', filename);
-				return this.fs.readFileSync(filename);
+				let content = await util.promisify(fs.readFile)(filename);
+				this.storedFiles.updateCache(filename, content.toString());
+				this.includedFiles.push(filename);
+				return content;
+			}
+			else if (!inCache) {
+				// console.log('not found:', filename);
+				this.storedFiles.updateCache(filename, '');
+				return '';
 			}
 			else {
-				// console.log('not found:', filename);
-				return '';
+				this.storedFiles.updateCache(filename, inCache);
+				this.includedFiles.push(filename.replace(this.config.buildLocation, ''));
+				return inCache;
 			}
 		}
 		catch (error) {
@@ -143,18 +172,18 @@ export default class BuildFile {
 		}
 	}
 
-	private build(
+	private async build(
 		parsedURL: string[],
 		type: string,
 		min: boolean,
 		folderNameList: string[],
-		fileNameList: Array<Map<string, string[]>>,
+		fileNameList: Array < Map < string, string[] >> ,
 		versionList: string[],
 		includesList: { [key: string]: string },
 		start: number
 		) {
 		// Add build message from the config file to the top of the file
-		let fileContent: string = config.buildMessage;
+		let fileContent: string = this.config.buildMessage;
 
 		// Set minify to the correct value dependant on parameters
 		let minify: string = '';
@@ -196,10 +225,10 @@ export default class BuildFile {
 					let filename: string = fileNameArray[j] + minify + type;
 
 					// Create path based on order of the element
-					let path: string = config.buildLocation + folderNameList[i] + '-' + versionList[i] +  '/' + filename;
+					let path: string = this.config.buildLocation + folderNameList[i] + '-' + versionList[i] +  '/' + filename;
 
 					// Get the new bit of file
-					let fileAddition = this.fetchFile(path);
+					let fileAddition = await this.fetchFile(path);
 
 					// If '500' is returned then a server error has occured so return false
 					if (fileAddition === '500') {
@@ -214,4 +243,5 @@ export default class BuildFile {
 		// Return the finished product
 		return fileContent;
 	}
+
 }

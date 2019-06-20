@@ -1,13 +1,15 @@
-import config from './config';
-
 /**
  * This class will validate that the URL given is a valid build path.
  */
 export default class URLValidate {
+	private config;
 	private fs = require('fs');
 
 	private excludes = [];
 
+	constructor(configIn) {
+		this.config = configIn;
+	}
 	public parseURL(inputURL: string) {
 
 		let parsedURL: string[];
@@ -37,7 +39,7 @@ export default class URLValidate {
 
 		// declare an order map, mapping the abbreviation of each element to its order
 		let orderMap = new Map<string, number>();
-		for (let element of config.elements) {
+		for (let element of this.config.elements) {
 			orderMap.set(element.abbr, element.order);
 		}
 
@@ -58,7 +60,7 @@ export default class URLValidate {
 		}
 
 		// validate Order, Abbreviation and requirements list.
-		let requireList: number[] = config.requires;
+		let requireList: number[] = this.config.requires;
 		for (let j = 0; j < orderList.length; j++) {
 			if (requireList.indexOf(orderList[j]) > -1) {
 				requireList = requireList.filter(function(element, index, array) {
@@ -89,7 +91,7 @@ export default class URLValidate {
 	}
 
 	private validateVersion(parsedURL: string) {
-		for (let element of config.elements) {
+		for (let element of this.config.elements) {
 
 			// if the abbreviation of this element is included in the exclusion list dont bother with checking the versions
 			if (this.excludes.indexOf(element.abbr) === -1) {
@@ -108,7 +110,7 @@ export default class URLValidate {
 
 	private validateFilename(filename: string) {
 		// Validate that the ending of the URL is valid
-		if (filename.search(new RegExp('(' + config.fileNames.join('|') + ')(\.min)?\.(js|css)$')) < 0) {
+		if (filename.search(new RegExp('(' + this.config.fileNames.join('|') + ')(\.min)?\.(js|css)$')) < 0) {
 			return false;
 		}
 		return true;
