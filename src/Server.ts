@@ -99,6 +99,28 @@ http.createServer(async function(req, res) {
 		res.write('405 Bad Request');
 		res.statusCode = 405;
 	}
+	// If the URL has a latest parameter run the following to find the latest version of the listed modules
+	else if (splitURL.length > 1 && splitURL[1].split('=').indexOf('latest') === 0) {
+		let findLatest = splitURL[1].split('=');
+		// Run validateLatest to validate the URL is legal and return the full URL required by the user
+		let latest = URL.validateLatest(findLatest[1]);
+		// If false then error in the url
+		if (!latest) {
+			res.write('Error 404. Invalid URL');
+		}
+		else {
+			let details = new Details();
+			let Bui = new BuildFile(cache, config);
+			let content: any[] = [];
+			let latestOptions: any[] = [];
+			// For every filetype build the file and push to the array for hashing purposes
+			for (let i = 0; i < config.fileTypes.length; i++) {
+				content.push(await Bui.buildFile(latest + config.fileNames[0] + config.fileTypes[i]));
+				latestOptions.push(latest + config.fileNames[0] + config.fileTypes[i]);
+			}
+			res.write(JSON.stringify(details.getLatest(content, await Bui.getInclusions(), latest, config.fileNames[0])));
+		}
+	}
 	else if (URL.parseURL(splitURL[0])) {
 
 		// Build requested file

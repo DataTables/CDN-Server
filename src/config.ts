@@ -22,6 +22,10 @@ interface IConfig {
 	 */
 	fileNames: string[];
 	/**
+	 * A list of the potential file types that could be requested.
+	 */
+	fileTypes: string[];
+	/**
 	 * A list of the orders that must appear in the request URL in order for a build to be succesful.
 	 */
 	requires: number[];

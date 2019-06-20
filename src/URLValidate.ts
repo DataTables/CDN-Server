@@ -1,3 +1,4 @@
+import * as cmp from 'semver-compare';
 /**
  * This class will validate that the URL given is a valid build path.
  */
@@ -27,6 +28,44 @@ export default class URLValidate {
 		// Validate the remainder of the URL
 		output = this.validateURL(parsedURL);
 		return output;
+	}
+	public validateLatest(inputURL: string) {
+		let parsedURL: string[];
+
+		parsedURL = inputURL.split('/');
+		let stylingLegal: boolean = false;
+
+		// Confirm that the choice of styling is legal.
+		for (let element of this.config.elements) {
+			if (parsedURL[0] === element.abbr && element.order === 10) {
+				stylingLegal = true;
+				break;
+			}
+		}
+		if (!stylingLegal) {
+			return false;
+		}
+
+		// Confirm that the URL only contains valid abbreviations.
+		for (let i = 1; i < parsedURL.length; i++) {
+			if (!this.validateAbbreviation(parsedURL[i])) {
+				return false;
+			}
+			parsedURL[i] += '-';
+		}
+
+		// Generate the necessary URL by finding all of the latest versions.
+		let filename = '';
+		for (let i = 0; i < parsedURL.length; i++) {
+			parsedURL[i] += this.findLatestVersion(parsedURL[i]);
+			filename += parsedURL[i] + '/';
+		}
+
+		// Validate the generated URL to make sure that it is legal.
+		if (this.validateURL(parsedURL)) {
+			return filename;
+		}
+		return false;
 	}
 
 	private validateURL(parsedURL: string[]) {
@@ -114,5 +153,26 @@ export default class URLValidate {
 			return false;
 		}
 		return true;
-   }
+	}
+
+ private validateAbbreviation(parsedURL: string) {
+	 	// Scan all of the modules to find the abbreviation.
+		for (let element of this.config.elements) {
+			if (parsedURL === element.abbr.split('-')[0]) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private findLatestVersion(mod: string) {
+		// Sort the versions for the element using the library and return the biggest one.
+		for (let element of this.config.elements) {
+			if (mod === element.abbr) {
+				let versions = element.versions.sort(cmp);
+				return versions[versions.length - 1];
+			}
+		}
+	}
+
 }
