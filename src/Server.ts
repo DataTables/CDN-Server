@@ -1,6 +1,7 @@
 // Import libraries used within the server
 import * as fileExtension from 'file-extension';
 import * as fs from 'fs';
+import * as getopts from 'getopts';
 import * as http from 'http';
 import * as mime from 'mime-types';
 import * as util from 'util';
@@ -10,8 +11,19 @@ import Details from './Details';
 import URLValidate from './URLValidate';
 
 let reReadConfig = false;
-let config = require('./config.json');
-
+let argum = getopts(process.argv.slice(2),{
+	default: {
+		configLoc: './config.json'
+	}
+});
+let config;
+try {
+	config = require(argum.configLoc);
+}
+catch (error) {
+	console.log("Invalid JSON");
+	process.exit();
+}
 interface IConfig {
 	/**
 	 * The location of the top level file containing all of the sub folders for build files.
@@ -84,7 +96,7 @@ let cache = new Cache(config);
  * It validates the URL that it takes and builds the file before returning them to the user.
  */
 http.createServer(async function(req, res) {
-	throw "asdbflasbdfa";
+
 	let t = new Date();
 	let t0 = t.getTime();
 	if (reReadConfig) {
