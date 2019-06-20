@@ -84,7 +84,7 @@ let cache = new Cache(config);
  * It validates the URL that it takes and builds the file before returning them to the user.
  */
 http.createServer(async function(req, res) {
-
+	throw "asdbflasbdfa";
 	let t = new Date();
 	let t0 = t.getTime();
 	if (reReadConfig) {
@@ -171,3 +171,12 @@ process.on('SIGUSR1', () => {
 	// config = require('./config.json');
 	reReadConfig = true;
 });
+
+process.on('unhandledRejection', (reason, p) => {
+	console.error(reason, 'Unhandled Rejection at Promise', p);
+});
+
+process.on('uncaughtException', err => {
+	console.error(err, 'Uncaught Exception thrown');
+	process.exit(1);
+})
