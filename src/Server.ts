@@ -118,7 +118,16 @@ http.createServer(async function(req, res) {
 				content.push(await Bui.buildFile(latest + config.fileNames[0] + config.fileTypes[i]));
 				latestOptions.push(latest + config.fileNames[0] + config.fileTypes[i]);
 			}
-			res.write(JSON.stringify(details.getLatest(content, await Bui.getInclusions(), latest, config.fileNames[0])));
+			res.write(
+				JSON.stringify(
+					details.getLatest(
+						content,
+						await Bui.getInclusions(),
+						latest.toString(),
+						config.fileNames[0]
+					)
+				)
+			);
 		}
 	}
 	else if (URL.parseURL(splitURL[0])) {
