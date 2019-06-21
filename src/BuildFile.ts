@@ -22,10 +22,14 @@ export default class BuildFile {
 
 		if (parsedURL[0] === '') {
 			parsedURL.splice(0, 1);
+			let cloneParsedURL = parsedURL.slice();
+			cloneParsedURL.pop();
+			filePath = cloneParsedURL.join('/');
 		}
 
 		// Create a mapping between the URL Abbreviations, folder names, file names, order and includes
 		let folderNameMap = new Map < string, string > ();
+		let moduleNameMap = new Map < string, string > ();
 
 		// FileNameMap maps the abbreviation to a map of the file type(js,css,etc...) to an array of the files to be built
 		let fileNameMap = new Map<string, Map<string, string[]>>();
@@ -44,6 +48,7 @@ export default class BuildFile {
 			}
 
 			folderNameMap.set(element.abbr, element.folderName);
+			moduleNameMap.set(element.abbr, element.moduleName);
 			orderMap.set(element.abbr, element.order);
 
 			if (fileKeys.length > 0) {
@@ -87,7 +92,6 @@ export default class BuildFile {
 					str[0] += '-';
 				}
 			}
-
 			orderList.push(orderMap.get(str[0]));
 			folderNameList.push(folderNameMap.get(str[0]));
 
@@ -96,7 +100,7 @@ export default class BuildFile {
 				if (i > 1) {
 					extensionsList += ',';
 				}
-				extensionsList += ' ' + folderNameMap.get(str[0]) + ' ' + str[str.length - 1];
+				extensionsList += ' ' + moduleNameMap.get(str[0]) + ' ' + str[str.length - 1];
 			}
 
 			if (fileNameMap.get(str[0]) !== undefined) {
@@ -134,6 +138,7 @@ export default class BuildFile {
 		else {
 			file = file.replace(this.config.substitutions.extensionsURL, filePath);
 			file = file.replace(this.config.substitutions.extensionsList, extensionsList);
+			file = file.replace(this.config.substitutions.source, '"' + filePath + '"');
 		}
 
 		return file;
@@ -150,14 +155,12 @@ export default class BuildFile {
 		try {
 			let inCache = this.storedFiles.searchCache(filename);
 			if (await util.promisify(fs.exists)(filename) && !inCache) {
-				// console.log('found:', filename);
-				let content = await util.promisify(fs.readFile)(filename);
+				let content = await util.promisify(fs.readFile)(filename) + '\n\n';
 				this.storedFiles.updateCache(filename, content.toString());
 				this.includedFiles.push(filename);
 				return content;
 			}
 			else if (!inCache) {
-				// console.log('not found:', filename);
 				this.storedFiles.updateCache(filename, '');
 				return '';
 			}

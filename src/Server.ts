@@ -11,9 +11,9 @@ import Details from './Details';
 import URLValidate from './URLValidate';
 
 let reReadConfig = false;
-let argum = getopts(process.argv.slice(2),{
+let argum = getopts(process.argv.slice(2), {
 	default: {
-		configLoc: './config.json'
+		configLoc: '../config.json'
 	}
 });
 let config;
@@ -96,11 +96,10 @@ let cache = new Cache(config);
  * It validates the URL that it takes and builds the file before returning them to the user.
  */
 http.createServer(async function(req, res) {
-
 	let t = new Date();
 	let t0 = t.getTime();
 	if (reReadConfig) {
-		let input = await util.promisify(fs.readFile)('./config.json');
+		let input = await util.promisify(fs.readFile)(argum.configLoc);
 		config = JSON.parse(input.toString());
 		cache.resetCache(config);
 	}
@@ -121,7 +120,7 @@ http.createServer(async function(req, res) {
 			res.write('Error 404. Invalid URL');
 		}
 		else {
-			let details = new Details();
+			let details = new Details(config);
 			let Bui = new BuildFile(cache, config);
 			let content: any[] = [];
 			let latestOptions: any[] = [];
@@ -155,7 +154,7 @@ http.createServer(async function(req, res) {
 
 		}
 		else if (splitURL.indexOf('details') === 1) {
-			let details = new Details();
+			let details = new Details(config);
 			res.write(JSON.stringify(details.getDetails(content, await Bui.getInclusions(), t0)));
 			res.statusCode = 200;
 		}
@@ -191,4 +190,4 @@ process.on('unhandledRejection', (reason, p) => {
 process.on('uncaughtException', err => {
 	console.error(err, 'Uncaught Exception thrown');
 	process.exit(1);
-})
+});

@@ -1,11 +1,14 @@
 const hash = require( 'hash.js');
-let config = require('./config.json');
+let config;
 
 /**
  * Class for returning answers of queries to the server.
  */
-export default class Details{
+export default class Details {
 
+		constructor(configIn) {
+			config = configIn;
+		}
 		/**
 		 * This method will return the filesize, hash, list of included files and the return time for a certain file.
 		 *
