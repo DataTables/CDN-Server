@@ -5,6 +5,7 @@ import * as getopts from 'getopts';
 import * as http from 'http';
 import * as mime from 'mime-types';
 import * as util from 'util';
+import * as winston from 'winston';
 import BuildFile from './BuildFile';
 import Cache from './Cache';
 import Details from './Details';
@@ -13,7 +14,9 @@ import URLValidate from './URLValidate';
 let reReadConfig = false;
 let argum = getopts(process.argv.slice(2), {
 	default: {
-		configLoc: '../config.json'
+		configLoc: '../config.json',
+		debug: false,
+		logfile: false
 	}
 });
 let config;
@@ -96,6 +99,8 @@ let cache = new Cache(config);
  * It validates the URL that it takes and builds the file before returning them to the user.
  */
 http.createServer(async function(req, res) {
+	console.log(argum.debug);
+	console.log(argum.logfile);
 	let t = new Date();
 	let t0 = t.getTime();
 	if (reReadConfig) {
@@ -105,6 +110,20 @@ http.createServer(async function(req, res) {
 	}
 	let URL = new URLValidate(config);
 	let splitURL: string[] = req.url.split('?');
+
+	// if debugging then create a debug object to return data
+	let debug;
+	if (argum.debug) {
+		debug = {
+			agent: req.headers['user-agent'],
+			buildTime: 0,
+			fileSize: 0,
+			includes: '',
+			ip: req.connection.remoteAddress,
+			time: t0,
+			url: req.url
+		};
+	}
 	// Ensure a valid request type is being made and validate that the requested url is also valid
 	if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
 		res.write('405 Bad Request');
@@ -140,6 +159,38 @@ http.createServer(async function(req, res) {
 				)
 			);
 		}
+	}
+	// If debugging then run the standard process then log either to console or to the
+	// log file if that argument is included.
+	else if (argum.debug) {
+		if (URL.parseURL(splitURL[0])) {
+			let Bui = new BuildFile(cache, config);
+			let content = await Bui.buildFile(splitURL[0]);
+			let details = new Details(config);
+			let stats = details.getDetails(content, await Bui.getInclusions(), t0);
+			debug.buildTime = stats.returnTime;
+			debug.fileSize = stats.fileSize;
+			debug.includes = stats.includedFiles;
+			if (!argum.logfile) {
+				console.log(debug);
+			}
+			else {
+				const logger = winston.createLogger({
+					level: 'silly',
+					format: winston.format.json(),
+					defaultMeta: { service: 'user-service'},
+					transports: [
+						new winston.transports.File({filename: 'error.log', level:'error'}),
+						new winston.transports.File({filename: 'combined.log'}),
+						new winston.transports.Console()
+					]
+				});
+				// logger.log({level: 'debug', message: debug});
+				logger.info(debug);
+			}
+		}
+		res.write(JSON.stringify(debug));
+		res.statusCode = 200;
 	}
 	else if (URL.parseURL(splitURL[0])) {
 

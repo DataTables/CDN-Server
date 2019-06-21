@@ -5,7 +5,7 @@ interface IConfig {
 	buildLocation: string;
 	/**
 	 * The message to be included at the top of the finished file.
-	 * 
+	 *
 	 * NOTE - THIS MUST REMAIN CONSISTENT OTHERWISE THE HASHES WILL CHANGE AND FAIL.
 	 */
 	buildMessage: string;
@@ -58,6 +58,10 @@ interface IElements {
 	 * The name of the target folder that holds the desired files for this module.
 	 */
 	folderName: string;
+	/**
+	 * The name of the Module to show in the extensions list in top comment
+	 */
+	moduleName: string;
 	/**
 	 * The order represents the order that the modules must be loaded in.
 	 *
