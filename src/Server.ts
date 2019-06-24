@@ -13,18 +13,24 @@ import URLValidate from './URLValidate';
 
 let reReadConfig = false;
 let argum = getopts(process.argv.slice(2), {
+	alias: {
+		configLoc: ['c', 'C'],
+		debug: ['d', 'D'],
+		logfile: ['l', 'L']
+	},
 	default: {
 		configLoc: '../config.json',
 		debug: false,
 		logfile: false
+
 	}
 });
 let config;
 try {
 	config = require(argum.configLoc);
-}
+} 
 catch (error) {
-	console.log("Invalid JSON");
+	console.log('Invalid JSON');
 	process.exit();
 }
 interface IConfig {
@@ -99,8 +105,6 @@ let cache = new Cache(config);
  * It validates the URL that it takes and builds the file before returning them to the user.
  */
 http.createServer(async function(req, res) {
-	console.log(argum.debug);
-	console.log(argum.logfile);
 	let t = new Date();
 	let t0 = t.getTime();
 	if (reReadConfig) {
@@ -180,7 +184,7 @@ http.createServer(async function(req, res) {
 					format: winston.format.json(),
 					defaultMeta: { service: 'user-service'},
 					transports: [
-						new winston.transports.File({filename: 'error.log', level:'error'}),
+						new winston.transports.File({filename: 'error.log', level: 'error'}),
 						new winston.transports.File({filename: 'combined.log'}),
 						new winston.transports.Console()
 					]
