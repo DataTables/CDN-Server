@@ -28,7 +28,7 @@ let argum = getopts(process.argv.slice(2), {
 let config;
 try {
 	config = require(argum.configLoc);
-} 
+}
 catch (error) {
 	console.log('Invalid JSON');
 	process.exit();
