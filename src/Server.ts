@@ -30,8 +30,8 @@ let port;
 /**
  * See which port we should be using
  */
-if (process.env.DT_PORT) {
-	port = process.env.DT_PORT;
+if (process.env.DT_CDN_SERVER_PORT) {
+	port = process.env.DT_CDN_SERVER_PORT;
 }
 else  {
 	port = 8080;
