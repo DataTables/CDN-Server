@@ -25,6 +25,18 @@ let argum = getopts(process.argv.slice(2), {
 
 	}
 });
+let port;
+
+/**
+ * See which port we should be using
+ */
+if (process.env.DT_PORT) {
+	port = process.env.DT_PORT;
+}
+else  {
+	port = 8080;
+}
+
 let config;
 try {
 	config = require(argum.configLoc);
@@ -231,7 +243,7 @@ http.createServer(async function(req, res) {
 		res.statusCode = 404;
 	}
 	res.end();
-}).listen(8080);
+}).listen(port);
 
 process.on('SIGUSR1', () => {
 	// config = require('./config.json');
