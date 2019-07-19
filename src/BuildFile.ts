@@ -155,16 +155,19 @@ export default class BuildFile {
 		try {
 			let inCache = this.storedFiles.searchCache(filename);
 			if (await util.promisify(fs.exists)(filename) && !inCache) {
+				console.log("File not in Cache and found in directory");
 				let content = await util.promisify(fs.readFile)(filename) + '\n\n';
 				this.storedFiles.updateCache(filename, content.toString());
 				this.includedFiles.push(filename);
 				return content;
 			}
 			else if (!inCache) {
+				console.log("File not in cache and not found in directory");
 				this.storedFiles.updateCache(filename, '');
 				return '';
 			}
 			else {
+				console.log("File in Cache");
 				this.storedFiles.updateCache(filename, inCache);
 				this.includedFiles.push(filename.replace(this.config.buildLocation, ''));
 				return inCache;
