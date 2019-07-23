@@ -14,7 +14,7 @@
     "elements": [
         {
             "abbr": "snf",
-            "excludes": ["snf"],
+            "excludes": ["swf", "swf-"],
             "fileIncludes": {
                 "styling": "styleNoFiles"
             },
@@ -38,7 +38,7 @@
         },
         {
             "abbr": "swf-",
-            "excludes": [],
+            "excludes": ["snf"],
             "fileIncludes": {},
             "fileNames": {
                 "css": ["css/style", "css/style.{styling}"],
@@ -65,11 +65,11 @@
             "folderName": "ProductA",
             "moduleName": "ProductA",
             "order": 20,
-            "versions": ["1.0.0"]
+            "versions": ["1.0.0", "1.0.1"]
         },
         {
             "abbr": "pb-",
-            "excludes": ["pa-"],
+            "excludes": [],
             "fileIncludes": {},
             "fileNames": {
                 "css": ["productb"],
@@ -77,8 +77,27 @@
             },
             "folderName": "ProductB",
             "moduleName": "ProductB",
-            "order": 20,
-            "versions": ["2.0.0"]
+            "order": 15,
+            "versions": ["2.0.0", "2.0.1", "2.1.0"]
+        },
+        {
+            "abbr": "pc-",
+            "excludes": ["pa-", "pb-"],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": [
+					"css/productc",
+					"css/ProductC.{styling}"
+				],
+                "js": [
+					"js/ProductC.{styling}",
+					"js/productC"
+				]
+            },
+            "folderName": "ProductC",
+            "moduleName": "ProductC",
+            "order": 40,
+            "versions": ["3.0.0", "3.0.1", "3.0.2", "3.1.0"]
         },
         {
             "abbr": "ea-",
@@ -91,7 +110,7 @@
             "folderName": "ExtA",
             "moduleName": "ExtA",
             "order": 30,
-            "versions": ["", "3.0.0"]
+            "versions": ["", "10.0.0"]
         }
     ]
 }

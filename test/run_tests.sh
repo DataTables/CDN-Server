@@ -6,17 +6,22 @@ run_test() {
 	expected=$(tail -1 $testfile)
 
 	printf "[%-40s] %-5s %s\n" $testfile $expected $url
-	rm -f ${TMPFILE}
 	result=$(curl -o $TMPFILE --silent localhost:$DT_CDN_SERVER_PORT/$url --write-out "%{http_code}")
 	if [ $result -eq $expected ] ; then
 		if [ $result -eq "200" ] ; then
 			if [ "$(md5sum $testfile.out | cut -d ' ' -f 1)" != "$(md5sum $TMPFILE  | cut -d ' ' -f 1)" ] ; then
 				failed=$((failed+1))
-				echo "FAILED: $testfile"
-				#echo "expected $expected >>>"
-				#cat $testfile.out
-				#echo "got $result >>>"
-				#cat $TMPFILE
+				echo "FAILED: $testfile: contents different"
+				echo "expected"
+				echo "##########################"
+				cat $testfile.out
+				echo "##########################"
+				echo "got"
+				echo "##########################"
+				cat $TMPFILE
+				echo "##########################"
+				diff $testfile.out $TMPFILE
+				echo "##########################"
 			else
 				passed=$((passed+1))
 			fi
@@ -25,8 +30,10 @@ run_test() {
 		fi
 	else
 		failed=$((failed+1))
-		echo "FAILED: $testfile - expected $expected, got $result"
+		echo "FAILED: $testfile: HTTP status different: expected $expected, got $result"
 	fi
+
+	rm -f ${TMPFILE}
 }
 
 #############################
