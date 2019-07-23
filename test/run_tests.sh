@@ -39,8 +39,6 @@ passed=0
 
 #############################
 echo "Starting server"
-git pull
-npm run build
 node ./dist/Server.js --configLoc $PWD/test/config.json &
 
 sleep 2
