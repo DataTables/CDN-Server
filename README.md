@@ -1,1 +1,1 @@
-CDN Server - Documentation to follow
+CDN Server - Documentation to follow.
