@@ -1,0 +1,97 @@
+{
+    "buildLocation": "./test/cache/",
+    "buildMessage": "extensionsURL >{extensionsURL}<\nextensionsList >{extensionsList}<\nsource >{source}<\ntestString >{testString}<\nstyling >{styling}<\n",
+    "cacheSize": 100,
+    "fileNames": ["test"],
+    "fileTypes": [".js", ".min.js", ".css", ".min.css"],
+    "requires": [10],
+    "substitutions": {
+        "extensionsList": "{extensionsList}",
+        "extensionsURL": "{extensionsURL}",
+        "source": "\"-source-\"",
+		"testString" : "test string"
+    },
+    "elements": [
+        {
+            "abbr": "snf",
+            "excludes": ["snf"],
+            "fileIncludes": {
+                "styling": "styleNoFiles"
+            },
+            "fileNames": {},
+            "folderName": "StyleNoFiles",
+            "moduleName": "StyleNoFiles",
+            "order": 10,
+            "versions": [""]
+        },
+        {
+            "abbr": "swf",
+            "excludes": ["snf"],
+            "fileIncludes": {
+                "styling": "styleWithFiles"
+            },
+            "fileNames": {},
+            "folderName": "",
+            "moduleName": "StyleWithFilesStyle",
+            "order": 10,
+            "versions": [""]
+        },
+        {
+            "abbr": "swf-",
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["css/style", "css/style.{styling}"],
+                "js": ["js/style", "js/style.{styling}"]
+            },
+            "folderName": "StyleWithFiles",
+            "moduleName": "StyleWithFiles",
+            "order": 10,
+            "versions": ["", "0.0.1", "0.0.2"]
+        },
+        {
+            "abbr": "pa-",
+            "excludes": ["pa-"],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": [
+					"css/producta"
+				],
+                "js": [
+					"js/ProductA.{styling}",
+					"js/productA"
+				]
+            },
+            "folderName": "ProductA",
+            "moduleName": "ProductA",
+            "order": 20,
+            "versions": ["1.0.0"]
+        },
+        {
+            "abbr": "pb-",
+            "excludes": ["pa-"],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["productb"],
+                "js": ["productb"]
+            },
+            "folderName": "ProductB",
+            "moduleName": "ProductB",
+            "order": 20,
+            "versions": ["2.0.0"]
+        },
+        {
+            "abbr": "ea-",
+            "excludes": [""],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["css/exta", "css/exta.{styling}"],
+                "js": ["js/exta", "js/exta.{styling}"]
+            },
+            "folderName": "ExtA",
+            "moduleName": "ExtA",
+            "order": 30,
+            "versions": ["", "3.0.0"]
+        }
+    ]
+}

@@ -4,7 +4,7 @@
   "description": "DataTables CDN Server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "bash test/run_tests.sh",
     "server": "node dist/Server.js",
     "build": "tsc ./src/*.ts --outDir ./dist/",
     "all": "npm run build && npm run server"
