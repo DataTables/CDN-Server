@@ -1,44 +1,89 @@
 import Cache from './Cache';
+import {IConfig} from './config';
 
 import * as fs from 'fs';
 import * as util from 'util';
+import { config, version } from 'winston';
 
+/**
+ * This interface defines the format of the object to hold the details of all of the individual
+ *   elements required to build the file.
+ */
+interface IDetails {
+	version: string;
+	folderName: string;
+	fileNameMap: Map <string, string[]>;
+	order: number;
+}
+
+/**
+ * This interface defines the format of the Includes object used throughout the BuildFile Class.
+ */
+interface IIncludes {
+	[key: string]: string;
+}
+
+const fileExists = util.promisify(fs.readFile);
 /**
  * This class will return a file that contains all of the modules listed in the filePath.
  */
 export default class BuildFile {
+	private _config: IConfig;
+	private _storedFiles: Cache;
+	private _includedFiles: string[] = [];
+	private _debug: boolean = false;
+	private _logger;
 
-	private config;
-	private storedFiles: Cache;
-	private includedFiles: string[] = [];
-	constructor(cache: Cache, configIn) {
-		this.storedFiles = cache;
-		this.config = configIn;
+	/**
+	 * The constructor initialises the cache, reads in the configuration for the
+	 * CDN Server and whether it is to be run in debug mode.
+	 * @param cache The current Cache of most recent files to have been requested
+	 * @param configIn The configuration of the CDN Server. This includes the build
+	 *   location of the files and all of their details.
+	 * @param debug A boolean value to defined whether the Server is being run in debug mode.
+	 */
+	constructor(cache: Cache, configIn: IConfig, debug: boolean, logger) {
+		this._storedFiles = cache;
+		this._config = configIn;
+		this._debug = debug;
+		this._logger = logger;
 	}
 
-	public async buildFile(filePath: string) {
+	/**
+	 * Fetches all of the sub files and converges them all into one final file to be returned to the user
+	 * @param filePath The path of the file specified. Each element specifies a module to be included.
+	 * @returns {boolean | string} Returns the file content if it is built succesfully and a boolean value
+	 *   to indicate a failure.
+	 */
+	public async buildFile(filePath: string): Promise<boolean | string> {
+		this._logger.debug('Starting Build File');
 		// Split URL into useful chunks and remove the first element if it is empty.
-		let parsedURL: string[] = filePath.split('/');
+		let parsedURL = filePath.split('/');
 
+		// If the parsedURL's first element is and empty string then it begins with a '/',
+		//   which is legal but will cause errors further on unless we remove the empty string from the array.
+		//   If the URL Requested contains multiple '/'s at the start of the URL then this
+		//   will be picked up in the Validation stage.
 		if (parsedURL[0] === '') {
 			parsedURL.splice(0, 1);
-			let cloneParsedURL = parsedURL.slice();
-			cloneParsedURL.pop();
-			filePath = cloneParsedURL.join('/');
 		}
 
+		let cloneParsedURL = parsedURL.slice();
+		cloneParsedURL.pop();
+		filePath = cloneParsedURL.join('/');
+
 		// Create a mapping between the URL Abbreviations, folder names, file names, order and includes
-		let folderNameMap = new Map < string, string > ();
-		let moduleNameMap = new Map < string, string > ();
+		let folderNameMap = new Map<string, string>();
+		let moduleNameMap = new Map<string, string>();
 
 		// FileNameMap maps the abbreviation to a map of the file type(js,css,etc...) to an array of the files to be built
 		let fileNameMap = new Map<string, Map<string, string[]>>();
-		let orderMap = new Map < string, number > ();
-		let includesMap = new Map < string, {} > ();
+		let orderMap = new Map <string, number>();
+		let includesMap = new Map <string, {}>();
 
-		for (let element of this.config.elements) {
-			let fileKeys: string[] = Object.keys(element.fileNames);
-			let fileValues: string[][] = Object.values(element.fileNames);
+		for (let element of this._config.elements) {
+			let fileKeys = Object.keys(element.fileNames);
+			let fileValues = Object.values(element.fileNames);
 
 			// This is the map between the file type and the array of files to be built
 			let tempMap = new Map <string, string[]>();
@@ -62,57 +107,64 @@ export default class BuildFile {
 		}
 
 		// Grab the Folder names, File names, versions, orders and includes and add them to a list.
-		let folderNameList: string[] = [];
-		let fileNameList: Array < Map < string, string [] > > = [];
-		let versionList: string[] = [];
-		let orderList: number[] = [];
+		let parsedDetails: IDetails[] = [];
+		let includesList: IIncludes = {};
 		let extensionsList: string = '';
-		let includesList: {
-			[key: string]: string
-		} = {};
 
-		let start: number = 0;
+		this._logger.debug('Retrieving relevant data for build');
 		for (let i = 0; i < parsedURL.length; i++) {
-			let str: string[] = parsedURL[i].split('-');
+			let folderName: string;
+			let fileName: Map < string, string [] >;
+			let vers: string;
+			let order: number;
+			let extensionsListArray: string[] = [];
+			let strParsed = parsedURL[i].split('-');
+
 			// If the URL includes a version add a '-' to the abbreviation as in config,
 			// otherwise no version is associated with this element so push an empty string
-			if (str.length > 1) {
-				str[0] += '-';
-				versionList.push(str[str.length - 1]);
-			}
-			else {
-				start = 1;
-				versionList.push('');
-			}
+			if (strParsed.length > 1) {
+				this._logger.debug('Version included in module');
+				strParsed[0] += '-';
+				vers = strParsed[strParsed.length - 1];
 
-			// If the URL splits to 3 or more it must be a Sub-Extension, so add the second part of the abbreviation
-			if (str.length > 2) {
-				for (let j = 1; j < str.length - 1; j++) {
-					str[0] = str[0] += str[j];
-					str[0] += '-';
+				// If the URL splits to 3 or more it must be a Sub-Extension, so add the second part of the abbreviation
+				if (strParsed.length > 2) {
+					for (let j = 1; j < strParsed.length - 1; j++) {
+						strParsed[0] += strParsed[j];
+						strParsed[0] += '-';
+					}
 				}
 			}
-			orderList.push(orderMap.get(str[0]));
-			folderNameList.push(folderNameMap.get(str[0]));
+			else {
+				this._logger.debug('Version not included in module');
+				vers = '';
+			}
 
-			// Create the string to replace the macro in the built file as defined in config
+			order = orderMap.get(strParsed[0]);
+			folderName = folderNameMap.get(strParsed[0]);
+
+			this._logger.debug('Creating list of extensions');
+			// Create the string to replace the `{extensionsList}` macro in the built file as defined in config
 			if (i > 0 && i < parsedURL.length - 1) {
-				if (i > 1) {
-					extensionsList += ',';
-				}
-				extensionsList += ' ' + moduleNameMap.get(str[0]) + ' ' + str[str.length - 1];
+				extensionsListArray.push(moduleNameMap.get(strParsed[0]) + ' ' + strParsed[strParsed.length - 1]);
 			}
 
-			if (fileNameMap.get(str[0]) !== undefined) {
-				fileNameList.push(fileNameMap.get(str[0]));
-			}
-			else {
-				fileNameList.push(null);
-			}
+			extensionsList = extensionsListArray.join(', ');
 
-			if (includesMap.get(str[0]) !== undefined) {
-				let keys: string[] = Object.keys(includesMap.get(str[0]));
-				let vals: string[] = Object.values(includesMap.get(str[0]));
+			fileName = fileNameMap.get(strParsed[0]);
+
+			parsedDetails.push({
+				fileNameMap: fileName,
+				folderName,
+				order,
+				version,
+			});
+
+			// If the string has styling or similar that need to be included with it
+			//   then this is where they are added to the includes list.
+			if (includesMap.get(strParsed[0]) !== undefined) {
+				let keys: string[] = Object.keys(includesMap.get(strParsed[0]));
+				let vals: string[] = Object.values(includesMap.get(strParsed[0]));
 				for (let j = 0; j < keys.length; j++) {
 					includesList[keys[j]] = vals[j];
 				}
@@ -121,133 +173,148 @@ export default class BuildFile {
 
 		// From the file name, identify filetype, and whether the minified version is to be built
 		let splitFileName: string[] = parsedURL[parsedURL.length - 1].split('.');
-		let file;
 		let type: string = '.' + splitFileName[splitFileName.length - 1];
-		let min: boolean = false;
+		let min: boolean = splitFileName.length > 2 ? true : false;
 
-		if (splitFileName.length > 2) {
-			min = true;
-		}
+		this._logger.debug('Constructing file');
+		// Call function to _build the required file
+		let file = await this._build(parsedURL, type, min, parsedDetails, includesList);
 
-		// Call function to build the required file
-		file = await this.build(parsedURL, type, min, folderNameList, fileNameList, versionList, includesList, start);
-		// Replace macros in the file as defined in the this.config
+		// Replace macros in the file as defined in the this._config
 		if (!file) {
+			this._logger.error('File unable to be built');
 			return false;
 		}
-		else {
-			file = file.replace(this.config.substitutions.extensionsURL, filePath);
-			file = file.replace(this.config.substitutions.extensionsList, extensionsList);
-			file = file.replace(this.config.substitutions.source, '"' + filePath + '"');
+		else if (typeof file === 'string') {
+			this._logger.debug('File built succesfully, replacing macros');
+			let substitutions = this._config.substitutions;
+			file = file.replace(substitutions.extensionsURL, filePath)
+				.replace(substitutions.extensionsList, extensionsList)
+				.replace(substitutions.source, '"' + filePath + '"');
 		}
 
+		this._logger.debug('File built. Returning file.');
 		return file;
 
 	}
 
-	public async getInclusions() {
-		return this.includedFiles;
+	/**
+	 * Returns an array of the files included in this build
+	 * @returns {string[]} Returns the array of included files for this build
+	 */
+	public getInclusions(): string[] {
+		return this._includedFiles;
 	}
 
-	private async fetchFile(filename: string) {
-		// Try to find the file and return it, if it's not found then return an empty string,
-		// If an error occurs return '500' and log it.
-		try {
-			let inCache = this.storedFiles.searchCache(filename);
-			if (await util.promisify(fs.exists)(filename) && !inCache) {
-				console.log("File not in Cache and found in directory", filename);
-				let content = await util.promisify(fs.readFile)(filename) + '\n\n';
-				this.storedFiles.updateCache(filename, content.toString());
-				this.includedFiles.push(filename);
-				return content;
-			}
-			else if (!inCache) {
-				console.log("File not in cache and not found in directory",filename);
-				this.storedFiles.updateCache(filename, '');
-				return '';
-			}
-			else {
-				console.log("File in Cache",filename);
-				this.storedFiles.updateCache(filename, inCache);
-				this.includedFiles.push(filename.replace(this.config.buildLocation, ''));
-				return inCache;
-			}
-		}
-		catch (error) {
-			return '500';
-		}
-	}
-
-	private async build(
+	/**
+	 * This function coordinates the building of all of the files, it fetches each sub-file
+	 *   and adds it to the final file to be returned to the user.
+	 * @param parsedURL the URL and all of its elements
+	 * @param extension The extension for the file requested
+	 * @param min Whether or not the file is to be minified
+	 * @param parsedDetails An array of the Details interface for returning the details of a build
+	 * @param includesList The list of files that are to be included in the build
+	 */
+	private async _build(
 		parsedURL: string[],
-		type: string,
+		extension: string,
 		min: boolean,
-		folderNameList: string[],
-		fileNameList: Array < Map < string, string[] >> ,
-		versionList: string[],
-		includesList: { [key: string]: string },
-		start: number
-		) {
-		// Add build message from the config file to the top of the file
-		let fileContent: string = this.config.buildMessage;
+		parsedDetails: IDetails[],
+		includesList: IIncludes
+	): Promise<string | boolean> {
+		// Assigns _build message from the config file to a variable which will be appended to the top of the file
+		let fileContent: string = this._config.headerContent;
 
 		// Set minify to the correct value dependant on parameters
-		let minify: string = '';
-
-		if (min) {
-			minify = '.min';
-		}
+		let minify: string = min ? '.min' : '';
 
 		// Folders are not prefixed by a '.', therefore if there is one included in the type ignore it
-		let folderType: string[] = type.split('.');
-		let folder: string = folderType[folderType.length - 1];
+		let folder: string = extension.replace('.', '');
 
 		// Work through URL adding all of the files for each element
-		for (let i = start; i < parsedURL.length - 1; i++) {
-
+		for (let i = 0; i < parsedURL.length - 1; i++) {
 			// Create arrays of both the keys and values from the includesList
 			let includesKeys: string[] = Object.keys(includesList);
 			let includesValues: string[] = Object.values(includesList);
-
 			let updateFile: string[] = [];
-			if (fileNameList[i] !== null && fileNameList[i].get(folder) !== undefined) {
-				let fileNameArray: string[] = fileNameList[i].get(folder);
+
+			if (parsedDetails[i].fileNameMap !== undefined && parsedDetails[i].fileNameMap.get(folder) !== undefined) {
+				let fileNameArray: string[] = parsedDetails[i].fileNameMap.get(folder);
 
 				// Replace Macros defined in includes with the corresponding value
 				for (let name of fileNameArray) {
 					let updatestring: string = name;
+
 					for (let l = 0; l < includesKeys.length; l++) {
 						updatestring = updatestring.replace('{' + includesKeys[l] + '}', includesValues[l]);
 					}
-					updatestring = updatestring.replace('{version}', versionList[i]);
+
+					updatestring = updatestring.replace('{version}', parsedDetails[i].version);
 					updateFile.push(updatestring);
 				}
 
-				fileNameList[i].set(folder, updateFile);
-				fileNameArray = fileNameList[i].get(folder);
-				for (let j = 0; j < fileNameList[i].get(folder).length; j++) {
+				parsedDetails[i].fileNameMap.set(folder, updateFile);
+				fileNameArray = parsedDetails[i].fileNameMap.get(folder);
+
+				for (let filename of fileNameArray) {
 
 					// Append the minify and type to the filename
-					let filename: string = fileNameArray[j] + minify + type;
+					filename += minify + extension;
 
 					// Create path based on order of the element
-					let path: string = this.config.buildLocation + folderNameList[i] + '-' + versionList[i] +  '/' + filename;
+					let path: string = this._config.packagesDir + parsedDetails[i].folderName +
+						'-' + parsedDetails[i].version +  '/' + filename;
 
+					this._logger.debug('Fetching sub-file');
 					// Get the new bit of file
-					let fileAddition = await this.fetchFile(path);
+					let fileAddition = await this._fetchFile(path);
 
 					// If '500' is returned then a server error has occured so return false
-					if (fileAddition === '500') {
-						return false;
+					if (fileAddition !== false) {
+						// Add the new addition to the final file
+						fileContent += fileAddition;
 					}
-
-					// Add the new addition to the final file
-					fileContent += fileAddition;
 				}
 			}
 		}
+
 		// Return the finished product
 		return fileContent;
+	}
+
+	/**
+	 * This function fetches the sub files from the cache or the dist folder
+	 * @param filename The path to the next sub file to be found
+	 */
+	private async _fetchFile(filename: string): Promise <string | boolean> {
+		// Try to find the file and return it, if it's not found then return an empty string,
+		// If an error occurs return '500' and log it.
+		try {
+			let fromCache = this._storedFiles.searchCache(filename);
+
+			if (await fileExists(filename) && !fromCache) {
+				this._logger.debug('File not in Cache, but found in directory: ' + filename);
+				let content = await fileExists(filename) + '\n\n';
+				this._storedFiles.updateCache(filename, content.toString());
+				this._includedFiles.push(filename);
+				return content;
+			}
+			else if (typeof fromCache === 'string') {
+				this._logger.debug('File found in cache: ' + filename);
+				this._storedFiles.updateCache(filename, fromCache);
+				this._includedFiles.push(filename.replace(this._config.packagesDir, ''));
+				return fromCache;
+			}
+			else {
+				this._logger.warn('File not found in cache or directory');
+				this._storedFiles.updateCache(filename, '');
+				return '';
+			}
+		}
+		catch (error) {
+			this._logger.warn('Error fetching File, may not exist: ' + filename);
+			return false;
+		}
 	}
 
 }

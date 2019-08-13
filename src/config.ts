@@ -1,14 +1,14 @@
-interface IConfig {
+export interface IConfig {
 	/**
 	 * The location of the top level file containing all of the sub folders for build files.
 	 */
-	buildLocation: string;
+	packagesDir: string;
 	/**
 	 * The message to be included at the top of the finished file.
 	 *
 	 * NOTE - THIS MUST REMAIN CONSISTENT OTHERWISE THE HASHES WILL CHANGE AND FAIL.
 	 */
-	buildMessage: string;
+	headerContent: string;
 	/**
 	 * The number of files that will be stored in the cache at any given time.
 	 */
@@ -24,7 +24,7 @@ interface IConfig {
 	/**
 	 * A list of the potential file types that could be requested.
 	 */
-	fileTypes: string[];
+	fileExtensions: string[];
 	/**
 	 * A list of the orders that must appear in the request URL in order for a build to be succesful.
 	 */
@@ -37,6 +37,7 @@ interface IConfig {
 	 */
 	substitutions: {[key: string]: string};
 }
+
 interface IElements {
 	/**
 	 * The abbreviation of the module as seen in the URL.
@@ -44,6 +45,7 @@ interface IElements {
 	abbr: string;
 	/**
 	 * The abbreviation of any modules that are not permitted alongside this one should be noted here.
+	 * The abbreviation of this element is automatically excluded from other occurences in the URL.
 	 */
 	excludes: string[];
 	/**

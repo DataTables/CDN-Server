@@ -2,12 +2,13 @@
   "name": "datatables.net-cdn-server",
   "version": "0.0.1",
   "description": "DataTables CDN Server",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
     "test": "bash test/run_tests.sh",
-    "server": "node dist/Server.js",
+    "server": "node dist/server.js",
     "build": "tsc ./src/*.ts --outDir ./dist/",
-    "all": "npm run build && npm run server"
+    "all": "npm run build && npm run server",
+    "debug": "node dist/server.js -d"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "homepage": "https://github.com/DataTables/CDN-Server#readme",
   "dependencies": {
     "@types/node": "^12.0.7",
+    "appmetrics-dash": "^5.0.0",
     "file-extension": "^4.0.5",
     "file-type": "^12.0.0",
     "getopts": "^2.2.4",
