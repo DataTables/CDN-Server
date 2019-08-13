@@ -1,0 +1,14 @@
+extensionsURL >swf/swf-0.0.1/pa-1.0.0<
+extensionsList > StyleWithFiles 0.0.1, ProductA 1.0.0<
+source >{source}<
+testString >{testString}<
+styling >{styling}<
+./StyleWithFiles-0.0.1/css/style.css
+
+
+./StyleWithFiles-0.0.1/css/style.styleWithFiles.css
+
+
+./ProductA-1.0.0/css/producta.css
+
+

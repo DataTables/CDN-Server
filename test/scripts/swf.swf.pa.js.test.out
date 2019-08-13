@@ -1,0 +1,17 @@
+extensionsURL >swf/swf-0.0.1/pa-1.0.0<
+extensionsList > StyleWithFiles 0.0.1, ProductA 1.0.0<
+source >{source}<
+testString >{testString}<
+styling >{styling}<
+./StyleWithFiles-0.0.1/js/style.js
+
+
+./StyleWithFiles-0.0.1/js/style.styleWithFiles.js
+
+
+./ProductA-1.0.0/js/ProductA.styleWithFiles.js
+
+
+./ProductA-1.0.0/js/productA.js
+
+
