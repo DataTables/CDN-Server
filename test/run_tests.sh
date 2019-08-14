@@ -46,7 +46,7 @@ passed=0
 
 #############################
 echo "Starting server"
-node ./dist/Server.js --configLoc $PWD/test/config.json &
+node ./dist/server.js --configLoc $PWD/test/config.json &
 
 sleep 2
 
@@ -56,7 +56,7 @@ done
 
 PID=$(jobs -p)
 echo "Stopping server $PID" 
-kill $PID
+#kill $PID
 
 echo "Tests complete: $passed passed, $failed failed"
 exit $failed
