@@ -3,7 +3,6 @@ import {IConfig} from './config';
 
 import * as fs from 'fs';
 import * as util from 'util';
-import { config, version } from 'winston';
 
 /**
  * This interface defines the format of the object to hold the details of all of the individual
@@ -157,7 +156,7 @@ export default class BuildFile {
 				fileNameMap: fileName,
 				folderName,
 				order,
-				version,
+				version: vers,
 			});
 
 			// If the string has styling or similar that need to be included with it
