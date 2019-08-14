@@ -46,7 +46,7 @@ passed=0
 
 #############################
 echo "Starting server"
-node ./dist/server.js --configLoc $PWD/test/config.json &
+node ./dist/server.js -d --configLoc $PWD/test/config.json &
 
 sleep 2
 

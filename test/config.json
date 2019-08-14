@@ -1,15 +1,15 @@
 {
     "packagesDir": "./test/cache/",
-    "buildMessage": "extensionsURL >{extensionsURL}<\nextensionsList >{extensionsList}<\nsource >{source}<\ntestString >{testString}<\nstyling >{styling}<\n",
+    "headerContent": "extensionsURL >{extensionsURL}<\nextensionsList >{extensionsList}<\nsource >\"-source-\"<\ntestString >{testString}<\n",
     "cacheSize": 100,
     "fileNames": ["test"],
-    "fileTypes": [".js", ".min.js", ".css", ".min.css"],
+    "fileExtensions": [".js", ".min.js", ".css", ".min.css"],
     "requires": [10],
     "substitutions": {
-        "extensionsList": "{extensionsList}",
-        "extensionsURL": "{extensionsURL}",
-        "source": "\"-source-\"",
-		"testString" : "test string"
+        "_extensionsList": "{extensionsList}",
+        "_extensionsURL": "{extensionsURL}",
+        "_source": "\"-source-\"",
+		"{testString}" : "test string"
     },
     "elements": [
         {
@@ -51,7 +51,7 @@
         },
         {
             "abbr": "pa-",
-            "excludes": ["pa-"],
+            "excludes": [],
             "fileIncludes": {},
             "fileNames": {
                 "css": [
