@@ -1,5 +1,5 @@
 {
-    "buildLocation": "./test/cache/",
+    "packagesDir": "./test/cache/",
     "buildMessage": "extensionsURL >{extensionsURL}<\nextensionsList >{extensionsList}<\nsource >{source}<\ntestString >{testString}<\nstyling >{styling}<\n",
     "cacheSize": 100,
     "fileNames": ["test"],
