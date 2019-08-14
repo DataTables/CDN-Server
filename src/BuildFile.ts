@@ -109,6 +109,7 @@ export default class BuildFile {
 		let parsedDetails: IDetails[] = [];
 		let includesList: IIncludes = {};
 		let extensionsList: string = '';
+		let extensionsListArray: string[] = [];
 
 		this._logger.debug('Retrieving relevant data for build');
 		for (let i = 0; i < parsedURL.length; i++) {
@@ -116,7 +117,6 @@ export default class BuildFile {
 			let fileName: Map < string, string [] >;
 			let vers: string;
 			let order: number;
-			let extensionsListArray: string[] = [];
 			let strParsed = parsedURL[i].split('-');
 
 			// If the URL includes a version add a '-' to the abbreviation as in config,
@@ -148,8 +148,6 @@ export default class BuildFile {
 				extensionsListArray.push(moduleNameMap.get(strParsed[0]) + ' ' + strParsed[strParsed.length - 1]);
 			}
 
-			extensionsList = extensionsListArray.join(', ');
-
 			fileName = fileNameMap.get(strParsed[0]);
 
 			parsedDetails.push({
@@ -169,6 +167,8 @@ export default class BuildFile {
 				}
 			}
 		}
+
+		extensionsList += extensionsListArray.join(', ');
 
 		// From the file name, identify filetype, and whether the minified version is to be built
 		let splitFileName: string[] = parsedURL[parsedURL.length - 1].split('.');

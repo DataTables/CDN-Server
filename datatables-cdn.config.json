@@ -1078,8 +1078,8 @@
 	"fileExtensions": [".js", ".min.js", ".css", ".min.css"],
 	"requires": [10],
 	"substitutions": {
-		"extensionsList": "{extensionsList}",
-		"extensionsURL": "{extensionsURL}",
-		"source": "\"-source-\""
+		"_extensionsList": "{extensionsList}",
+		"_extensionsURL": "{extensionsURL}",
+		"_source": "\"-source-\""
 	}
 }
