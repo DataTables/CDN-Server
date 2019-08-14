@@ -189,16 +189,24 @@ export default class BuildFile {
 			let substitutions = this._config.substitutions;
 			for (let substitution of Object.keys(substitutions)) {
 				if (substitution === '_extensionsList') {
-					file = file.replace(substitutions._extensionsList, extensionsList);
+					while (file.indexOf(substitutions._extensionsList) !== -1) {
+						file = file.replace(substitutions._extensionsList, extensionsList);
+					}
 				}
 				else if (substitution === '_extensionsURL') {
-					file = file.replace(substitutions._extensionsURL, filePath);
+					while (file.indexOf(substitutions._extensionsURL) !== -1) {
+						file = file.replace(substitutions._extensionsURL, filePath);
+					}
 				}
 				else if (substitution === '_source') {
-					file = file.replace(substitutions._source, '"' + filePath + '"');
+					while (file.indexOf(substitutions._source) !== -1) {
+						file = file.replace(substitutions._source, '"' + filePath + '"');
+					}
 				}
 				else {
-					file = file.replace(substitution, substitutions[substitution]);
+					while (file.indexOf(substitution) !== -1) {
+						file = file.replace(substitution, substitutions[substitution]);
+					}
 				}
 			}
 		}

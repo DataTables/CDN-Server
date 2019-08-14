@@ -1,6 +1,6 @@
 {
 	"packagesDir": "./dist/cache/",
-	"headerContent": "/*\n * {testString} This combined file was created by the DataTables downloader builder:\n *   https://datatables.net/download\n *\n * To rebuild or modify this file with the latest versions of the included\n * software please visit:\n *   https://datatables.net/download/#{extensionsURL}\n *\n * Included libraries:\n *  {extensionsList}\n */\n\n",
+	"headerContent": "/*\n * \"-source-\" This combined file was created by the DataTables downloader builder:\n *   https://datatables.net/download\n *\n * To rebuild or modify this file with the latest versions of the included\n * software please visit:\n *   https://datatables.net/download/#{extensionsURL}\n *\n * Included libraries:\n *  {extensionsList}\n */\n\n",
 	"cacheSize": 100,
 	"elements": [{
 		"abbr": "dt",
