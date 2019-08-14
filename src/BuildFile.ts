@@ -187,9 +187,20 @@ export default class BuildFile {
 		else if (typeof file === 'string') {
 			this._logger.debug('File built succesfully, replacing macros');
 			let substitutions = this._config.substitutions;
-			file = file.replace(substitutions.extensionsURL, filePath)
-				.replace(substitutions.extensionsList, extensionsList)
-				.replace(substitutions.source, '"' + filePath + '"');
+			for (let substitution of Object.keys(substitutions)) {
+				if (substitution === '_extensionsList') {
+					file = file.replace(substitutions._extensionsList, extensionsList);
+				}
+				else if (substitution === '_extensionsURL') {
+					file = file.replace(substitutions._extensionsURL, filePath);
+				}
+				else if (substitution === '_source') {
+					file = file.replace(substitutions._source, '"' + filePath + '"');
+				}
+				else {
+					file = file.replace(substitution, substitutions[substitution]);
+				}
+			}
 		}
 
 		this._logger.debug('File built. Returning file.');
