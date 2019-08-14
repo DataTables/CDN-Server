@@ -1,8 +1,7 @@
 extensionsURL >swf/swf-0.0.1/pa-1.0.0<
-extensionsList > StyleWithFiles 0.0.1, ProductA 1.0.0<
-source >{source}<
-testString >{testString}<
-styling >{styling}<
+extensionsList >StyleWithFiles 0.0.1, ProductA 1.0.0<
+source >"swf/swf-0.0.1/pa-1.0.0"<
+testString >test string<
 ./StyleWithFiles-0.0.1/js/style.js
 
 
@@ -11,6 +10,9 @@ styling >{styling}<
 
 ./ProductA-1.0.0/js/ProductA.styleWithFiles.js
 
+
+first -source-
+second "swf/swf-0.0.1/pa-1.0.0"
 
 ./ProductA-1.0.0/js/productA.js
 

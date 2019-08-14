@@ -1,8 +1,7 @@
 extensionsURL >snf/pb-2.1.0<
-extensionsList > ProductB 2.1.0<
-source >{source}<
-testString >{testString}<
-styling >{styling}<
+extensionsList >ProductB 2.1.0<
+source >"snf/pb-2.1.0"<
+testString >test string<
 ./ProductB-2.1.0/productb.css
 
 
