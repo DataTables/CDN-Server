@@ -32,8 +32,9 @@ export interface IConfig {
 	/**
 	 * Substitutions to be made throughout the built file.
 	 *
-	 * There are 2 predefined substitutions, extensionURL and extensionList.
-	 * These provide the build message with custom data relating to the file that has been requested.
+	 * There are 2 predefined _substitutions, _extensionURL and _extensionList.
+	 * These provide the build message with custom data relating to the file that has been requested. For these properties only the value held is replaced by the value of an internal varaible.
+	 * For custom substitutions the property name is replaced by its value.
 	 */
 	substitutions: {[key: string]: string};
 }
