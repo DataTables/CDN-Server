@@ -233,9 +233,10 @@ export default class URLValidate {
 		}
 		this._logger.debug('All requested versions are valid');
 
+		// Validate that none of the elements have been excluded except themselves
 		for (let element of parsedURL) {
 			let abbr = element.split('-') ;
-			if(abbr.length > 1){
+			if (abbr.length > 1) {
 				abbr[0] += '-';
 			}
 			if (this._excludes.indexOf(abbr[0]) !== this._excludes.lastIndexOf(abbr[0])) {
