@@ -142,9 +142,10 @@ export default class BuildFile {
 			order = orderMap.get(strParsed[0]);
 			folderName = folderNameMap.get(strParsed[0]);
 
-			this._logger.debug('Creating list of extensions');
+			this._logger.debug('Creating list of extensions for ' + strParsed);
 			// Create the string to replace the `{extensionsList}` macro in the built file as defined in config
-			if (i > 0 && i < parsedURL.length - 1) {
+			if (strParsed.length > 1 && i < parsedURL.length - 1) {
+				this._logger.debug('Adding to extensionsList ' + moduleNameMap.get(strParsed[0]));
 				extensionsListArray.push(moduleNameMap.get(strParsed[0]) + ' ' + strParsed[strParsed.length - 1]);
 			}
 
