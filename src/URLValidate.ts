@@ -31,7 +31,6 @@ export default class URLValidate {
 
 		// The last element should be a valid file name, so assign it to filename and validate.
 		let filename: string = parsedURL.pop();
-		console.log(filename);
 		if (!this._validateFilename(filename)) {
 			this._logger.error('Invalid filename in request: ' + filename);
 			return false;
