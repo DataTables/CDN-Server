@@ -1,8 +1,7 @@
 extensionsURL >snf/ea-10.0.0<
-extensionsList > ExtA 10.0.0<
-source >{source}<
-testString >{testString}<
-styling >{styling}<
+extensionsList >ExtA 10.0.0<
+source >"snf/ea-10.0.0"<
+testString >test string<
 ./Ext-10-3.0.0/js/exta.js
 
 

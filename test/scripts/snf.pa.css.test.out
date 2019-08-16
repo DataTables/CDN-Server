@@ -1,8 +1,7 @@
 extensionsURL >snf/pa-1.0.0<
-extensionsList > ProductA 1.0.0<
-source >{source}<
-testString >{testString}<
-styling >{styling}<
+extensionsList >ProductA 1.0.0<
+source >"snf/pa-1.0.0"<
+testString >test string<
 ./ProductA-1.0.0/css/producta.css
 
 
