@@ -5,7 +5,7 @@ run_test() {
 	url=$(head -1 $testfile)
 	expected=$(tail -1 $testfile)
 
-	printf "[%-40s] %-5s %s\n" $testfile $expected $url
+	printf "[%-50s] %-5s %s\n" $testfile $expected $url
 	result=$(curl -o $TMPFILE --silent localhost:$DT_CDN_SERVER_PORT/$url --write-out "%{http_code}")
 	if [ $result -eq $expected ] ; then
 		if [ $result -eq "200" ] ; then
@@ -58,6 +58,8 @@ PID=$(jobs -p)
 # Run through all the script directories
 
 for i in `ls -1d test/scripts/*` ; do
+	echo ""
+	echo "#########################################"
 	echo "Loading $(basename $i) config into server"
 	cp $i/config.json $CONFFILE
 
@@ -67,8 +69,6 @@ for i in `ls -1d test/scripts/*` ; do
 	for testfile in $(ls -1 $i/*.test) ; do
 		run_test $testfile
 	done
-
-
 done
 
 echo "Stopping server $PID" 
