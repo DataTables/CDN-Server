@@ -58,9 +58,10 @@ http.createServer(async function(req, res) {
 	logger.info('New Request ' + req.url);
 	if (getConfig) {
 		config = await readConfig();
-		logger.debug('Config Read');
+		logger.debug('Config Read ' + argum.configLoc);
 		cache.resetCache(config.cacheSize);
 		logger.debug('Cache Reset');
+		getConfig = false;
 	}
 	let t = new Date();
 	let t0 = t.getTime();
@@ -69,7 +70,8 @@ http.createServer(async function(req, res) {
 	// before reading it (to save signal handler time)
 	if (reReadConfig) {
 		config = await readConfig();
-		logger.debug('config Read');
+		logger.debug('config Read' + argum.configLoc);
+		reReadConfig = false;
 	}
 
 	let url = new URLValidate(config, logger);
