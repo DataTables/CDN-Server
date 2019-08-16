@@ -39,22 +39,38 @@ run_test() {
 #############################
 # A few constants
 export DT_CDN_SERVER_PORT=8090
-TMPFILE=/tmp/wget.out.$$
+
+TMPFILE="/tmp/wget.out.$$"
+CONFFILE="test/config.json"
 
 failed=0
 passed=0
 
 #############################
-echo "Starting server"
-node ./dist/server.js --configLoc ./test/config.json &
 
+echo "Starting server with empty config"
+node ./dist/server.js --configLoc $CONFFILE &
 sleep 2
 
-for testfile in $(ls -1 test/scripts/*.test) ; do
-	run_test $testfile
+# Get the PID of the server
+PID=$(jobs -p)
+
+# Run through all the script directories
+
+for i in `ls -1d test/scripts/*` ; do
+	echo "Loading $(basename $i) config into server"
+	cp $i/config.json $CONFFILE
+
+	kill -SIGUSR1 $PID
+	sleep 2
+
+	for testfile in $(ls -1 $i/*.test) ; do
+		run_test $testfile
+	done
+
+
 done
 
-PID=$(jobs -p)
 echo "Stopping server $PID" 
 kill $PID
 

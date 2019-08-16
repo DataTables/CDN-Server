@@ -2,9 +2,9 @@
     "packagesDir": "./test/cache/",
     "headerContent": "extensionsURL >{extensionsURL}<\nextensionsList >{extensionsList}<\nsource >\"-source-\"<\ntestString >{testString}<\n",
     "cacheSize": 100,
-    "fileNames": ["test"],
+    "fileNames": ["test", ""],
     "fileExtensions": [".js", ".min.js", ".css", ".min.css"],
-    "requires": [10],
+    "requires": [],
     "substitutions": {
         "_extensionsList": "{extensionsList}",
         "_extensionsURL": "{extensionsURL}",
