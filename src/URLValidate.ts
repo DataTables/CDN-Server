@@ -31,7 +31,7 @@ export default class URLValidate {
 
 		// The last element should be a valid file name, so assign it to filename and validate.
 		let filename: string = parsedURL.pop();
-
+		console.log(filename);
 		if (!this._validateFilename(filename)) {
 			this._logger.error('Invalid filename in request: ' + filename);
 			return false;
@@ -136,7 +136,11 @@ export default class URLValidate {
 	 */
 	private _validateFilename(filename: string): boolean {
 		// Validate that the ending of the URL is valid
-		if (filename.search(new RegExp('(' + this._config.fileNames.join('|') + ')(\.min)?\.(js|css)$')) < 0) {
+		if (Object.values(this._config.fileNames).indexOf('') !== -1) {
+			this._logger.warn('Empty filename in config - not allowed');
+			return false;
+		}
+		else if (filename.search(new RegExp('(' + this._config.fileNames.join('|') + ')(\.min)?\.(js|css)$')) < 0) {
 			return false;
 		}
 
@@ -158,6 +162,10 @@ export default class URLValidate {
 		for (let element of parsedURL) {
 			if (element === '') {
 				this._logger.error('Empty element included in URL, all elements must contain a module');
+				return false;
+			}
+			else if (element.indexOf('..') !== -1) {
+				this._logger.warn('No ".." allowed in filename');
 				return false;
 			}
 		}
@@ -224,6 +232,17 @@ export default class URLValidate {
 			}
 		}
 		this._logger.debug('All requested versions are valid');
+
+		for (let element of parsedURL) {
+			let abbr = element.split('-') ;
+			if(abbr.length > 1){
+				abbr[0] += '-';
+			}
+			if (this._excludes.indexOf(abbr[0]) !== this._excludes.lastIndexOf(abbr[0])) {
+				this._logger.error('Excluded module included in request');
+				return false;
+			}
+		}
 
 		this._logger.debug('Validation Success');
 		return true;
