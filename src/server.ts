@@ -50,6 +50,10 @@ if (argum.metrics) {
 if (loggerDetails.logfile === true) {
 	process.exit(1);
 }
+
+// Validation that the config is valid
+readConfig();
+
 let logger = new Logger(loggerDetails);
 
 let cache = new Cache(null, logger);
