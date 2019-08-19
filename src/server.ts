@@ -90,8 +90,7 @@ http.createServer(async function(req, res) {
 
 	// Ensure a valid request type is being made and validate that the requested url is also valid
 	if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
-		res.write('405 Bad Request');
-		res.statusCode = 405;
+		res.writeHead(405);
 		logger.error('405 Bad Request. Types not permitted "POST", "PUT" and "DELETE". Type method attempted ' + req.method);
 	}
 
@@ -103,7 +102,7 @@ http.createServer(async function(req, res) {
 		let latest = url.validateLatest(findLatest[1]);
 
 		if (!latest) {
-			res.write('Error 404. Invalid URL.');
+			res.writeHead(404, 'Error 404. Invalid URL.');
 			logger.error('404 Invalid URL. Failed to find latest version(s) of the module(s) requested.');
 		}
 		else {
@@ -140,9 +139,12 @@ http.createServer(async function(req, res) {
 		let content = await bui.buildFile(splitURL[0]);
 
 		if (content === false) {
-			res.write('Error 500. File not Found');
-			res.statusCode = 500;
+			res.writeHead(500);
 			logger.error('500 File not found when building file');
+		}
+		else if (content === 404) {
+			res.writeHead(404);
+			logger.error('404 File not found when building file');
 		}
 		else if (splitURL.indexOf('details') === 1 && typeof content === 'string') {
 			logger.debug('Getting Meta Info for build.');

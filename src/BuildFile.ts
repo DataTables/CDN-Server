@@ -54,7 +54,7 @@ export default class BuildFile {
 	 * @returns {boolean | string} Returns the file content if it is built succesfully and a boolean value
 	 *   to indicate a failure.
 	 */
-	public async buildFile(filePath: string): Promise<boolean | string> {
+	public async buildFile(filePath: string): Promise<boolean | string | number> {
 		this._logger.debug('Starting Build File');
 		// Split URL into useful chunks and remove the first element if it is empty.
 		let parsedURL = filePath.split('/');
@@ -185,6 +185,10 @@ export default class BuildFile {
 			this._logger.error('File unable to be built');
 			return false;
 		}
+		else if (typeof file === 'number'){
+			this._logger.error('File unable to be built');
+			return file;
+		}
 		else if (typeof file === 'string') {
 			this._logger.debug('File built succesfully, replacing macros');
 			let substitutions = this._config.substitutions;
@@ -240,7 +244,7 @@ export default class BuildFile {
 		min: boolean,
 		parsedDetails: IDetails[],
 		includesList: IIncludes
-	): Promise<string | boolean> {
+	): Promise<string | boolean | number> {
 		// Assigns _build message from the config file to a variable which will be appended to the top of the file
 		let fileContent: string = this._config.headerContent;
 
@@ -289,7 +293,10 @@ export default class BuildFile {
 					let fileAddition = await this._fetchFile(path);
 
 					// If '500' is returned then a server error has occured so return false
-					if (fileAddition !== false) {
+					if (typeof fileAddition === 'number') {
+						return fileAddition;
+					}
+					else if (fileAddition !== false) {
 						// Add the new addition to the final file
 						fileContent += fileAddition;
 					}
@@ -308,7 +315,7 @@ export default class BuildFile {
 	 * This function fetches the sub files from the cache or the dist folder
 	 * @param filename The path to the next sub file to be found
 	 */
-	private async _fetchFile(filename: string): Promise <string | boolean> {
+	private async _fetchFile(filename: string): Promise <string | boolean | number> {
 		// Try to find the file and return it, if it's not found then return an empty string,
 		// If an error occurs return '500' and log it.
 		try {
@@ -341,7 +348,7 @@ export default class BuildFile {
 			}
 			else {
 				this._logger.error('Unable to fetch non option file' + filename);
-				return false;
+				return 404;
 			}
 		}
 	}
