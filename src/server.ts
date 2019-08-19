@@ -62,7 +62,6 @@ let cache = new Cache(null, logger);
  * It validates the URL that it takes and builds the file before returning them to the user.
  */
 http.createServer(async function(req, res) {
-	res.setHeader('Cache-Control', 'public, max-age=31557600');
 	logger.info('New Request ' + req.url);
 	if (getConfig) {
 		config = await readConfig();
@@ -158,7 +157,9 @@ http.createServer(async function(req, res) {
 			logger.debug('Getting Meta Info for build.');
 			let meta = new MetaInformation(config, logger);
 			res.write(JSON.stringify(meta.getDetails(content, await bui.getInclusions(), t0)));
-			res.statusCode = 200;
+			res.writeHead(200, {
+				'Cache-Control': 'max-age=31557600'
+			});
 			logger.debug('Success. Returning Build Details');
 		}
 		else {
@@ -167,7 +168,8 @@ http.createServer(async function(req, res) {
 			let extension: string = fileExtension(splitURL[0]);
 			let type = mime.lookup(extension);
 			res.writeHead(200, {
-				'Content-Type': type + '; charset=utf-8'
+				'Content-Type': type + '; charset=utf-8',
+				'Cache-Control': 'max-age=31557600'
 			});
 			// Return file
 			res.write(content);
