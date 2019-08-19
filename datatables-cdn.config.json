@@ -4,6 +4,7 @@
 	"cacheSize": 100,
 	"elements": [{
 		"abbr": "dt",
+		"description" : "This element includes the datatables styling.",
 		"excludes": [
 			"se",
 			"se-",
@@ -26,6 +27,7 @@
 		]
 	}, {
 		"abbr": "se-",
+		"description" : "This element includes the semantic styling of a certain version.",
 		"excludes": [
 			"dt",
 			"se",
@@ -52,6 +54,7 @@
 		]
 	}, {
 		"abbr": "se",
+		"description" : "This element includes the semantic styling.",
 		"excludes": [
 			"dt",
 			"se-",
@@ -74,6 +77,7 @@
 		]
 	}, {
 		"abbr": "bs4",
+		"description" : "This element includes the bootstrap4 styling.",
 		"excludes": [
 			"dt",
 			"se",
@@ -96,6 +100,7 @@
 		]
 	}, {
 		"abbr": "bs4-",
+		"description" : "This element includes the bootstrap4 styling of a specific version.",
 		"excludes": [
 			"dt",
 			"se",
@@ -121,6 +126,7 @@
 		]
 	}, {
 		"abbr": "bs",
+		"description" : "This element includes the bootstrap3 styling.",
 		"excludes": [
 			"dt",
 			"se",
@@ -143,6 +149,7 @@
 		]
 	}, {
 		"abbr": "bs-",
+		"description" : "This element includes the bootstrap3 styling of a certain version.",
 		"excludes": [
 			"dt",
 			"se",
@@ -171,6 +178,7 @@
 		]
 	}, {
 		"abbr": "zf",
+		"description" : "This element includes the foundation styling.",
 		"excludes": [
 			"dt",
 			"se",
@@ -191,6 +199,7 @@
 		]
 	}, {
 		"abbr": "zf-",
+		"description" : "This element includes the foundation styling of a specific version.",
 		"excludes": [
 			"dt",
 			"se",
@@ -218,6 +227,7 @@
 		]
 	},  {
 		"abbr": "jqc-",
+		"description" : "This element includes jQuery below version 2.",
 		"excludes": [
 			"jq-"
 		],
@@ -236,6 +246,7 @@
 		]
 	}, {
 		"abbr": "jq-",
+		"description" : "This element includes jQuery past version 2.",
 		"excludes": [
 			"jqc-"
 		],
@@ -256,6 +267,7 @@
 		]
 	}, {
 		"abbr": "jszip-",
+		"description" : "This element includes the jszip third party extension.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -272,6 +284,7 @@
 		]
 	}, {
 		"abbr": "pdfmake-",
+		"description" : "This element includes the pdfmake third party extension.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -290,6 +303,7 @@
 		]
 	}, {
 		"abbr": "moment-",
+		"description" : "This element includes the moment third party extension.",
 		"excludes": [
 			"momentjs-"
 		],
@@ -307,6 +321,7 @@
 		]
 	}, {
 		"abbr": "momentjs-",
+		"description" : "This element includes the moment js third party extension.",
 		"excludes": [
 			"moment-"
 		],
@@ -327,6 +342,7 @@
 		]
 	}, {
 		"abbr": "selectize-",
+		"description" : "This element includes the selectize third party extension.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -345,6 +361,7 @@
 		]
 	}, {
 		"abbr": "select2-",
+		"description" : "This element includes the select2 third party extension.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -364,6 +381,7 @@
 		]
 	}, {
 		"abbr": "quill-",
+		"description" : "This element includes the quill third party extension.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -384,6 +402,7 @@
 		]
 	}, {
 		"abbr": "mask-",
+		"description" : "This element includes the mark third party extension for editor.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -399,6 +418,7 @@
 		]
 	}, {
 		"abbr": "date-",
+		"description" : "This element includes the date picker third party extension.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -417,6 +437,7 @@
 		]
 	}, {
 		"abbr": "dt-",
+		"description" : "This element includes the DataTables core files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -455,6 +476,7 @@
 		]
 	},{
 		"abbr": "af-",
+		"description" : "This element includes the AutoFill extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -489,6 +511,7 @@
 		]
 	}, {
 		"abbr": "b-",
+		"description" : "This element includes the Buttons extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -529,6 +552,7 @@
 		]
 	}, {
 		"abbr": "cr-",
+		"description" : "This element includes the ColReorder extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -568,6 +592,7 @@
 		]
 	}, {
 		"abbr": "fc-",
+		"description" : "This element includes the FixedColumns extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -604,6 +629,7 @@
 		]
 	}, {
 		"abbr": "fh-",
+		"description" : "This element includes the FixedHeader extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -638,6 +664,7 @@
 		]
 	}, {
 		"abbr": "kt-",
+		"description" : "This element includes the KeyTable extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -684,6 +711,7 @@
 		]
 	}, {
 		"abbr": "r-",
+		"description" : "This element includes the Responsive extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -718,6 +746,7 @@
 		]
 	}, {
 		"abbr": "rg-",
+		"description" : "This element includes the RowGroup extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -742,6 +771,7 @@
 		]
 	}, {
 		"abbr": "rr-",
+		"description" : "This element includes the RowReorder extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -769,6 +799,7 @@
 		]
 	}, {
 		"abbr": "sc-",
+		"description" : "This element includes the Scroller extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -802,6 +833,7 @@
 		]
 	}, {
 		"abbr": "sl-",
+		"description" : "This element includes the Select extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -833,6 +865,7 @@
 		]
 	}, {
 		"abbr": "b-colvis-",
+		"description" : "This element includes the Colvis buttons sub-extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -869,6 +902,7 @@
 		]
 	}, {
 		"abbr": "b-flash-",
+		"description" : "This element includes the Flash Export buttons sub-extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -905,6 +939,7 @@
 		]
 	}, {
 		"abbr": "b-html5-",
+		"description" : "This element includes the html5 export buttons sub-extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -941,6 +976,7 @@
 		]
 	}, {
 		"abbr": "b-print-",
+		"description" : "This element includes the print view buttons sub-extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -977,6 +1013,7 @@
 		]
 	}, {
 		"abbr": "ef-display-",
+		"description" : "This element includes the FieldType Display extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -994,6 +1031,7 @@
 		]
 	}, {
 		"abbr": "ef-quill-",
+		"description" : "This element includes the field type quill extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -1012,6 +1050,7 @@
 		]
 	}, {
 		"abbr": "ef-select2-",
+		"description" : "This element includes the field type select2 extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -1029,6 +1068,7 @@
 		]
 	}, {
 		"abbr": "ef-selectize",
+		"description" : "This element includes the field type selectize extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {
@@ -1046,6 +1086,7 @@
 		]
 	}, {
 		"abbr": "ef-title",
+		"description" : "This element includes the field type title extension files.",
 		"excludes": [],
 		"fileIncludes": {},
 		"fileNames": {

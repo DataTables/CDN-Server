@@ -33,7 +33,8 @@ export interface IConfig {
 	 * Substitutions to be made throughout the built file.
 	 *
 	 * There are 2 predefined _substitutions, _extensionURL and _extensionList.
-	 * These provide the build message with custom data relating to the file that has been requested. For these properties only the value held is replaced by the value of an internal varaible.
+	 * These provide the build message with custom data relating to the file that has been requested.
+	 * For these properties only the value held is replaced by the value of an internal varaible.
 	 * For custom substitutions the property name is replaced by its value.
 	 */
 	substitutions: {[key: string]: string};
@@ -44,6 +45,11 @@ interface IElements {
 	 * The abbreviation of the module as seen in the URL.
 	 */
 	abbr: string;
+	/**
+	 * Not used. Purely here to allow the config files to be more readable by allowing a property
+	 *   to effectively act as a comment describing the element.
+	 */
+	description: string;
 	/**
 	 * The abbreviation of any modules that are not permitted alongside this one should be noted here.
 	 * The abbreviation of this element is automatically excluded from other occurences in the URL.
