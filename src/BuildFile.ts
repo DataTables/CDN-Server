@@ -293,6 +293,9 @@ export default class BuildFile {
 						// Add the new addition to the final file
 						fileContent += fileAddition;
 					}
+					else {
+						return false;
+					}
 				}
 			}
 		}
@@ -331,8 +334,14 @@ export default class BuildFile {
 			}
 		}
 		catch (error) {
-			this._logger.warn('Error fetching File, may not exist: ' + filename);
-			return false;
+			if (filename.indexOf('?') !== -1) {
+				this._logger.warn('Unable to fetch optional file, may not exist: ' + filename.split('?')[1]);
+				return '';
+			}
+			else {
+				this._logger.error('Unable to fetch non option file' + filename);
+				return false;
+			}
 		}
 	}
 

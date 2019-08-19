@@ -1,5 +1,5 @@
 {
-	"packagesDir": "./dist/cache/",
+	"packagesDir": "./newNameCache/cache/",
 	"headerContent": "/*\n * This combined file was created by the DataTables downloader builder:\n *   https://datatables.net/download\n *\n * To rebuild or modify this file with the latest versions of the included\n * software please visit:\n *   https://datatables.net/download/#{extensionsURL}\n *\n * Included libraries:\n *  {extensionsList}\n */\n\n",
 	"cacheSize": 100,
 	"elements": [{
@@ -421,12 +421,11 @@
 		"fileIncludes": {},
 		"fileNames": {
 			"css": [
-				"css/jquery.dataTables",
 				"css/dataTables.{styling}"
 			],
 			"js": [
 				"js/jquery.dataTables",
-				"js/dataTables.{styling}"
+				"?js/dataTables.{styling}"
 			]
 		},
 		"folderName": "DataTables",
@@ -460,12 +459,11 @@
 		"fileIncludes": {},
 		"fileNames": {
 			"css": [
-				"css/dataTables.autoFill",
 				"css/autoFill.{styling}"
 			],
 			"js": [
 				"js/dataTables.autoFill",
-				"js/autoFill.{styling}"
+				"?js/autoFill.{styling}"
 			]
 		},
 		"folderName": "AutoFill",
@@ -495,12 +493,11 @@
 		"fileIncludes": {},
 		"fileNames": {
 			"css": [
-				"css/dataTables.buttons",
 				"css/buttons.{styling}"
 			],
 			"js": [
 				"js/dataTables.buttons",
-				"js/buttons.{styling}"
+				"?js/buttons.{styling}"
 			]
 		},
 		"folderName": "Buttons",
@@ -536,12 +533,11 @@
 		"fileIncludes": {},
 		"fileNames": {
 			"css": [
-				"css/dataTables.colReorder",
 				"css/colReorder.{styling}"
 			],
 			"js": [
 				"js/dataTables.colReorder",
-				"js/colReorder.{styling}"
+				"?js/colReorder.{styling}"
 			]
 		},
 		"folderName": "ColReorder",
@@ -576,12 +572,11 @@
 		"fileIncludes": {},
 		"fileNames": {
 			"css": [
-				"css/dataTables.fixedColumns",
 				"css/fixedColumns.{styling}"
 			],
 			"js": [
 				"js/dataTables.fixedColumns",
-				"js/fixedColumns.{styling}"
+				"?js/fixedColumns.{styling}"
 			]
 		},
 		"folderName": "FixedColumns",
@@ -613,12 +608,11 @@
 		"fileIncludes": {},
 		"fileNames": {
 			"css": [
-				"css/dataTables.fixedHeader",
 				"css/fixedHeader.{styling}"
 			],
 			"js": [
 				"js/dataTables.fixedHeader",
-				"js/fixedHeader.{styling}"
+				"?js/fixedHeader.{styling}"
 			]
 		},
 		"folderName": "FixedHeader",
@@ -648,12 +642,11 @@
 		"fileIncludes": {},
 		"fileNames": {
 			"css": [
-				"css/dataTables.keyTable",
 				"css/keyTable.{styling}"
 			],
 			"js": [
 				"js/dataTables.keyTable",
-				"js/keyTable.{styling}"
+				"?js/keyTable.{styling}"
 			]
 		},
 		"folderName": "KeyTable",
@@ -695,12 +688,11 @@
 		"fileIncludes": {},
 		"fileNames": {
 			"css": [
-				"css/dataTables.responsive",
 				"css/responsive.{styling}"
 			],
 			"js": [
 				"js/dataTables.responsive",
-				"js/responsive.{styling}"
+				"?js/responsive.{styling}"
 			]
 		},
 		"folderName": "Responsive",
@@ -730,12 +722,11 @@
 		"fileIncludes": {},
 		"fileNames": {
 			"css": [
-				"css/dataTables.rowGroup",
 				"css/rowGroup.{styling}"
 			],
 			"js": [
 				"js/dataTables.rowGroup",
-				"js/rowGroup.{styling}"
+				"?js/rowGroup.{styling}"
 			]
 		},
 		"folderName": "RowGroup",
@@ -755,12 +746,11 @@
 		"fileIncludes": {},
 		"fileNames": {
 			"css": [
-				"css/dataTables.rowReorder",
 				"css/rowReorder.{styling}"
 			],
 			"js": [
 				"js/dataTables.rowReorder",
-				"js/rowReorder.{styling}"
+				"?js/rowReorder.{styling}"
 			]
 		},
 		"folderName": "RowReorder",
@@ -783,12 +773,11 @@
 		"fileIncludes": {},
 		"fileNames": {
 			"css": [
-				"css/dataTables.scroller",
 				"css/scroller.{styling}"
 			],
 			"js": [
 				"js/dataTables.scroller",
-				"js/scroller.{styling}"
+				"?js/scroller.{styling}"
 			]
 		},
 		"folderName": "Scroller",
@@ -817,12 +806,11 @@
 		"fileIncludes": {},
 		"fileNames": {
 			"css": [
-				"css/dataTables.select",
 				"css/select.{styling}"
 			],
 			"js": [
 				"js/dataTables.select",
-				"js/select.{styling}"
+				"?js/select.{styling}"
 			]
 		},
 		"folderName": "Select",
