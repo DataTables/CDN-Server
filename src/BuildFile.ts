@@ -334,7 +334,7 @@ export default class BuildFile {
 			}
 		}
 		catch (error) {
-			if (filename.indexOf('?') !== -1) {
+			if (filename.indexOf('?') !== -1){
 				this._logger.warn('Unable to fetch optional file, may not exist: ' + filename.split('?')[1]);
 				this._storedFiles.updateCache(filename, '');
 				return '';
