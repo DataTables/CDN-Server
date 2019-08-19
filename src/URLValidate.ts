@@ -182,8 +182,8 @@ export default class URLValidate {
 
 		for (let element of parsedURL) {
 			let str: string[] = element.split('-');
-
 			if (str.length > 2) {
+				str[0] += '-';
 				for (let k = 1; k < str.length - 1; k++) {
 					str[0] += str[k] + '-';
 				}
@@ -191,7 +191,6 @@ export default class URLValidate {
 			else if (str.length > 1) {
 				str[0] += '-';
 			}
-
 			orderList.push(orderMap.get(str[0]));
 		}
 
@@ -206,7 +205,7 @@ export default class URLValidate {
 			// Check that the elements of the URL are in the correct order
 			// Order list can be undefined if an unknown element is requested from the map
 			if (orderList[j] === undefined) {
-				this._logger.error('Order of element not recognised.');
+				this._logger.error('Order of element not recognised');
 				return false;
 			}
 			else if (j > 0 && orderList[j] < orderList[j - 1]) {
