@@ -47,6 +47,9 @@ if (argum.metrics) {
 	require('appmetrics-dash').monitor();
 }
 
+if (loggerDetails.logfile === true) {
+	process.exit(1);
+}
 let logger = new Logger(loggerDetails);
 
 let cache = new Cache(null, logger);
@@ -186,7 +189,7 @@ process.on('unhandledRejection', (reason, p) => {
 
 process.on('uncaughtException', err => {
 	logger.error(err + ' Uncaught exception thrown');
-	process.exit(1);
+	process.exit(2);
 });
 
 async function readConfig() {
@@ -198,7 +201,7 @@ async function readConfig() {
 	}
 	catch (error) {
 		logger.error('Error reloading config file');
-		process.exit();
+		process.exit(3);
 	}
 }
 
