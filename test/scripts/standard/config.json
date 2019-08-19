@@ -13,6 +13,8 @@
     },
     "elements": [
         {
+			"description": "this should be ignored",
+			"fred": "bleh",
             "abbr": "snf",
             "excludes": ["swf", "swf-"],
             "fileIncludes": {
