@@ -102,7 +102,7 @@
 					"css/ProductC.{styling}"
 				],
                 "js": [
-					"js/ProductC.{styling}",
+					"?js/ProductC.{styling}",
 					"js/productC"
 				]
             },
