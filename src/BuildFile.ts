@@ -319,6 +319,10 @@ export default class BuildFile {
 		// Try to find the file and return it, if it's not found then return an empty string,
 		// If an error occurs return '500' and log it.
 		try {
+			if (filename.indexOf('?') !== -1) {
+				filename = filename.split('?').join('');
+			}
+
 			let fromCache = this._storedFiles.searchCache(filename);
 
 			if (await fileExists(filename) && !fromCache) {
