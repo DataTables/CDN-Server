@@ -65,6 +65,6 @@ export default class Cache {
 
 		// Add the filename to the end of the _cacheList
 		this._cacheList.push(filename);
-		this._logger.debug('Adding file to Cache');
+		this._logger.debug('Adding file to Cache ' + filename);
 	}
 }
