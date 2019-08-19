@@ -62,6 +62,7 @@ let cache = new Cache(null, logger);
  * It validates the URL that it takes and builds the file before returning them to the user.
  */
 http.createServer(async function(req, res) {
+	res.setHeader('Cache-Control', 'public, max-age=31557600');
 	logger.info('New Request ' + req.url);
 	if (getConfig) {
 		config = await readConfig();
