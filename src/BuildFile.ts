@@ -313,16 +313,14 @@ export default class BuildFile {
 
 	/**
 	 * This function fetches the sub files from the cache or the dist folder
-	 * @param filename The path to the next sub file to be found
+	 * @param fileIn The path to the next sub file to be found
 	 */
-	private async _fetchFile(filename: string): Promise <string | boolean | number> {
+	private async _fetchFile(fileIn: string): Promise <string | boolean | number> {
 		// Try to find the file and return it, if it's not found then return an empty string,
 		// If an error occurs return '500' and log it.
+		let optional = fileIn.indexOf('?') !== -1 ? true : false;
+		let filename = fileIn.split('?').join('');
 		try {
-			if (filename.indexOf('?') !== -1) {
-				filename = filename.split('?').join('');
-			}
-
 			let fromCache = this._storedFiles.searchCache(filename);
 
 			if (await fileExists(filename) && !fromCache) {
@@ -345,7 +343,7 @@ export default class BuildFile {
 			}
 		}
 		catch (error) {
-			if (filename.indexOf('?') !== -1){
+			if (optional) {
 				this._logger.warn('Unable to fetch optional file, may not exist: ' + filename.split('?')[1]);
 				this._storedFiles.updateCache(filename, '');
 				return '';
