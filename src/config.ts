@@ -49,7 +49,7 @@ interface IElements {
 	 * Not used. Purely here to allow the config files to be more readable by allowing a property
 	 *   to effectively act as a comment describing the element.
 	 */
-	description: string;
+	description?: string;
 	/**
 	 * The abbreviation of any modules that are not permitted alongside this one should be noted here.
 	 * The abbreviation of this element is automatically excluded from other occurences in the URL.
