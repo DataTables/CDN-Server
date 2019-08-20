@@ -29,6 +29,11 @@ let argum = getopts(process.argv.slice(2), {
 	}
 });
 
+let defaults = {
+	cacheDuration: 31557600,
+	separators: ["/", ","]
+}
+
 /**
  * See which port we should be using
  */
@@ -64,8 +69,9 @@ let cache = new Cache(null, logger);
 http.createServer(async function(req, res) {
 	logger.info('New Request ' + req.url);
 	if (getConfig) {
-		config = await readConfig();
+		let input = await readConfig();
 		logger.debug('Config Read ' + argum.configLoc);
+		config = Object.assign(defaults, input);
 		cache.resetCache(config.cacheSize);
 		logger.debug('Cache Reset');
 		getConfig = false;
@@ -76,8 +82,9 @@ http.createServer(async function(req, res) {
 	// If a signal is recieved to re-read the config file then wait until the next request
 	// before reading it (to save signal handler time)
 	if (reReadConfig) {
-		config = await readConfig();
+		let input = await readConfig();
 		logger.debug('config Read' + argum.configLoc);
+		config = Object.assign(defaults, input);
 		reReadConfig = false;
 	}
 

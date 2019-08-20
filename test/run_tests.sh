@@ -49,7 +49,7 @@ passed=0
 #############################
 
 echo "Starting server with empty config"
-node ./dist/server.js -l test.log --configLoc $CONFFILE &
+node ./dist/server.js --configLoc $CONFFILE &
 sleep 2
 
 # Get the PID of the server
