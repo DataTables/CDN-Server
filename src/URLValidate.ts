@@ -27,7 +27,7 @@ export default class URLValidate {
 	 */
 	public parseURL(inputURL: string): boolean {
 		// split URL into useful elements
-		let parsedURL = inputURL.split('/');
+		let parsedURL = inputURL.split(new RegExp('[' + this._config.separators.join('') + ']'));
 
 		// The last element should be a valid file name, so assign it to filename and validate.
 		let filename: string = parsedURL.pop();
@@ -49,7 +49,7 @@ export default class URLValidate {
 		this._logger('Validating URL for latest request');
 		let parsedURL: string[];
 
-		parsedURL = inputURL.split('/');
+		parsedURL = inputURL.split(new RegExp('[' + this._config.separators.join('') + ']'));
 		let orderList = this._config.requires.slice();
 
 		// Confirm that the all of the orders are present.
@@ -114,7 +114,7 @@ export default class URLValidate {
 	}
 
 	/**
-	 * @param parsedURL The Elements of the original URL which have been broken down by '/'
+	 * @param parsedURL The Elements of the original URL which have been broken down by separators
 	 * @returns {boolean} returns a boolean value indicating whether the abbreviation requested is valid
 	 */
 	private _validateAbbreviation(parsedURL: string): boolean {
@@ -148,12 +148,12 @@ export default class URLValidate {
 
 	/**
 	 * Validates the URL's order, requirements and other specifications
-	 * @param parsedURL The Elements of the original URL which have been broken down by '/'
+	 * @param parsedURL The Elements of the original URL which have been broken down by separators
 	 * @returns {boolean} returns a boolean value indicating if the URL has passed validation
 	 */
 	private _validateURL(parsedURL: string[]): boolean {
 		this._logger.debug('Validating URL');
-		// if the URL started with a '/' then element 0 will be empty so remove it
+		// if the URL started with a separator then element 0 will be empty so remove it
 		if (parsedURL[0] === '') {
 			parsedURL.splice(0, 1);
 		}
@@ -249,7 +249,7 @@ export default class URLValidate {
 
 	/**
 	 * Validates that the versions requested for each element is valid according to the config
-	 * @param parsedURL The Elements of the original URL which have been broken down by '/'
+	 * @param parsedURL The Elements of the original URL which have been broken down by separators
 	 * @returns {boolean} returns a boolean value indicating if the version requested is valid
 	 */
 	private _validateVersion(parsedURL: string): boolean {

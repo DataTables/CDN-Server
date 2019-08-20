@@ -1106,6 +1106,7 @@
 	"fileNames": ["datatables"],
 	"fileExtensions": [".js", ".min.js", ".css", ".min.css"],
 	"requires": [10],
+	"separators": ["/", ","],
 	"substitutions": {
 		"_extensionsList": "{extensionsList}",
 		"_extensionsURL": "{extensionsURL}",

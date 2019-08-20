@@ -57,11 +57,11 @@ export default class BuildFile {
 	public async buildFile(filePath: string): Promise<boolean | string | number> {
 		this._logger.debug('Starting Build File');
 		// Split URL into useful chunks and remove the first element if it is empty.
-		let parsedURL = filePath.split('/');
+		let parsedURL = filePath.split(new RegExp('[' + this._config.separators.join('') + ']'));
 
-		// If the parsedURL's first element is and empty string then it begins with a '/',
+		// If the parsedURL's first element is and empty string then it begins with a separator,
 		//   which is legal but will cause errors further on unless we remove the empty string from the array.
-		//   If the URL Requested contains multiple '/'s at the start of the URL then this
+		//   If the URL Requested contains multiple separators at the start of the URL then this
 		//   will be picked up in the Validation stage.
 		if (parsedURL[0] === '') {
 			parsedURL.splice(0, 1);

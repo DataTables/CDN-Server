@@ -30,6 +30,10 @@ export interface IConfig {
 	 */
 	requires: number[];
 	/**
+	 * An array of strings which the URL is to be split on.
+	 */
+	separators: string[];
+	/**
 	 * Substitutions to be made throughout the built file.
 	 *
 	 * There are 2 predefined _substitutions, _extensionURL and _extensionList.
