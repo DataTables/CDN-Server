@@ -10,6 +10,10 @@ export interface IConfig {
 	 */
 	headerContent: string;
 	/**
+	 * The length of time that the files will be valid for in seconds
+	 */
+	cacheDuration: number;
+	/**
 	 * The number of files that will be stored in the cache at any given time.
 	 */
 	cacheSize: number;

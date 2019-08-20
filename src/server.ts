@@ -158,7 +158,7 @@ http.createServer(async function(req, res) {
 			let meta = new MetaInformation(config, logger);
 			res.write(JSON.stringify(meta.getDetails(content, await bui.getInclusions(), t0)));
 			res.writeHead(200, {
-				'Cache-Control': 'max-age=31557600'
+				'Cache-Control': 'max-age=' + config.cacheDuration,
 			});
 			logger.debug('Success. Returning Build Details');
 		}
@@ -169,7 +169,7 @@ http.createServer(async function(req, res) {
 			let type = mime.lookup(extension);
 			res.writeHead(200, {
 				'Content-Type': type + '; charset=utf-8',
-				'Cache-Control': 'max-age=31557600'
+				'Cache-Control': 'max-age=' + config.cacheDuration,
 			});
 			// Return file
 			res.write(content);
