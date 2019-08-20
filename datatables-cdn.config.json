@@ -112,7 +112,9 @@
 			"zf",
 			"zf-"
 		],
-		"fileIncludes": {},
+		"fileIncludes": {
+			"styling": "bootstrap4"
+		},
 		"fileNames": {
 			"css": ["css/bootstrap"],
 			"js": ["js/bootstrap"]
@@ -190,7 +192,9 @@
 			"bs-",
 			"zf-"
 		],
-		"fileIncludes": {},
+		"fileIncludes": {
+			"styling": "foundation"
+		},
 		"fileNames": {},
 		"folderName": "Foundation",
 		"moduleName": "Foundation",
