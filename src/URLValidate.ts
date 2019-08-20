@@ -196,7 +196,6 @@ export default class URLValidate {
 
 		// validate Order, Abbreviation and requirements list.
 		let requireList: number[] = this._config.requires;
-
 		for (let j = 0; j < orderList.length; j++) {
 			if (requireList.indexOf(orderList[j]) > -1) {
 				requireList.splice(requireList.indexOf(orderList[j]), 1);

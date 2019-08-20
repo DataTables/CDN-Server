@@ -14,7 +14,9 @@
 			"bs",
 			"bs-",
 			"zf",
-			"zf-"
+			"zf-",
+			"ju",
+			"ju-"
 		],
 		"fileIncludes": {
 			"styling": "dataTables"
@@ -37,7 +39,9 @@
 			"bs",
 			"bs-",
 			"zf",
-			"zf-"
+			"zf-",
+			"ju",
+			"ju-"
 		],
 		"fileIncludes": {
 			"styling": "semanticui"
@@ -64,7 +68,9 @@
 			"bs",
 			"bs-",
 			"zf",
-			"zf-"
+			"zf-",
+			"ju",
+			"ju-"
 		],
 		"fileIncludes": {
 			"styling": "semanticui"
@@ -87,7 +93,9 @@
 			"bs",
 			"bs-",
 			"zf",
-			"zf-"
+			"zf-",
+			"ju",
+			"ju-"
 		],
 		"fileIncludes": {
 			"styling": "bootstrap4"
@@ -110,7 +118,9 @@
 			"bs",
 			"bs-",
 			"zf",
-			"zf-"
+			"zf-",
+			"ju",
+			"ju-"
 		],
 		"fileIncludes": {
 			"styling": "bootstrap4"
@@ -138,7 +148,9 @@
 			"bs4-",
 			"bs-",
 			"zf",
-			"zf-"
+			"zf-",
+			"ju",
+			"ju-"
 		],
 		"fileIncludes": {
 			"styling": "bootstrap"
@@ -161,7 +173,9 @@
 			"bs4-",
 			"bs",
 			"zf",
-			"zf-"
+			"zf-",
+			"ju",
+			"ju-"
 		],
 		"fileIncludes": {
 			"styling": "bootstrap"
@@ -190,7 +204,9 @@
 			"bs4-",
 			"bs",
 			"bs-",
-			"zf-"
+			"zf-",
+			"ju",
+			"ju-"
 		],
 		"fileIncludes": {
 			"styling": "foundation"
@@ -213,7 +229,9 @@
 			"bs4-",
 			"bs",
 			"bs-",
-			"zf"
+			"zf",
+			"ju",
+			"ju-"
 		],
 		"fileIncludes": {
 			"styling": "foundation"
@@ -230,7 +248,63 @@
 			"6.4.3",
 			"5.5.2"
 		]
-	},  {
+	},{
+		"abbr": "ju",
+		"description" : "This element includes the jqueryui styling.",
+		"excludes": [
+			"dt",
+			"se",
+			"se-",
+			"bs4",
+			"bs4-",
+			"bs",
+			"bs-",
+			"zf",
+			"ju-"
+		],
+		"fileIncludes": {
+			"styling": "jqueryui"
+		},
+		"fileNames": {},
+		"folderName": "jQueryUI",
+		"moduleName": "jQueryUI",
+		"order": 10,
+		"versions": [
+			""
+		]
+	}, {
+		"abbr": "ju-",
+		"description" : "This element includes the jqueryui styling of a specific version.",
+		"excludes": [
+			"dt",
+			"se",
+			"se-",
+			"bs4",
+			"bs4-",
+			"bs",
+			"bs-",
+			"zf",
+			"ju"
+		],
+		"fileIncludes": {
+			"styling": "jqueryui"
+		},
+		"fileNames": {
+			"css": [
+				"?jquery-ui",
+				"?themes/base/jquery-ui"
+			],
+			"js": ["jquery-ui"]
+		},
+		"folderName": "jQueryUI",
+		"moduleName": "jQueryUI",
+		"order": 10,
+		"versions": [
+			"",
+			"1.11.4",
+			"1.12.1"
+		]
+	}, {
 		"abbr": "jqc-",
 		"description" : "This element includes jQuery below version 2.",
 		"excludes": [
