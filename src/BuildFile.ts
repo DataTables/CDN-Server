@@ -168,7 +168,6 @@ export default class BuildFile {
 					includesList[keys[j]] = vals[j];
 				}
 			}
-			console.log(includesMap, includesList)
 		}
 
 		extensionsList += extensionsListArray.join(', ');
@@ -280,7 +279,6 @@ export default class BuildFile {
 
 				parsedDetails[i].fileNameMap.set(folder, updateFile);
 				fileNameArray = parsedDetails[i].fileNameMap.get(folder);
-				console.log(fileNameArray)
 				for (let filename of fileNameArray) {
 
 					// Append the minify and type to the filename
@@ -322,7 +320,6 @@ export default class BuildFile {
 		// If an error occurs return '500' and log it.
 		let optional = fileIn.indexOf('?') !== -1 ? true : false;
 		let filename = fileIn.split('?').join('');
-		console.log(filename)
 		try {
 			let fromCache = this._storedFiles.searchCache(filename);
 
