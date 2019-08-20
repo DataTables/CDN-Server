@@ -167,8 +167,8 @@
 			"styling": "bootstrap"
 		},
 		"fileNames": {
-			"css": ["bootstrap"],
-			"js": ["bootstrap"]
+			"css": ["css/bootstrap"],
+			"js": ["js/bootstrap"]
 		},
 		"folderName": "Bootstrap",
 		"moduleName": "Bootstrap",
