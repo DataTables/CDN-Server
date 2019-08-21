@@ -3,6 +3,7 @@ import {IConfig} from './config';
 
 import * as fs from 'fs';
 import * as util from 'util';
+import { threadId } from 'worker_threads';
 
 /**
  * This interface defines the format of the object to hold the details of all of the individual
@@ -23,6 +24,7 @@ interface IIncludes {
 }
 
 const fileExists = util.promisify(fs.readFile);
+const folderExists = util.promisify(fs.readdir);
 /**
  * This class will return a file that contains all of the modules listed in the filePath.
  */
@@ -54,7 +56,7 @@ export default class BuildFile {
 	 * @returns {boolean | string} Returns the file content if it is built succesfully and a boolean value
 	 *   to indicate a failure.
 	 */
-	public async buildFile(filePath: string): Promise<boolean | string | number> {
+	public async buildFile(filePath: string): Promise<boolean | string | number | Buffer> {
 		this._logger.debug('Starting Build File');
 		// Split URL into useful chunks and remove the first element if it is empty.
 		let parsedURL = filePath.split(new RegExp('[' + this._config.separators.join('') + ']'));
@@ -65,6 +67,25 @@ export default class BuildFile {
 		//   will be picked up in the Validation stage.
 		if (parsedURL[0] === '') {
 			parsedURL.splice(0, 1);
+		}
+
+		// If an image is requested then there is a need to return only that image so do the following and return
+		if (parsedURL.indexOf('images') !== -1) {
+			let cut = parsedURL.indexOf('images');
+			parsedURL.splice(0, cut - 1);
+			let path = this._config.packagesDir + parsedURL.join('/');
+			this._logger.debug('Checking for image in cache');
+			let fromCache = this._storedFiles.searchCache(path);
+			if (!fromCache) {
+				this._logger.debug('Image not found in cache, fetching Image from ' + path);
+				let content = await fileExists(path);
+				this._storedFiles.updateCache(path, content);
+				return content;
+			}
+			else if (Buffer.isBuffer(fromCache)) {
+				this._logger.debug('Image found in cache');
+				return fromCache;
+			}
 		}
 
 		let cloneParsedURL = parsedURL.slice();
@@ -290,7 +311,55 @@ export default class BuildFile {
 
 					this._logger.debug('Fetching sub-file');
 					// Get the new bit of file
-					let fileAddition = await this._fetchFile(path);
+					let fileAddition = await this._fetchFile(path, parsedDetails[i].folderName, parsedDetails[i].version);
+
+					// Split the filename used to find the file into useful chunks
+					let splitFileName = path.split('/');
+					let cutLoc = splitFileName.indexOf(parsedDetails[i].folderName + '-' + parsedDetails[i].version) - 1;
+					let fileList;
+					// if the folder and version combination is found in the filename
+					if (cutLoc > -1) {
+						this._logger.debug('Searching for image folder');
+
+						// work out how many chunks to remove from the end
+						let tail = splitFileName.length - cutLoc - 1;
+						splitFileName.splice(cutLoc + 2, tail);
+
+						// put the useful ones back together and make the path up for the image location
+						let imageLoc = splitFileName.join('/');
+						let folderPath = imageLoc + '/images/';
+						imageLoc += '/images/*.png';
+						let imagePath = new RegExp(imageLoc);
+
+						this._logger.debug('checking if folder exists');
+						try {
+							fileList = await folderExists(folderPath);
+							this._logger.debug('Folder found');
+							let filePathList = [];
+
+							// make a list of all of the files in the folder
+							for (let file of fileList) {
+								filePathList.push(folderPath + file);
+							}
+						}
+						catch {
+							this._logger.warn('Folder not found');
+						}
+					}
+					if (fileList !== undefined && typeof fileAddition === 'string') {
+						let usefulURL = parsedURL.slice()
+						usefulURL.splice(parsedURL.length-1, 1)
+						// for every file if its url is present in the file then replace it with the new URL
+						for (let file of fileList) {
+							if (fileAddition.indexOf(file) !== -1) {
+								fileAddition = fileAddition.replace(
+									new RegExp('"(.)*\/(.)*\/' + file + '"'),
+									'/' + usefulURL.join('/') + '/' + parsedDetails[i].folderName + '-' + parsedDetails[i].version + '/images/' + file
+								);
+							}
+						}
+					}
+
 
 					// If '500' is returned then a server error has occured so return false
 					if (typeof fileAddition === 'number') {
@@ -315,14 +384,13 @@ export default class BuildFile {
 	 * This function fetches the sub files from the cache or the dist folder
 	 * @param fileIn The path to the next sub file to be found
 	 */
-	private async _fetchFile(fileIn: string): Promise <string | boolean | number> {
+	private async _fetchFile(fileIn: string, folder: string, version: string): Promise <string | boolean | number> {
 		// Try to find the file and return it, if it's not found then return an empty string,
 		// If an error occurs return '500' and log it.
 		let optional = fileIn.indexOf('?') !== -1 ? true : false;
 		let filename = fileIn.split('?').join('');
 		try {
 			let fromCache = this._storedFiles.searchCache(filename);
-
 			if (await fileExists(filename) && !fromCache) {
 				this._logger.debug('File not in Cache, but found in directory: ' + filename);
 				let content = await fileExists(filename) + '\n\n';

@@ -1184,6 +1184,7 @@
 	}],
 	"fileNames": ["datatables"],
 	"fileExtensions": [".js", ".min.js", ".css", ".min.css"],
+	"imageFileExtensions": [".png"],
 	"requires": [10],
 	"separators": ["/", ","],
 	"substitutions": {

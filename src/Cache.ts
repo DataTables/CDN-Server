@@ -1,6 +1,6 @@
 export default class Cache {
-	private _cacheMap = new Map<string, string>();
-	private _cacheList: string[] = [];
+	private _cacheMap = new Map<string, string | Buffer>();
+	private _cacheList: Array<string> = [];
 	private _cacheSize = 1;
 	private _logger;
 
@@ -32,7 +32,7 @@ export default class Cache {
 	 * @param filename The name of the file to search the cache for
 	 * @returns {boolean | string} Returns the file if it is found and false if it is not
 	 */
-	public searchCache(filename: string): boolean | string {
+	public searchCache(filename: string): boolean | string | Buffer {
 		if (this._cacheMap.has(filename)) {
 			this._logger.debug('File is present in cache, returning file.');
 			return this._cacheMap.get(filename);
@@ -48,7 +48,7 @@ export default class Cache {
 	 * @param filename Filename which is currently being added to the cache
 	 * @param fileContent The content of the file that is currently being added to the cache
 	 */
-	public updateCache(filename: string, fileContent: string): void {
+	public updateCache(filename: string, fileContent: string | Buffer): void {
 		this._logger.debug('Update Cache Request');
 		// If the _cacheMap is approaching the limit size then delete the first element in the list
 		if (this._cacheMap.size >= this._cacheSize) {

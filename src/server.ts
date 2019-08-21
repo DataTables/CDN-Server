@@ -31,7 +31,8 @@ let argum = getopts(process.argv.slice(2), {
 
 let defaults = {
 	cacheDuration: 31557600,
-	separators: ["/", ","]
+	imageFileExtensions: ['png'],
+	separators: ['/', ','],
 }
 
 /**
@@ -113,7 +114,7 @@ http.createServer(async function(req, res) {
 		logger.debug('Latest versions requested.');
 		let findLatest = splitURL[1].split('=');
 		// Run validateLatest to validate the URL is legal and return the full URL required by the user
-		let latest = url.validateLatest(findLatest[1]);
+		let latest = await url.validateLatest(findLatest[1]);
 
 		if (!latest) {
 			res.writeHead(404, 'Error 404. Invalid URL.');
@@ -146,7 +147,7 @@ http.createServer(async function(req, res) {
 			logger.debug('Latest succesfully found and returned');
 		}
 	}
-	else if (url.parseURL(splitURL[0])) {
+	else if (await url.parseURL(splitURL[0])) {
 		logger.debug('Requested file. Build commencing.');
 		// Build requested file
 		let bui = new BuildFile(cache, config, argum.debug, logger);

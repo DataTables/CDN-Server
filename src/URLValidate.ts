@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import * as cmp from 'semver-compare';
 import { IConfig } from './config';
 
+import * as util from 'util';
+const fileExists = util.promisify(fs.readFile);
 /**
  * This class will validate that the URL given is a valid build path.
  */
@@ -25,7 +27,7 @@ export default class URLValidate {
 	 * @param inputURL The URL which was recieved from the HTTP request
 	 * @returns {boolean} Returns a boolean value indicating if the URL is valid
 	 */
-	public parseURL(inputURL: string): boolean {
+	public async parseURL(inputURL: string): Promise<boolean> {
 		// split URL into useful elements
 		let parsedURL = inputURL.split(new RegExp('[' + this._config.separators.join('') + ']'));
 
@@ -37,7 +39,7 @@ export default class URLValidate {
 		}
 		this._logger.debug('Valid filename in request.');
 		// Validate the remainder of the URL
-		return this._validateURL(parsedURL);
+		return await this._validateURL(parsedURL, filename);
 	}
 
 	/**
@@ -45,7 +47,7 @@ export default class URLValidate {
 	 * @param inputURL The URL of which the latest versions are to be found for
 	 * @returns {boolean | string} returns either the valid filename or a boolean value indicating a fail
 	 */
-	public validateLatest(inputURL: string): boolean | string {
+	public async validateLatest(inputURL: string): Promise <boolean | string> {
 		this._logger('Validating URL for latest request');
 		let parsedURL: string[];
 
@@ -89,7 +91,7 @@ export default class URLValidate {
 		}
 
 		// Validate the generated URL to make sure that it is legal.
-		if (this._validateURL(parsedURL)) {
+		if (await this._validateURL(parsedURL, filename)) {
 			this._logger.debug('Generated URL to be requested is legal');
 			return filename;
 		}
@@ -139,7 +141,11 @@ export default class URLValidate {
 			this._logger.warn('Empty filename in config - not allowed');
 			return false;
 		}
-		else if (filename.search(new RegExp('(' + this._config.fileNames.join('|') + ')(\.min)?\.(js|css)$')) < 0) {
+		else if (filename.search(new RegExp(this._config.imageFileExtensions.join('|') + '$')) > 0 &&
+			this._config.imageFileExtensions.length > 0) {
+			return true;
+		}
+		else if (filename.search(new RegExp('(' + this._config.fileNames.join('|') + ')(\\' + this._config.fileExtensions.join('|\\') + ')$')) < 0) {
 			return false;
 		}
 
@@ -151,8 +157,44 @@ export default class URLValidate {
 	 * @param parsedURL The Elements of the original URL which have been broken down by separators
 	 * @returns {boolean} returns a boolean value indicating if the URL has passed validation
 	 */
-	private _validateURL(parsedURL: string[]): boolean {
+	private async _validateURL(parsedURL: string[], filename: string): Promise<boolean> {
 		this._logger.debug('Validating URL');
+		let image = false;
+
+		// Check if there is an images folder in the request
+		if (parsedURL.indexOf('images') !== -1) {
+			image = true;
+		}
+
+		// If there is then an image request has to be validated, otherwise validate a file request
+		if (image) {
+			this._logger.debug('Validating Image Request');
+			return await this._validateImageRequest(parsedURL, filename);
+		}
+		else {
+			this._logger.debug('Validating File Request');
+			return this._validateFileRequest(parsedURL);
+		}
+	}
+
+	private async _validateImageRequest(parsedURL, filename) {
+		// Find the point in the requested URL that images is and remove all of the preceeding elements
+		// bar one as this should be the folder name. Then construct the path to the file.
+		let cut = parsedURL.indexOf('images');
+		parsedURL.splice(0, cut - 1);
+		let path = this._config.packagesDir + parsedURL.join('/') + '/' + filename;
+
+		if (await fileExists(path)) {
+			this._logger.debug('Image found at ' + path);
+			return true;
+		}
+		else {
+			this._logger.error('Image not found at ' + path);
+			return false;
+		}
+	}
+
+	private _validateFileRequest(parsedURL){
 		// if the URL started with a separator then element 0 will be empty so remove it
 		if (parsedURL[0] === '') {
 			parsedURL.splice(0, 1);
