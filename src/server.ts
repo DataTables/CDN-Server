@@ -18,12 +18,14 @@ let argum = getopts(process.argv.slice(2), {
 	alias: {
 		configLoc: ['c', 'C'],
 		debug: ['d', 'D'],
+		help: ['h', 'H'],
 		logfile: ['l', 'L'],
 		metrics: ['m', 'M'],
 	},
 	default: {
 		configLoc: './datatables-cdn.config.json',
 		debug: false,
+		help: false,
 		logfile: false,
 		metrics: false,
 	}
@@ -53,14 +55,28 @@ if (argum.metrics) {
 	require('appmetrics-dash').monitor();
 }
 
-if (loggerDetails.logfile === true) {
-	process.exit(1);
-}
-
 // Validation that the config is valid
 readConfig();
 
 let logger = new Logger(loggerDetails);
+
+// If there are more options defined which are not defined then print the help and end server
+if (Object.keys(argum).length > 16) {
+	logger.help();
+	process.exit(5);
+}
+else if (loggerDetails.logfile === true) {
+	logger.sudoError('Logfile option set to true but no file location specified. Ending.');
+	logger.help();
+	process.exit(1);
+}
+
+if (argum.help === true){
+	loggerDetails.debug = true;
+	logger = new Logger(loggerDetails);
+	logger.help();
+	process.exit(4);
+}
 
 let cache = new Cache(null, logger);
 /*
