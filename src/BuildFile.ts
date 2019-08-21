@@ -77,14 +77,11 @@ export default class BuildFile {
 			this._logger.debug('Checking for image in cache');
 			let fromCache = this._storedFiles.searchCache(path);
 			if (!fromCache) {
-				this._logger.debug('Image not found in cache, fetching Image from ' + path);
 				let content = await fileExists(path);
-				this._storedFiles.updateCache(path, content);
-				return content;
+				return this._logUpdateReturn('Image not found in cache, fetching Image from ' + path, path, content, false)
 			}
 			else if (Buffer.isBuffer(fromCache)) {
-				this._logger.debug('Image found in cache');
-				return fromCache;
+				return this._logUpdateReturn('Image found in cache', path, fromCache, true);
 			}
 		}
 
@@ -391,29 +388,26 @@ export default class BuildFile {
 		let filename = fileIn.split('?').join('');
 		try {
 			let fromCache = this._storedFiles.searchCache(filename);
-			if (await fileExists(filename) && !fromCache) {
-				this._logger.debug('File not in Cache, but found in directory: ' + filename);
-				let content = await fileExists(filename) + '\n\n';
-				this._storedFiles.updateCache(filename, content.toString());
-				this._includedFiles.push(filename);
-				return content;
+			if (optional && typeof fromCache === 'string' && fromCache === '') {
+				return this._logUpdateReturn('Found empty optional file in cache: ' + filename, filename, '', true);
 			}
 			else if (typeof fromCache === 'string') {
-				this._logger.debug('File found in cache: ' + filename);
-				this._storedFiles.updateCache(filename, fromCache);
 				this._includedFiles.push(filename.replace(this._config.packagesDir, ''));
-				return fromCache;
+				return this._logUpdateReturn('File found in cache: ' + filename, filename, fromCache, true);
+			}
+			else if (await fileExists(filename) && !fromCache) {
+				let content = await fileExists(filename) + '\n\n';
+				this._includedFiles.push(filename);
+				return this._logUpdateReturn('File not in Cache, but found in directory: ' + filename, filename, content, false);
 			}
 			else {
-				this._logger.warn('File not found in cache or directory');
-				this._storedFiles.updateCache(filename, '');
-				return '';
+				return this._logUpdateReturn('File not found in cache or directory', filename, '', false);
 			}
 		}
 		catch (error) {
 			if (optional) {
 				this._logger.warn('Unable to fetch optional file, may not exist: ' + filename);
-				this._storedFiles.updateCache(filename, '');
+				this._storedFiles.updateCache(filename, '', false);
 				return '';
 			}
 			else {
@@ -421,6 +415,12 @@ export default class BuildFile {
 				return 404;
 			}
 		}
+	}
+
+	private _logUpdateReturn(logMessage: string, filename, returnContent, refresh) {
+		this._logger.debug(logMessage);
+		this._storedFiles.updateCache(filename, returnContent.toString(), refresh);
+		return returnContent;
 	}
 
 }
