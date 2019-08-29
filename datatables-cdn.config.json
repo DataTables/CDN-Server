@@ -24,7 +24,8 @@
 		"fileNames": {},
 		"folderName": "DataTables",
 		"moduleName": "DataTables",
-		"order": 10,
+		"order": 10, 
+		"buildOrder": 20,
 		"versions": [
 			""
 		]
@@ -52,7 +53,8 @@
 		},
 		"folderName": "SemanticUI",
 		"moduleName": "SemanticUI",
-		"order": 10,
+		"order": 10, 
+		"buildOrder": 20,
 		"versions": [
 			"",
 			"2.2.13"
@@ -78,7 +80,8 @@
 		"fileNames": {},
 		"folderName": "SemanticUI",
 		"moduleName": "SemanticUI",
-		"order": 10,
+		"order": 10, 
+		"buildOrder": 20,
 		"versions": [
 			""
 		]
@@ -103,7 +106,8 @@
 		"fileNames": {},
 		"folderName": "Bootstrap-4",
 		"moduleName": "Bootstrap-4",
-		"order": 10,
+		"order": 10, 
+		"buildOrder": 20,
 		"versions": [
 			""
 		]
@@ -131,7 +135,8 @@
 		},
 		"folderName": "Bootstrap-4",
 		"moduleName": "Bootstrap-4",
-		"order": 10,
+		"order": 10, 
+		"buildOrder": 20,
 		"versions": [
 			"",
 			"4.1.1",
@@ -158,7 +163,8 @@
 		"fileNames": {},
 		"folderName": "Bootstrap",
 		"moduleName": "Bootstrap",
-		"order": 10,
+		"order": 10, 
+		"buildOrder": 20,
 		"versions": [
 			""
 		]
@@ -186,7 +192,8 @@
 		},
 		"folderName": "Bootstrap",
 		"moduleName": "Bootstrap",
-		"order": 10,
+		"order": 10, 
+		"buildOrder": 20,
 		"versions": [
 			"",
 			"3.3.7",
@@ -214,7 +221,8 @@
 		"fileNames": {},
 		"folderName": "Foundation",
 		"moduleName": "Foundation",
-		"order": 10,
+		"order": 10, 
+		"buildOrder": 20,
 		"versions": [
 			""
 		]
@@ -242,7 +250,8 @@
 		},
 		"folderName": "Foundation",
 		"moduleName": "Foundation",
-		"order": 10,
+		"order": 10, 
+		"buildOrder": 20,
 		"versions": [
 			"",
 			"6.4.3",
@@ -268,7 +277,8 @@
 		"fileNames": {},
 		"folderName": "jQueryUI",
 		"moduleName": "jQueryUI",
-		"order": 10,
+		"order": 10, 
+		"buildOrder": 20,
 		"versions": [
 			""
 		]
@@ -298,7 +308,8 @@
 		},
 		"folderName": "jQueryUI",
 		"moduleName": "jQueryUI",
-		"order": 10,
+		"order": 10, 
+		"buildOrder": 20,
 		"versions": [
 			"",
 			"1.11.4",
@@ -317,6 +328,7 @@
 		"folderName": "jQuery",
 		"moduleName": "jQuery",
 		"order": 20,
+		"buildOrder": 1,
 		"versions": [
 			"1.12.4",
 			"1.11.3",
@@ -335,7 +347,8 @@
 		},
 		"folderName": "jQuery",
 		"moduleName": "jQuery",
-		"order": 20,
+		"order": 20, 
+		"buildOrder": 1,
 		"versions": [
 			"3.3.1",
 			"2.1.4",
@@ -357,6 +370,7 @@
 		"folderName": "JSZip",
 		"moduleName": "JSZip",
 		"order": 20,
+		"buildOrder": 10,
 		"versions": [
 			"2.5.0",
 			"3.1.3"
@@ -373,7 +387,8 @@
 		},
 		"folderName": "pdfmake",
 		"moduleName": "pdfmake",
-		"order": 20,
+		"order": 20, 
+		"buildOrder": 10,
 		"versions": [
 			"0.1.18",
 			"0.1.27",
@@ -394,7 +409,8 @@
 		},
 		"folderName": "Moment",
 		"moduleName": "Moment",
-		"order": 20,
+		"order": 20, 
+		"buildOrder": 10,
 		"versions": [
 			"2.18.1"
 		]
@@ -412,7 +428,8 @@
 		},
 		"folderName": "MomentJS",
 		"moduleName": "MomentJS",
-		"order": 20,
+		"order": 20, 
+		"buildOrder": 10,
 		"versions": [
 			"2.10.6",
 			"2.11.2",
@@ -434,7 +451,8 @@
 		},
 		"folderName": "Selectize",
 		"moduleName": "Selectize",
-		"order": 20,
+		"order": 20, 
+		"buildOrder": 10,
 		"versions": [
 			"0.12.1"
 		]
@@ -453,7 +471,8 @@
 		},
 		"folderName": "Select2",
 		"moduleName": "Select2",
-		"order": 20,
+		"order": 20, 
+		"buildOrder": 10,
 		"versions": [
 			"4.0.0",
 			"4.0.1"
@@ -473,7 +492,8 @@
 		},
 		"folderName": "Quill",
 		"moduleName": "Quill",
-		"order": 20,
+		"order": 20, 
+		"buildOrder": 10,
 		"versions": [
 			"0.20.0",
 			"0.20.1",
@@ -491,7 +511,8 @@
 		},
 		"folderName": "FieldType-Mask",
 		"moduleName": "FieldType-Mask",
-		"order": 20,
+		"order": 20, 
+		"buildOrder": 10,
 		"versions": [
 			"1.13.4"
 		]
@@ -510,7 +531,8 @@
 		},
 		"folderName": "bootstrap-datepicker-4.15.35",
 		"moduleName": "bootstrap-datepicker-4.15.35",
-		"order": 20,
+		"order": 20, 
+		"buildOrder": 10,
 		"versions": [
 			"4.15.35"
 		]
@@ -530,7 +552,8 @@
 		},
 		"folderName": "DataTables",
 		"moduleName": "DataTables",
-		"order": 30,
+		"order": 30, 
+		"buildOrder": 30,
 		"versions": [
 			"1.10.1",
 			"1.10.2",
@@ -569,7 +592,8 @@
 		},
 		"folderName": "AutoFill",
 		"moduleName": "AutoFill",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"2.3.3",
 			"2.3.0",
@@ -604,7 +628,8 @@
 		},
 		"folderName": "Buttons",
 		"moduleName": "Buttons",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"1.5.6",
 			"1.5.5",
@@ -645,7 +670,8 @@
 		},
 		"folderName": "ColReorder",
 		"moduleName": "ColReorder",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"1.5.0",
 			"1.4.1",
@@ -685,7 +711,8 @@
 		},
 		"folderName": "FixedColumns",
 		"moduleName": "FixedColumns",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"3.2.5",
 			"3.2.4",
@@ -722,7 +749,8 @@
 		},
 		"folderName": "FixedHeader",
 		"moduleName": "FixedHeader",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"3.1.4",
 			"3.1.3",
@@ -757,7 +785,8 @@
 		},
 		"folderName": "KeyTable",
 		"moduleName": "KeyTable",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"2.5.0",
 			"2.4.1",
@@ -804,7 +833,8 @@
 		},
 		"folderName": "Responsive",
 		"moduleName": "Responsive",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"2.2.2",
 			"2.2.1",
@@ -839,7 +869,8 @@
 		},
 		"folderName": "RowGroup",
 		"moduleName": "RowGroup",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"1.1.0",
 			"1.0.4",
@@ -864,7 +895,8 @@
 		},
 		"folderName": "RowReorder",
 		"moduleName": "RowReorder",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"1.2.4",
 			"1.2.3",
@@ -892,7 +924,8 @@
 		},
 		"folderName": "Scroller",
 		"moduleName": "Scroller",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"2.0.0",
 			"1.5.0",
@@ -926,7 +959,8 @@
 		},
 		"folderName": "Select",
 		"moduleName": "Select",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"1.3.0",
 			"1.2.6",
@@ -954,7 +988,8 @@
 		},
 		"folderName": "Buttons",
 		"moduleName": "Column visibility",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"1.5.6",
 			"1.5.5",
@@ -991,7 +1026,8 @@
 		},
 		"folderName": "Buttons",
 		"moduleName": "Flash export",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"1.5.6",
 			"1.5.5",
@@ -1028,7 +1064,8 @@
 		},
 		"folderName": "Buttons",
 		"moduleName": "HTML5 export",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"1.5.6",
 			"1.5.5",
@@ -1065,7 +1102,8 @@
 		},
 		"folderName": "Buttons",
 		"moduleName": "Print view",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"1.5.6",
 			"1.5.5",
@@ -1102,7 +1140,8 @@
 		},
 		"folderName": "FieldType-Display",
 		"moduleName": "FieldType-Display",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"1.0.0",
 			"1.5.6",
@@ -1120,7 +1159,8 @@
 		},
 		"folderName": "FieldType-Quill",
 		"moduleName": "FieldType-Quill",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"0.20.0",
 			"0.20.1",
@@ -1139,7 +1179,8 @@
 		},
 		"folderName": "FieldType-Select2",
 		"moduleName": "FieldType-Select2",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"1.5.6",
 			"1.6.2",
@@ -1157,7 +1198,8 @@
 		},
 		"folderName": "FieldType-Selectize",
 		"moduleName": "FieldType-Selectize",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"0.12.1",
 			"1.5.6",
@@ -1175,7 +1217,8 @@
 		},
 		"folderName": "FieldType-Title",
 		"moduleName": "FieldType-Title",
-		"order": 40,
+		"order": 40, 
+		"buildOrder": 40,
 		"versions": [
 			"1.0.0",
 			"1.5.6",

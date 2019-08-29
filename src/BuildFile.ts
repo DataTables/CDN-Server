@@ -98,6 +98,7 @@ export default class BuildFile {
 		cloneParsedURL.pop();
 		filePath = cloneParsedURL.join('/');
 
+		parsedURL = this._reOrderBuild(parsedURL);
 		// Create a mapping between the URL Abbreviations, folder names, file names, order and includes
 		let folderNameMap = new Map<string, string>();
 		let moduleNameMap = new Map<string, string>();
@@ -247,9 +248,8 @@ export default class BuildFile {
 		this._logger.warn('Replacing Source Maps.');
 		if (typeof file === 'string') {
 			let matches = file.match(sourceMapReg);
-			if(matches !== null){
+			if (matches !== null) {
 				for (let match of matches) {
-					console.log(match)
 					file = file.replace(match, '');
 				}
 			}
@@ -361,7 +361,8 @@ export default class BuildFile {
 								for (let file of fileList) {
 									filePathList.push(folderPath + file);
 								}
-							} catch {
+							}
+							catch {
 								this._logger.warn('Folder not found');
 							}
 						}
@@ -373,11 +374,16 @@ export default class BuildFile {
 								usefulURL.pop();
 								for (let match of matches) {
 									let anchor = match.split('#')[1];
-									if(anchor !== undefined){
+									if (anchor !== undefined) {
 										anchor = anchor.split('\'')[0];
 									}
 									for (let file of fileList) {
-										let replacement = 'url(\'/' + usefulURL.join('/') + '/' + parsedDetails[i].folderName + '-' + parsedDetails[i].version + '/' + extra + '/' + file + (anchor !== undefined ? '#' + anchor : '') + '\')';
+										let replacement = 'url(\'/' + usefulURL.join('/')
+														+ '/' + parsedDetails[i].folderName
+														+ '-' + parsedDetails[i].version
+														+ '/' + extra
+														+ '/' + file
+														+ (anchor !== undefined ? '#' + anchor : '') + '\')';
 										if (match.match(new RegExp(file + '(#.*)?[\'"]')) !== null) {
 											fileAddition = fileAddition.replace(match, replacement);
 										}
@@ -432,7 +438,8 @@ export default class BuildFile {
 			else {
 				return this._logUpdateReturn('File not found in cache or directory', filename, '', false);
 			}
-		} catch (error) {
+		}
+		catch (error) {
 			if (optional) {
 				this._logger.warn('Unable to fetch optional file, may not exist: ' + filename);
 				this._storedFiles.updateCache(filename, '', false);
@@ -445,10 +452,45 @@ export default class BuildFile {
 		}
 	}
 
+	/**
+	 * Function to log a message, update the cache and return the content.
+	 * @param logMessage The message to be logged to the debugger
+	 * @param filename The name of the file being returned
+	 * @param returnContent The content of the file being returned
+	 * @param refresh whether the cache is to be refreshed.
+	 */
 	private _logUpdateReturn(logMessage: string, filename, returnContent, refresh) {
 		this._logger.debug(logMessage);
 		this._storedFiles.updateCache(filename, returnContent.toString(), refresh);
 		return returnContent;
+	}
+
+	/**
+	 * The URL elements come in in a different order to that which they are to be built.
+	 * This function reorders them so that they are corrected.
+	 * @param parsedURL The Input URL that is to be reordered for building
+	 */
+	private _reOrderBuild(parsedURL) {
+		let buildOrderMap = new Map<string, number>();
+		for (let element of this._config.elements) {
+			buildOrderMap.set(element.abbr, element.buildOrder);
+		}
+		parsedURL.sort(function(a, b) {
+			let abbrA = a.split('-');
+			if (abbrA.length > 1) {
+				abbrA = abbrA[0] + '-';
+			}
+			let abbrB = b.split('-')[0] + '-';
+			if (abbrB.length > 1) {
+				abbrB = abbrB[0] + '-';
+			}
+			let ordA = buildOrderMap.get(abbrA);
+			let ordB = buildOrderMap.get(abbrB);
+			return ordA > ordB ?
+			 1 : ordA < ordB ?
+			   -1 : 0;
+		});
+		return parsedURL;
 	}
 
 }

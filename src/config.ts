@@ -88,11 +88,15 @@ interface IElements {
 	 */
 	moduleName: string;
 	/**
-	 * The order represents the order that the modules must be loaded in.
+	 * The order represents the order that the modules must be in the URL.
 	 *
 	 * Eg. Modules with order 20 must come before a module of order 30 and after any of order 10.
 	 */
 	order: number;
+	/**
+	 * The order of which the files are to be included in the file
+	 */
+	buildOrder: number;
 	/**
 	 * A list of the available versions for this module.
 	 */

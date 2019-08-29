@@ -65,6 +65,10 @@ export const IConfigSchema = {
           "description": "The order represents the order that the modules must be loaded in.\n\nEg. Modules with order 20 must come before a module of order 30 and after any of order 10.",
           "type": "number"
         },
+        "buildOrder":{
+          "description":"The order of which the files are to be included in the file",
+          "type":"number"
+        },
         "versions": {
           "description": "A list of the available versions for this module.",
           "items": {
@@ -81,6 +85,7 @@ export const IConfigSchema = {
         "folderName",
         "moduleName",
         "order",
+        "buildOrder",
         "versions"
       ],
       "type": "object"

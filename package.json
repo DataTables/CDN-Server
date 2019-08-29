@@ -7,6 +7,7 @@
     "test": "bash test/run_tests.sh",
     "server": "node dist/server.js",
     "build": "npm install && tsc ./src/*.ts --outDir ./dist/",
+    "buildNoInstall": "tsc ./src/*.ts --outDir ./dist/",
     "all": "npm run build && npm run server",
     "debug": "node dist/server.js -d"
   },
