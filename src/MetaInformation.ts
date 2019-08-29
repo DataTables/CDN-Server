@@ -1,6 +1,6 @@
 import { IConfig } from './config';
 
-const hash = require( 'hash.js');
+const hash = require('hash.js');
 
 /**
  * The Interface which defines the format of the data that is returned when the details of a build are requested.

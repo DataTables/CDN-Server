@@ -190,10 +190,5 @@ export default function (value: unknown): IConfig {
     return value;
   } else {
     console.log("ERROR", rawValidateIConfig.errors!.filter((e: any) => e.keyword !== 'if'), {dataVar: 'IConfig'});
-    // throw new Error(
-    //   ajv.errorsText(rawValidateIConfig.errors!.filter((e: any) => e.keyword !== 'if'), {dataVar: 'IConfig'}) +
-    //   '\n\n' +
-    //   inspect(value),
-    // );
   }
 }

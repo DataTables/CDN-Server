@@ -5,7 +5,6 @@ import * as getopts from 'getopts';
 import * as http from 'http';
 import * as mime from 'mime-types';
 import * as util from 'util';
-import * as winston from 'winston';
 import BuildFile from './BuildFile';
 import Cache from './Cache';
 import {IConfig} from './config';
@@ -14,7 +13,6 @@ import Logger from './Logger';
 import MetaInformation from './MetaInformation';
 import URLValidate from './URLValidate';
 
-let reReadConfig = false;
 let argum = getopts(process.argv.slice(2), {
 	alias: {
 		configLoc: ['c', 'C'],
@@ -47,9 +45,7 @@ let defaults: IConfig = {
 	substitutions: {},
 };
 
-/**
- * See which port we should be using
- */
+// See which port we should be using
 let port = process.env.DT_CDN_SERVER_PORT ?
 	process.env.DT_CDN_SERVER_PORT :
 	8080;
@@ -89,6 +85,7 @@ if (argum.help === true) {
 }
 
 let cache = new Cache(null, logger);
+
 /*
  * This is the server for requesting files to be built.
  * It validates the URL that it takes and builds the file before returning them to the user.
@@ -97,41 +94,22 @@ http.createServer(async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
 	logger.info('New Request ' + req.url);
-	if (getConfig) {
-		let input = await readConfig();
-		logger.debug('Config Read ' + argum.configLoc);
-		config = Object.assign(defaults, input);
-		cache.resetCache(config.cacheSize);
-		logger.debug('Cache Reset');
-		getConfig = false;
-	}
-	let t = new Date();
-	let t0 = t.getTime();
 
 	// If a signal is recieved to re-read the config file then wait until the next request
 	// before reading it (to save signal handler time)
-	if (reReadConfig) {
+	if (getConfig) {
 		let input = await readConfig();
 		logger.debug('config Read' + argum.configLoc);
 		config = Object.assign(defaults, input);
 		cache.resetCache(config.cacheSize);
 		logger.debug('Cache Reset');
-		reReadConfig = false;
+		getConfig = false;
 	}
 
+	let t = new Date();
+	let t0 = t.getTime();
 	let url = new URLValidate(config, logger);
 	let splitURL: string[] = req.url.split('?');
-
-	// if debugging then create a debug object to return data
-	let debug = {
-			agent: req.headers['user-agent'],
-			buildTime: 0,
-			fileSize: 0,
-			includes: [],
-			ip: req.connection.remoteAddress,
-			time: t0,
-			url: req.url
-		};
 
 	// Ensure a valid request type is being made and validate that the requested url is also valid
 	if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
@@ -143,6 +121,7 @@ http.createServer(async function(req, res) {
 	else if (splitURL.length > 1 && splitURL[1].split('=').indexOf('latest') === 0) {
 		logger.debug('Latest versions requested.');
 		let findLatest = splitURL[1].split('=');
+
 		// Run validateLatest to validate the URL is legal and return the full URL required by the user
 		let latest = await url.validateLatest(findLatest[1]);
 
@@ -179,6 +158,7 @@ http.createServer(async function(req, res) {
 	}
 	else if (await url.parseURL(splitURL[0])) {
 		logger.debug('Requested file. Build commencing.');
+
 		// Build requested file
 		let bui = new BuildFile(cache, config, argum.debug, logger);
 		let content = await bui.buildFile(splitURL[0]);
@@ -224,7 +204,7 @@ http.createServer(async function(req, res) {
 
 // Function to cause the config to be re read when a SIGUSR1 signal is recieved.
 process.on('SIGUSR1', () => {
-	reReadConfig = true;
+	getConfig = true;
 	logger.debug('Reread Config Signal Recieved');
 });
 
@@ -238,7 +218,6 @@ process.on('uncaughtException', err => {
 });
 
 async function readConfig() {
-	let validateConfig;
 	try {
 		let input = await util.promisify(fs.readFile)(argum.configLoc);
 		config = JSON.parse(input.toString()) as IConfig;
@@ -248,7 +227,9 @@ async function readConfig() {
 		logger.error('Error reloading config file');
 		process.exit(3);
 	}
+
 	logger.debug('Validating Config File');
+
 	if (validate(config)) {
 		logger.debug('Config File Valid');
 	}
@@ -256,6 +237,7 @@ async function readConfig() {
 		logger.error('Error Validating config file.');
 		process.exit(6);
 	}
+
 	return config;
 }
 

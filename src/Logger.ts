@@ -8,20 +8,30 @@ export default class Logger {
 	private _logLocation: string;
 
 	constructor(loggerDetails) {
+		// Defined the custom format for the logger
 		const myFormat = winston.format.printf(({level, message, label, timestamp}) => {
 			return `${message}`;
 		});
 		this._debugger = loggerDetails.debug;
+
+		// Define whether logging is to take place or not.
+		//  This will only happen if the value of loggerDetails.logfile is a string detailing the location for the logfile
 		this._logfile = typeof loggerDetails.logfile !== 'boolean' ? true : false;
+
+		// Define the location of the logfile based on the input parameter
 		this._logLocation = typeof loggerDetails.logfile !== 'boolean' ? loggerDetails.logfile : '.hidden.log';
 		this._logger = winston.createLogger({
 			defaultMeta: { service: 'user-service'},
 			format: winston.format.json(),
 			level: 'silly',
 		});
+
+		// If the debugger option is enabled then set up a transport to the console
 		if (this._debugger) {
 			this._logger.add(new winston.transports.Console({format: myFormat}));
 		}
+
+		// If the logfile option is enabled then set up a transport to the logfile
 		if (this._logfile) {
 			this._logger.add(new winston.transports.File({filename: this._logLocation}));
 		}
@@ -29,6 +39,7 @@ export default class Logger {
 
 	public info(message) {
 		if (this._debugger || this._logfile) {
+			// Prints `info` in green plus a message in white
 			message = '\x1b[32mINFO:\x1b[37m ' + message;
 			this._logger.log({level: 'info', message});
 		}
@@ -36,6 +47,7 @@ export default class Logger {
 
 	public warn(message: string) {
 		if (this._debugger || this._logfile) {
+			// Prints `warn` in yellow plus a message in white
 			message = '\x1b[33mWARN:\x1b[37m ' + message;
 			this._logger.log({level: 'warn', message});
 		}
@@ -43,30 +55,34 @@ export default class Logger {
 
 	public debug(message: string) {
 		if (this._debugger || this._logfile) {
+			// Prints `debug` in blue plus a message in white
 			message = '\x1b[34mDEBUG:\x1b[37m ' + message;
 			this._logger.log({level: 'debug', message});
 		}
 	}
 
 	public error(message: string) {
+		// Prints `error` in red plus a message in white
 		if (this._debugger || this._logfile) {
 			message = '\x1b[31mERROR:\x1b[37m ' + message;
 			this._logger.log({level: 'error', message});
 		}
 	}
 
-	public sudoError(message: string){
+	public sudoError(message: string) {
+		// Prints `error` in red plus a message in white regardless of whether the debugger is enabled or not
 		message = '\x1b[31mERROR:\x1b[37m ' + message;
 		this._logger.log({level: 'error', message});
 	}
 
-	public sudoInfo(message: string){
+	public sudoInfo(message: string) {
+		// Prints `info` in green plus a message in white regardless of whether the debugger is enabled or not
 		message = '\x1b[32mINFO:\x1b[37m ' + message;
 		this._logger.log({level: 'error', message});
 	}
 
 	public help() {
-		let message = 
+		let message =
 `The following options are available when running the server:
 	-h   help: info on how to run the server
 	-d   debug: prints debug messages to the console when enabled

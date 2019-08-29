@@ -3,7 +3,6 @@ import {IConfig} from './config';
 
 import * as fs from 'fs';
 import * as util from 'util';
-import { threadId } from 'worker_threads';
 
 /**
  * This interface defines the format of the object to hold the details of all of the individual
@@ -58,6 +57,7 @@ export default class BuildFile {
 	 */
 	public async buildFile(filePath: string): Promise<boolean | string | number | Buffer> {
 		this._logger.debug('Starting Build File');
+
 		// Split URL into useful chunks and remove the first element if it is empty.
 		let parsedURL = filePath.split(new RegExp('[' + this._config.separators.join('') + ']'));
 
@@ -69,6 +69,7 @@ export default class BuildFile {
 			parsedURL.splice(0, 1);
 		}
 
+		// Find out if the request is for a static file
 		let extras = '';
 		let extraIndex = -1;
 		for (let staticFile of this._config.staticFileTypes) {
@@ -77,7 +78,8 @@ export default class BuildFile {
 				break;
 			}
 		}
-		// If an image is requested then there is a need to return only that image so do the following and return
+
+		// If an static file is requested then there is a need to return only that file so do the following and return
 		if (extraIndex !== -1) {
 			extras = parsedURL[extraIndex];
 			let cut = parsedURL.indexOf(extras);
@@ -92,13 +94,18 @@ export default class BuildFile {
 			else if (Buffer.isBuffer(fromCache)) {
 				return this._logUpdateReturn(extras + ' found in cache', path, fromCache, true);
 			}
+			else {
+				return false;
+			}
 		}
-		this._logger.warn(extras);
+
 		let cloneParsedURL = parsedURL.slice();
 		cloneParsedURL.pop();
 		filePath = cloneParsedURL.join('/');
 
+		// ReOrder the URL so that the files are added together in the correct order as defined in the config
 		parsedURL = this._reOrderBuild(parsedURL);
+
 		// Create a mapping between the URL Abbreviations, folder names, file names, order and includes
 		let folderNameMap = new Map<string, string>();
 		let moduleNameMap = new Map<string, string>();
@@ -169,8 +176,8 @@ export default class BuildFile {
 
 			order = orderMap.get(strParsed[0]);
 			folderName = folderNameMap.get(strParsed[0]);
-
 			this._logger.debug('Creating list of extensions for ' + strParsed);
+
 			// Create the string to replace the `{extensionsList}` macro in the built file as defined in config
 			if (strParsed.length > 1 && i < parsedURL.length - 1) {
 				this._logger.debug('Adding to extensionsList ' + moduleNameMap.get(strParsed[0]));
@@ -178,7 +185,6 @@ export default class BuildFile {
 			}
 
 			fileName = fileNameMap.get(strParsed[0]);
-
 			parsedDetails.push({
 				fileNameMap: fileName,
 				folderName,
@@ -188,25 +194,26 @@ export default class BuildFile {
 
 			// If the string has styling or similar that need to be included with it
 			//   then this is where they are added to the includes list.
-
 			if (includesMap.get(strParsed[0]) !== undefined) {
 				let keys: string[] = Object.keys(includesMap.get(strParsed[0]));
 				let vals: string[] = Object.values(includesMap.get(strParsed[0]));
+
 				for (let j = 0; j < keys.length; j++) {
 					includesList[keys[j]] = vals[j];
 				}
 			}
 		}
+
 		extensionsList += extensionsListArray.join(', ');
 
 		// From the file name, identify filetype, and whether the minified version is to be built
 		let splitFileName: string[] = parsedURL[parsedURL.length - 1].split('.');
 		let type: string = '.' + splitFileName[splitFileName.length - 1];
 		let min: boolean = splitFileName.length > 2 ? true : false;
-
 		this._logger.debug('Constructing file');
+
 		// Call function to _build the required file
-		let file = await this._build(parsedURL, type, min, parsedDetails, includesList, extras);
+		let file = await this._build(parsedURL, type, min, parsedDetails, includesList);
 
 		// Replace macros in the file as defined in the this._config
 		if (!file) {
@@ -242,13 +249,15 @@ export default class BuildFile {
 					}
 				}
 			}
-		}
 
-		let sourceMapReg = new RegExp('\\/\\*# sourceMappingURL=.*\\*\\/', 'g');
-		this._logger.warn('Replacing Source Maps.');
-		if (typeof file === 'string') {
+			// Find all of the matching strings in the file for the RegExp as given
+			//  Then replace them with empty strings as we do not want to include them
+			let sourceMapReg = new RegExp('\\/\\*# sourceMappingURL=.*\\*\\/', 'g');
 			let matches = file.match(sourceMapReg);
+
 			if (matches !== null) {
+				this._logger.debug('Replacing Source Maps.');
+
 				for (let match of matches) {
 					file = file.replace(match, '');
 				}
@@ -257,7 +266,6 @@ export default class BuildFile {
 
 		this._logger.debug('File built. Returning file.');
 		return file;
-
 	}
 
 	/**
@@ -283,9 +291,8 @@ export default class BuildFile {
 		min: boolean,
 		parsedDetails: IDetails[],
 		includesList: IIncludes,
-		extras: string,
 	): Promise<string | boolean | number> {
-		this._logger.warn(extras);
+
 		// Assigns _build message from the config file to a variable which will be appended to the top of the file
 		let fileContent: string = this._config.headerContent;
 
@@ -297,6 +304,7 @@ export default class BuildFile {
 
 		// Work through URL adding all of the files for each element
 		for (let i = 0; i < parsedURL.length - 1; i++) {
+
 			// Create arrays of both the keys and values from the includesList
 			let includesKeys: string[] = Object.keys(includesList);
 			let includesValues: string[] = Object.values(includesList);
@@ -309,8 +317,8 @@ export default class BuildFile {
 				for (let name of fileNameArray) {
 					let updatestring: string = name;
 
-					for (let l = 0; l < includesKeys.length; l++) {
-						updatestring = updatestring.replace('{' + includesKeys[l] + '}', includesValues[l]);
+					for (let includesPoint = 0; includesPoint < includesKeys.length; includesPoint++) {
+						updatestring = updatestring.replace('{' + includesKeys[includesPoint] + '}', includesValues[includesPoint]);
 					}
 
 					updatestring = updatestring.replace('{version}', parsedDetails[i].version);
@@ -318,80 +326,14 @@ export default class BuildFile {
 				}
 
 				parsedDetails[i].fileNameMap.set(folder, updateFile);
-				fileNameArray = parsedDetails[i].fileNameMap.get(folder);
-				for (let filename of fileNameArray) {
+
+				for (let filename of updateFile) {
 
 					// Append the minify and type to the filename
 					filename += minify + extension;
 
-					// Create path based on order of the element
-					let path: string = this._config.packagesDir + parsedDetails[i].folderName +
-						'-' + parsedDetails[i].version +  '/' + filename;
-
-					this._logger.debug('Fetching sub-file');
-					// Get the new bit of file
-					let fileAddition = await this._fetchFile(path, parsedDetails[i].folderName, parsedDetails[i].version);
-
-					// Split the filename used to find the file into useful chunks
-					let splitFileName = path.split('/');
-					let cutLoc = splitFileName.indexOf(parsedDetails[i].folderName + '-' + parsedDetails[i].version) - 1;
-					for (let extra of this._config.staticFileTypes) {
-						let fileList;
-						// if the folder and version combination is found in the filename
-						if (cutLoc > -1) {
-							this._logger.debug('Searching for ' + extra + ' folder');
-
-							// work out how many chunks to remove from the end
-							let tail = splitFileName.length - cutLoc - 1;
-							splitFileName.splice(cutLoc + 2, tail);
-
-							// put the useful ones back together and make the path up for the image location
-							let imageLoc = splitFileName.join('/');
-							let folderPath = imageLoc + '/' + extra + '/';
-							imageLoc += '/' + extra + '/(' + this._config.staticFileExtensions.join('|') + ')';
-							let imagePath = new RegExp(imageLoc);
-							this._logger.warn(folderPath + '\n' + imagePath);
-							this._logger.debug('checking if folder exists');
-							try {
-								fileList = await folderExists(folderPath);
-								this._logger.debug('Folder found');
-								let filePathList = [];
-
-								// make a list of all of the files in the folder
-								for (let file of fileList) {
-									filePathList.push(folderPath + file);
-								}
-							}
-							catch {
-								this._logger.warn('Folder not found');
-							}
-						}
-						this._logger.warn(fileList);
-						if (fileList !== undefined && typeof fileAddition === 'string') {
-							let matches = fileAddition.match(/url\(.*?\)/g);
-							if (matches !== null) {
-								let usefulURL = parsedURL.slice();
-								usefulURL.pop();
-								for (let match of matches) {
-									let anchor = match.split('#')[1];
-									if (anchor !== undefined) {
-										anchor = anchor.split('\'')[0];
-									}
-									for (let file of fileList) {
-										let replacement = 'url(\'/' + usefulURL.join('/')
-														+ '/' + parsedDetails[i].folderName
-														+ '-' + parsedDetails[i].version
-														+ '/' + extra
-														+ '/' + file
-														+ (anchor !== undefined ? '#' + anchor : '') + '\')';
-										if (match.match(new RegExp(file + '(#.*)?[\'"]')) !== null) {
-											fileAddition = fileAddition.replace(match, replacement);
-										}
-									}
-								}
-							}
-						}
-					}
+					// Get the file with it's replacements in place
+					let fileAddition = await this._fetchReplace(parsedDetails[i], filename, parsedURL);
 
 					// If '500' is returned then a server error has occured so return false
 					if (typeof fileAddition === 'number') {
@@ -417,12 +359,15 @@ export default class BuildFile {
 	 * @param fileIn The path to the next sub file to be found
 	 */
 	private async _fetchFile(fileIn: string, folder: string, version: string): Promise <string | boolean | number> {
+
 		// Try to find the file and return it, if it's not found then return an empty string,
 		// If an error occurs return '500' and log it.
 		let optional = fileIn.indexOf('?') !== -1 ? true : false;
 		let filename = fileIn.split('?').join('');
+
 		try {
 			let fromCache = this._storedFiles.searchCache(filename);
+
 			if (optional && typeof fromCache === 'string' && fromCache === '') {
 				return this._logUpdateReturn('Found empty optional file in cache: ' + filename, filename, '', true);
 			}
@@ -440,6 +385,7 @@ export default class BuildFile {
 			}
 		}
 		catch (error) {
+
 			if (optional) {
 				this._logger.warn('Unable to fetch optional file, may not exist: ' + filename);
 				this._storedFiles.updateCache(filename, '', false);
@@ -450,6 +396,92 @@ export default class BuildFile {
 				return 404;
 			}
 		}
+	}
+
+	/**
+	 * Fetches the file and then performs any replacements that are required
+	 * @param parsedDetail The element of parsedDetails currently in question
+	 * @param filename The name of the file to be fetched
+	 * @param parsedURL The URL split on the separator
+	 */
+	private async _fetchReplace(parsedDetail, filename, parsedURL) {
+
+		// Create path based on order of the element
+		let path: string = this._config.packagesDir + parsedDetail.folderName + '-' + parsedDetail.version +  '/' + filename;
+
+		// Get the new bit of file
+		this._logger.debug('Fetching sub-file');
+		let fileAddition = await this._fetchFile(path, parsedDetail.folderName, parsedDetail.version);
+
+		// Split the filename used to find the file into useful chunks
+		let splitFileName = path.split('/');
+		let cutLoc = splitFileName.indexOf(parsedDetail.folderName + '-' + parsedDetail.version) - 1;
+
+		for (let extra of this._config.staticFileTypes) {
+			let fileList;
+
+			// If the folder and version combination is found in the filename
+			if (cutLoc > -1) {
+				this._logger.debug('Searching for ' + extra + ' folder');
+
+				// Work out how many chunks to remove from the end
+				let tail = splitFileName.length - cutLoc - 1;
+				splitFileName.splice(cutLoc + 2, tail);
+
+				// Put the useful ones back together and make the path up for the image location
+				let folderPath = splitFileName.join('/')  + '/' + extra + '/';
+				this._logger.debug('checking if folder exists');
+
+				// Try and find the folder and if it exists extract a list of files within it
+				try {
+					fileList = await folderExists(folderPath);
+					this._logger.debug('Folder found');
+					let filePathList = [];
+
+					// make a list of all of the files in the folder
+					for (let file of fileList) {
+						filePathList.push(folderPath + file);
+					}
+				}
+				catch {
+					this._logger.warn('Folder not found');
+				}
+			}
+
+			// If the folder was found and fetching the file has not resulted in an error
+			if (fileList !== undefined && typeof fileAddition === 'string') {
+				let matches = fileAddition.match(/url\(.*?\)/g);
+
+				if (matches !== null) {
+					let usefulURL = parsedURL.slice();
+					usefulURL.pop();
+
+					// For every match replace the string currently in the file with a
+					//  new one that this CDN will understand when it recieves a request.
+					for (let match of matches) {
+						let anchor = match.split('#')[1];
+
+						if (anchor !== undefined) {
+							anchor = anchor.split('\'')[0];
+						}
+
+						for (let file of fileList) {
+							let replacement = 'url(\'/' + usefulURL.join('/')
+											+ '/' + parsedDetail.folderName
+											+ '-' + parsedDetail.version
+											+ '/' + extra
+											+ '/' + file
+											+ (anchor !== undefined ? '#' + anchor : '') + '\')';
+
+							if (match.match(new RegExp(file + '(#.*)?[\'"]')) !== null) {
+								fileAddition = fileAddition.replace(match, replacement);
+							}
+						}
+					}
+				}
+			}
+		}
+		return fileAddition;
 	}
 
 	/**
@@ -471,25 +503,31 @@ export default class BuildFile {
 	 * @param parsedURL The Input URL that is to be reordered for building
 	 */
 	private _reOrderBuild(parsedURL) {
+
+		// Define and add all of the build Orders to a map
 		let buildOrderMap = new Map<string, number>();
 		for (let element of this._config.elements) {
 			buildOrderMap.set(element.abbr, element.buildOrder);
 		}
+
+		// Sort the array based on the buildOrders of the elements
 		parsedURL.sort(function(a, b) {
 			let abbrA = a.split('-');
+			let abbrB = b.split('-');
+
 			if (abbrA.length > 1) {
 				abbrA = abbrA[0] + '-';
 			}
-			let abbrB = b.split('-')[0] + '-';
+
 			if (abbrB.length > 1) {
 				abbrB = abbrB[0] + '-';
 			}
+
 			let ordA = buildOrderMap.get(abbrA);
 			let ordB = buildOrderMap.get(abbrB);
-			return ordA > ordB ?
-			 1 : ordA < ordB ?
-			   -1 : 0;
+			return ordA > ordB ? 1 : ordA < ordB ? -1 : 0;
 		});
+
 		return parsedURL;
 	}
 

@@ -1,6 +1,9 @@
+/**
+ * This class controls and acts as the Cache for the CDN Server
+ */
 export default class Cache {
 	private _cacheMap = new Map<string, string | Buffer>();
-	private _cacheList: Array<string> = [];
+	private _cacheList: string[] = [];
 	private _cacheSize = 1;
 	private _logger;
 
@@ -12,6 +15,7 @@ export default class Cache {
 		if (cacheSize !== null) {
 			this._cacheSize = cacheSize;
 		}
+
 		this._logger = logger;
 	}
 
@@ -50,6 +54,7 @@ export default class Cache {
 	 */
 	public updateCache(filename: string, fileContent: string | Buffer, refresh: boolean): void {
 		this._logger.debug((refresh ? 'Refresh' : 'Update') + ' Cache Request');
+
 		// If the _cacheMap is approaching the limit size then delete the first element in the list
 		if (this._cacheMap.size >= this._cacheSize) {
 			this._logger.debug('Cache at size limit, removing content');
