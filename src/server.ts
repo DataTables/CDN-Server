@@ -9,6 +9,7 @@ import * as winston from 'winston';
 import BuildFile from './BuildFile';
 import Cache from './Cache';
 import {IConfig} from './config';
+import validate from './config.validator';
 import Logger from './Logger';
 import MetaInformation from './MetaInformation';
 import URLValidate from './URLValidate';
@@ -31,11 +32,20 @@ let argum = getopts(process.argv.slice(2), {
 	}
 });
 
-let defaults = {
+let defaults: IConfig = {
 	cacheDuration: 31557600,
-	imageFileExtensions: ['png'],
+	cacheSize: 100,
+	elements: [],
+	fileExtensions: [],
+	fileNames: [],
+	headerContent: '',
+	packagesDir: './dist',
+	requires: [],
 	separators: ['/', ','],
-}
+	staticFileExtensions: [],
+	staticFileTypes: [],
+	substitutions: {},
+};
 
 /**
  * See which port we should be using
@@ -71,7 +81,7 @@ else if (loggerDetails.logfile === true) {
 	process.exit(1);
 }
 
-if (argum.help === true){
+if (argum.help === true) {
 	loggerDetails.debug = true;
 	logger = new Logger(loggerDetails);
 	logger.help();
@@ -84,6 +94,8 @@ let cache = new Cache(null, logger);
  * It validates the URL that it takes and builds the file before returning them to the user.
  */
 http.createServer(async function(req, res) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
 	logger.info('New Request ' + req.url);
 	if (getConfig) {
 		let input = await readConfig();
@@ -102,6 +114,8 @@ http.createServer(async function(req, res) {
 		let input = await readConfig();
 		logger.debug('config Read' + argum.configLoc);
 		config = Object.assign(defaults, input);
+		cache.resetCache(config.cacheSize);
+		logger.debug('Cache Reset');
 		reReadConfig = false;
 	}
 
@@ -192,8 +206,8 @@ http.createServer(async function(req, res) {
 			let extension: string = fileExtension(splitURL[0]);
 			let type = mime.lookup(extension);
 			res.writeHead(200, {
-				'Content-Type': type + '; charset=utf-8',
 				'Cache-Control': 'max-age=' + config.cacheDuration,
+				'Content-Type': type + '; charset=utf-8',
 			});
 			// Return file
 			res.write(content);
@@ -224,16 +238,25 @@ process.on('uncaughtException', err => {
 });
 
 async function readConfig() {
+	let validateConfig;
 	try {
 		let input = await util.promisify(fs.readFile)(argum.configLoc);
-		config = JSON.parse(input.toString());
+		config = JSON.parse(input.toString()) as IConfig;
 		logger.debug('Config file loaded');
-		return config;
 	}
 	catch (error) {
 		logger.error('Error reloading config file');
 		process.exit(3);
 	}
+	logger.debug('Validating Config File');
+	if (validate(config)) {
+		logger.debug('Config File Valid');
+	}
+	else {
+		logger.error('Error Validating config file.');
+		process.exit(6);
+	}
+	return config;
 }
 
 logger.info('Server running. Listening on port ' + port);

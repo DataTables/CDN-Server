@@ -2,21 +2,21 @@ export interface IConfig {
 	/**
 	 * The location of the top level file containing all of the sub folders for build files.
 	 */
-	packagesDir: string;
+	packagesDir?: string;
 	/**
 	 * The message to be included at the top of the finished file.
 	 *
 	 * NOTE - THIS MUST REMAIN CONSISTENT OTHERWISE THE HASHES WILL CHANGE AND FAIL.
 	 */
-	headerContent: string;
+	headerContent?: string;
 	/**
 	 * The length of time that the files will be valid for in seconds
 	 */
-	cacheDuration: number;
+	cacheDuration?: number;
 	/**
 	 * The number of files that will be stored in the cache at any given time.
 	 */
-	cacheSize: number;
+	cacheSize?: number;
 	/**
 	 * All of the modules that may be included in to build file.
 	 */
@@ -30,13 +30,21 @@ export interface IConfig {
 	 */
 	fileExtensions: string[];
 	/**
+	 * A list of the potential image file types that could be requested.
+	 */
+	staticFileExtensions: string[];
+	/**
+	 * An array of the static file types such as images and fonts.
+	 */
+	staticFileTypes: string[];
+	/**
 	 * A list of the orders that must appear in the request URL in order for a build to be succesful.
 	 */
 	requires: number[];
 	/**
 	 * An array of strings which the URL is to be split on.
 	 */
-	separators: string[];
+	separators?: string[];
 	/**
 	 * Substitutions to be made throughout the built file.
 	 *

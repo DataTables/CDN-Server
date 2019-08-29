@@ -69,22 +69,31 @@ export default class BuildFile {
 			parsedURL.splice(0, 1);
 		}
 
+		let extras = '';
+		let extraIndex = -1;
+		for (let staticFile of this._config.staticFileTypes) {
+			extraIndex = parsedURL.indexOf(staticFile);
+			if (extraIndex !== -1) {
+				break;
+			}
+		}
 		// If an image is requested then there is a need to return only that image so do the following and return
-		if (parsedURL.indexOf('images') !== -1) {
-			let cut = parsedURL.indexOf('images');
+		if (extraIndex !== -1) {
+			extras = parsedURL[extraIndex];
+			let cut = parsedURL.indexOf(extras);
 			parsedURL.splice(0, cut - 1);
 			let path = this._config.packagesDir + parsedURL.join('/');
-			this._logger.debug('Checking for image in cache');
+			this._logger.debug('Checking for ' + extras + ' in cache');
 			let fromCache = this._storedFiles.searchCache(path);
 			if (!fromCache) {
 				let content = await fileExists(path);
-				return this._logUpdateReturn('Image not found in cache, fetching Image from ' + path, path, content, false)
+				return this._logUpdateReturn(extras + ' not found in cache, fetching Image from ' + path, path, content, false);
 			}
 			else if (Buffer.isBuffer(fromCache)) {
-				return this._logUpdateReturn('Image found in cache', path, fromCache, true);
+				return this._logUpdateReturn(extras + ' found in cache', path, fromCache, true);
 			}
 		}
-
+		this._logger.warn(extras);
 		let cloneParsedURL = parsedURL.slice();
 		cloneParsedURL.pop();
 		filePath = cloneParsedURL.join('/');
@@ -178,7 +187,7 @@ export default class BuildFile {
 
 			// If the string has styling or similar that need to be included with it
 			//   then this is where they are added to the includes list.
-			
+
 			if (includesMap.get(strParsed[0]) !== undefined) {
 				let keys: string[] = Object.keys(includesMap.get(strParsed[0]));
 				let vals: string[] = Object.values(includesMap.get(strParsed[0]));
@@ -187,7 +196,6 @@ export default class BuildFile {
 				}
 			}
 		}
-
 		extensionsList += extensionsListArray.join(', ');
 
 		// From the file name, identify filetype, and whether the minified version is to be built
@@ -197,14 +205,14 @@ export default class BuildFile {
 
 		this._logger.debug('Constructing file');
 		// Call function to _build the required file
-		let file = await this._build(parsedURL, type, min, parsedDetails, includesList);
+		let file = await this._build(parsedURL, type, min, parsedDetails, includesList, extras);
 
 		// Replace macros in the file as defined in the this._config
 		if (!file) {
 			this._logger.error('File unable to be built');
 			return false;
 		}
-		else if (typeof file === 'number'){
+		else if (typeof file === 'number') {
 			this._logger.error('File unable to be built');
 			return file;
 		}
@@ -231,6 +239,18 @@ export default class BuildFile {
 					while (file.indexOf(substitution) !== -1) {
 						file = file.replace(substitution, substitutions[substitution]);
 					}
+				}
+			}
+		}
+
+		let sourceMapReg = new RegExp('\\/\\*# sourceMappingURL=.*\\*\\/', 'g');
+		this._logger.warn('Replacing Source Maps.');
+		if (typeof file === 'string') {
+			let matches = file.match(sourceMapReg);
+			if(matches !== null){
+				for (let match of matches) {
+					console.log(match)
+					file = file.replace(match, '');
 				}
 			}
 		}
@@ -262,8 +282,10 @@ export default class BuildFile {
 		extension: string,
 		min: boolean,
 		parsedDetails: IDetails[],
-		includesList: IIncludes
+		includesList: IIncludes,
+		extras: string,
 	): Promise<string | boolean | number> {
+		this._logger.warn(extras);
 		// Assigns _build message from the config file to a variable which will be appended to the top of the file
 		let fileContent: string = this._config.headerContent;
 
@@ -313,50 +335,57 @@ export default class BuildFile {
 					// Split the filename used to find the file into useful chunks
 					let splitFileName = path.split('/');
 					let cutLoc = splitFileName.indexOf(parsedDetails[i].folderName + '-' + parsedDetails[i].version) - 1;
-					let fileList;
-					// if the folder and version combination is found in the filename
-					if (cutLoc > -1) {
-						this._logger.debug('Searching for image folder');
+					for (let extra of this._config.staticFileTypes) {
+						let fileList;
+						// if the folder and version combination is found in the filename
+						if (cutLoc > -1) {
+							this._logger.debug('Searching for ' + extra + ' folder');
 
-						// work out how many chunks to remove from the end
-						let tail = splitFileName.length - cutLoc - 1;
-						splitFileName.splice(cutLoc + 2, tail);
+							// work out how many chunks to remove from the end
+							let tail = splitFileName.length - cutLoc - 1;
+							splitFileName.splice(cutLoc + 2, tail);
 
-						// put the useful ones back together and make the path up for the image location
-						let imageLoc = splitFileName.join('/');
-						let folderPath = imageLoc + '/images/';
-						imageLoc += '/images/*.png';
-						let imagePath = new RegExp(imageLoc);
+							// put the useful ones back together and make the path up for the image location
+							let imageLoc = splitFileName.join('/');
+							let folderPath = imageLoc + '/' + extra + '/';
+							imageLoc += '/' + extra + '/(' + this._config.staticFileExtensions.join('|') + ')';
+							let imagePath = new RegExp(imageLoc);
+							this._logger.warn(folderPath + '\n' + imagePath);
+							this._logger.debug('checking if folder exists');
+							try {
+								fileList = await folderExists(folderPath);
+								this._logger.debug('Folder found');
+								let filePathList = [];
 
-						this._logger.debug('checking if folder exists');
-						try {
-							fileList = await folderExists(folderPath);
-							this._logger.debug('Folder found');
-							let filePathList = [];
-
-							// make a list of all of the files in the folder
-							for (let file of fileList) {
-								filePathList.push(folderPath + file);
+								// make a list of all of the files in the folder
+								for (let file of fileList) {
+									filePathList.push(folderPath + file);
+								}
+							} catch {
+								this._logger.warn('Folder not found');
 							}
 						}
-						catch {
-							this._logger.warn('Folder not found');
-						}
-					}
-					if (fileList !== undefined && typeof fileAddition === 'string') {
-						let usefulURL = parsedURL.slice()
-						usefulURL.splice(parsedURL.length-1, 1)
-						// for every file if its url is present in the file then replace it with the new URL
-						for (let file of fileList) {
-							if (fileAddition.indexOf(file) !== -1) {
-								fileAddition = fileAddition.replace(
-									new RegExp('"(.)*\/(.)*\/' + file + '"'),
-									'/' + usefulURL.join('/') + '/' + parsedDetails[i].folderName + '-' + parsedDetails[i].version + '/images/' + file
-								);
+						this._logger.warn(fileList);
+						if (fileList !== undefined && typeof fileAddition === 'string') {
+							let matches = fileAddition.match(/url\(.*?\)/g);
+							if (matches !== null) {
+								let usefulURL = parsedURL.slice();
+								usefulURL.pop();
+								for (let match of matches) {
+									let anchor = match.split('#')[1];
+									if(anchor !== undefined){
+										anchor = anchor.split('\'')[0];
+									}
+									for (let file of fileList) {
+										let replacement = 'url(\'/' + usefulURL.join('/') + '/' + parsedDetails[i].folderName + '-' + parsedDetails[i].version + '/' + extra + '/' + file + (anchor !== undefined ? '#' + anchor : '') + '\')';
+										if (match.match(new RegExp(file + '(#.*)?[\'"]')) !== null) {
+											fileAddition = fileAddition.replace(match, replacement);
+										}
+									}
+								}
 							}
 						}
 					}
-
 
 					// If '500' is returned then a server error has occured so return false
 					if (typeof fileAddition === 'number') {
@@ -403,8 +432,7 @@ export default class BuildFile {
 			else {
 				return this._logUpdateReturn('File not found in cache or directory', filename, '', false);
 			}
-		}
-		catch (error) {
+		} catch (error) {
 			if (optional) {
 				this._logger.warn('Unable to fetch optional file, may not exist: ' + filename);
 				this._storedFiles.updateCache(filename, '', false);

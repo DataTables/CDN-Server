@@ -1,10 +1,14 @@
 {
     "packagesDir": "./test/cache.small/",
     "headerContent": "extensionsURL >{extensionsURL}<\nextensionsList >{extensionsList}<\nsource >\"-source-\"<\ntestString >{testString}<\n",
+    "cacheDuration": 31557600,
     "cacheSize": 100,
     "fileNames": ["test"],
     "fileExtensions": [".js", ".min.js", ".css", ".min.css"],
+    "staticFileExtensions": [],
+    "staticFileTypes":[],
     "requires": [10],
+    "separators": ["/", ","],
     "substitutions": {
         "_extensionsList": "{extensionsList}",
         "_extensionsURL": "{extensionsURL}",

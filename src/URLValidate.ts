@@ -29,6 +29,7 @@ export default class URLValidate {
 	 */
 	public async parseURL(inputURL: string): Promise<boolean> {
 		// split URL into useful elements
+
 		let parsedURL = inputURL.split(new RegExp('[' + this._config.separators.join('') + ']'));
 
 		// The last element should be a valid file name, so assign it to filename and validate.
@@ -37,7 +38,7 @@ export default class URLValidate {
 			this._logger.error('Invalid filename in request: ' + filename);
 			return false;
 		}
-		this._logger.debug('Valid filename in request.');
+		this._logger.debug('Valid filename in request: ' + filename);
 		// Validate the remainder of the URL
 		return await this._validateURL(parsedURL, filename);
 	}
@@ -141,11 +142,16 @@ export default class URLValidate {
 			this._logger.warn('Empty filename in config - not allowed');
 			return false;
 		}
-		else if (filename.search(new RegExp(this._config.imageFileExtensions.join('|') + '$')) > 0 &&
-			this._config.imageFileExtensions.length > 0) {
+		else if (filename.search(new RegExp(this._config.staticFileExtensions.join('|\\') + '$')) > 0 &&
+			this._config.staticFileExtensions.length > 0) {
+			console.log(filename, new RegExp('\\' + this._config.staticFileExtensions.join('|\\') + '$'));	
 			return true;
 		}
-		else if (filename.search(new RegExp('(' + this._config.fileNames.join('|') + ')(\\' + this._config.fileExtensions.join('|\\') + ')$')) < 0) {
+		else if (
+			filename.search(
+				new RegExp('(' + this._config.fileNames.join('|') + ')(\\' + this._config.fileExtensions.join('|\\') + ')$')
+				) < 0
+			) {
 			return false;
 		}
 
@@ -159,17 +165,17 @@ export default class URLValidate {
 	 */
 	private async _validateURL(parsedURL: string[], filename: string): Promise<boolean> {
 		this._logger.debug('Validating URL');
-		let image = false;
-
-		// Check if there is an images folder in the request
-		if (parsedURL.indexOf('images') !== -1) {
-			image = true;
+		let staticIndex = -1;
+		for (let staticType of this._config.staticFileTypes) {
+			staticIndex = parsedURL.indexOf(staticType);
+			if (staticIndex !== -1) {
+				break;
+			}
 		}
-
 		// If there is then an image request has to be validated, otherwise validate a file request
-		if (image) {
-			this._logger.debug('Validating Image Request');
-			return await this._validateImageRequest(parsedURL, filename);
+		if (staticIndex !== -1) {
+			this._logger.debug('Validating Static Request');
+			return await this._validateExtraRequest(parsedURL, filename, parsedURL[staticIndex]);
 		}
 		else {
 			this._logger.debug('Validating File Request');
@@ -177,24 +183,24 @@ export default class URLValidate {
 		}
 	}
 
-	private async _validateImageRequest(parsedURL, filename) {
+	private async _validateExtraRequest(parsedURL, filename, extra) {
 		// Find the point in the requested URL that images is and remove all of the preceeding elements
 		// bar one as this should be the folder name. Then construct the path to the file.
-		let cut = parsedURL.indexOf('images');
+		let cut = parsedURL.indexOf(extra);
 		parsedURL.splice(0, cut - 1);
 		let path = this._config.packagesDir + parsedURL.join('/') + '/' + filename;
 
 		if (await fileExists(path)) {
-			this._logger.debug('Image found at ' + path);
+			this._logger.debug(extra + ' found at ' + path);
 			return true;
 		}
 		else {
-			this._logger.error('Image not found at ' + path);
+			this._logger.error(extra + ' not found at ' + path);
 			return false;
 		}
 	}
 
-	private _validateFileRequest(parsedURL){
+	private _validateFileRequest(parsedURL) {
 		// if the URL started with a separator then element 0 will be empty so remove it
 		if (parsedURL[0] === '') {
 			parsedURL.splice(0, 1);
@@ -238,6 +244,7 @@ export default class URLValidate {
 
 		// validate Order, Abbreviation and requirements list.
 		let requireList: number[] = this._config.requires;
+
 		for (let j = 0; j < orderList.length; j++) {
 			if (requireList.indexOf(orderList[j]) > -1) {
 				requireList.splice(requireList.indexOf(orderList[j]), 1);
@@ -254,6 +261,7 @@ export default class URLValidate {
 				return false;
 			}
 		}
+
 		this._logger.debug('URL modules are all in the correct order.');
 
 		if (requireList.length > 0) {
