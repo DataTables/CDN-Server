@@ -8,7 +8,7 @@
     "server": "node dist/server.js",
     "build": "npm install && tsc ./src/*.ts --outDir ./dist/",
     "all": "npm run build && npm run server",
-    "debug": "node dist/server.js -d",
+    "debug": "node dist/server.js -d"
   },
   "repository": {
     "type": "git",
