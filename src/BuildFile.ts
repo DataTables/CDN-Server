@@ -509,25 +509,26 @@ export default class BuildFile {
 		for (let element of this._config.elements) {
 			buildOrderMap.set(element.abbr, element.buildOrder);
 		}
+		let filename = parsedURL.pop();
 
 		// Sort the array based on the buildOrders of the elements
 		parsedURL.sort(function(a, b) {
 			let abbrA = a.split('-');
 			let abbrB = b.split('-');
 
-			if (abbrA.length > 1) {
-				abbrA = abbrA[0] + '-';
-			}
+			abbrA = abbrA.length > 1 ?
+				abbrA = abbrA[0] + '-' :
+				abbrA = abbrA[0];
 
-			if (abbrB.length > 1) {
-				abbrB = abbrB[0] + '-';
-			}
+			abbrB = abbrB.length > -1 ?
+				abbrB = abbrB[0] + '-' :
+				abbrB = abbrB[0];
 
 			let ordA = buildOrderMap.get(abbrA);
 			let ordB = buildOrderMap.get(abbrB);
 			return ordA > ordB ? 1 : ordA < ordB ? -1 : 0;
 		});
-
+		parsedURL.push(filename);
 		return parsedURL;
 	}
 
