@@ -461,19 +461,40 @@ export default class BuildFile {
 					//  new one that this CDN will understand when it recieves a request.
 					for (let match of matches) {
 						let anchor = match.split('#')[1];
+						let splitType = '';
+						let anchorSplits = ['\'', '"', ')'];
 
 						if (anchor !== undefined) {
-							anchor = anchor.split('\'')[0];
-							anchor = anchor.split(')')[0];
+							for (let split of anchorSplits) {
+								let splitAnchor = anchor.split(split);
+
+								if (splitAnchor.length > 1) {
+									anchor = splitAnchor[0];
+									if (split !== ')') {
+										splitType = split;
+									}
+									break;
+								}
+							}
+						}
+						else {
+							for (let split of anchorSplits) {
+								let splitMatch = match.split(split);
+
+								if (splitMatch.length > 2) {
+									splitType = split;
+									break;
+								}
+							}
 						}
 
 						for (let file of fileList) {
-							let replacement = 'url(\'/' + usefulURL.join('/')
+							let replacement = 'url(' + splitType + '/' + usefulURL.join('/')
 											+ '/' + parsedDetail.folderName
 											+ '-' + parsedDetail.version
 											+ '/' + extra
 											+ '/' + file
-											+ (anchor !== undefined ? '#' + anchor : '') + '\')';
+											+ (anchor !== undefined ? '#' + anchor : '') + splitType +  ')';
 
 							if (match.match(new RegExp(file + '(#.*)?[\'"]?')) !== null) {
 								fileAddition = fileAddition.replace(match, replacement);
