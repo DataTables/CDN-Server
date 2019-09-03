@@ -430,7 +430,7 @@ export default class BuildFile {
 
 				// Put the useful ones back together and make the path up for the image location
 				let folderPath = splitFileName.join('/')  + '/' + extra + '/';
-				this._logger.debug('checking if folder exists');
+				this._logger.debug('checking if folder exists: ' + folderPath);
 
 				// Try and find the folder and if it exists extract a list of files within it
 				try {
@@ -453,6 +453,7 @@ export default class BuildFile {
 				let matches = fileAddition.match(/url\(.*?\)/g);
 
 				if (matches !== null) {
+					this._logger.debug('Number of files found: ' + matches.length);
 					let usefulURL = parsedURL.slice();
 					usefulURL.pop();
 
@@ -463,6 +464,7 @@ export default class BuildFile {
 
 						if (anchor !== undefined) {
 							anchor = anchor.split('\'')[0];
+							anchor = anchor.split(')')[0];
 						}
 
 						for (let file of fileList) {
@@ -473,7 +475,7 @@ export default class BuildFile {
 											+ '/' + file
 											+ (anchor !== undefined ? '#' + anchor : '') + '\')';
 
-							if (match.match(new RegExp(file + '(#.*)?[\'"]')) !== null) {
+							if (match.match(new RegExp(file + '(#.*)?[\'"]?')) !== null) {
 								fileAddition = fileAddition.replace(match, replacement);
 							}
 						}
