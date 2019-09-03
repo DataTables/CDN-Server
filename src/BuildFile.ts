@@ -638,6 +638,8 @@ export default class BuildFile {
 		}
 		let filename = parsedURL.pop();
 
+		let originalURL = parsedURL.slice();
+
 		// Sort the array based on the buildOrders of the elements
 		parsedURL.sort(function(a, b) {
 			let abbrA = a.split('-');
@@ -653,7 +655,22 @@ export default class BuildFile {
 
 			let ordA = buildOrderMap.get(abbrA);
 			let ordB = buildOrderMap.get(abbrB);
-			return ordA > ordB ? 1 : ordA < ordB ? -1 : 0;
+
+			if (ordA > ordB) {
+				return 1;
+			}
+			else if (ordA < ordB) {
+				return -1;
+			}
+			else if (originalURL.indexOf(a) < originalURL.indexOf(b)) {
+				return 1;
+			}
+			else if (originalURL.indexOf(a) > originalURL.indexOf(b)) {
+				return -1;
+			}
+			else {
+				return 0;
+			}
 		});
 		parsedURL.push(filename);
 		return parsedURL;
