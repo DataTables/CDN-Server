@@ -132,13 +132,6 @@ export const IConfigSchema = {
       },
       "type": "array"
     },
-    "staticFileTypes":{
-      "description": "An array of the static file types such as images and fonts.",
-      "items": {
-        "type": "string"
-      },
-      "type": "array"
-    },
     "packagesDir": {
       "description": "The location of the top level file containing all of the sub folders for build files.",
       "type": "string"
@@ -175,7 +168,6 @@ export const IConfigSchema = {
     "fileNames",
     "headerContent",
     "staticFileExtensions",
-    "staticFileTypes",
     "packagesDir",
     "requires",
     "separators",

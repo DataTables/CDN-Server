@@ -1228,7 +1228,6 @@
 	"fileNames": ["datatables"],
 	"fileExtensions": [".js", ".min.js", ".css", ".min.css"],
 	"staticFileExtensions": [".png", ".eot", ".woff2", ".woff", ".ttf"],
-	"staticFileTypes":["images", "fonts"],
 	"requires": [10],
 	"separators": ["/", ","],
 	"substitutions": {

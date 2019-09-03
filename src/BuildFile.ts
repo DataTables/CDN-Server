@@ -2,6 +2,7 @@ import Cache from './Cache';
 import {IConfig} from './config';
 
 import * as fs from 'fs';
+import { parse } from 'querystring';
 import * as util from 'util';
 
 /**
@@ -72,8 +73,9 @@ export default class BuildFile {
 		// Find out if the request is for a static file
 		let extras = '';
 		let extraIndex = -1;
-		for (let staticFile of this._config.staticFileTypes) {
-			extraIndex = parsedURL.indexOf(staticFile);
+		for (let staticFile of this._config.staticFileExtensions) {
+			extraIndex = parsedURL[parsedURL.length - 1].indexOf(staticFile);
+
 			if (extraIndex !== -1) {
 				break;
 			}
@@ -81,12 +83,19 @@ export default class BuildFile {
 
 		// If an static file is requested then there is a need to return only that file so do the following and return
 		if (extraIndex !== -1) {
-			extras = parsedURL[extraIndex];
-			let cut = parsedURL.indexOf(extras);
-			parsedURL.splice(0, cut - 1);
+			extras = parsedURL[parsedURL.length - 1];
+			let cut = this._findCut(parsedURL);
+
+			if (typeof cut === 'number') {
+				parsedURL.splice(0, cut);
+			}
+
+			// let cut = parsedURL.indexOf(extras);
 			let path = this._config.packagesDir + parsedURL.join('/');
+			this._logger.warn(path);
 			this._logger.debug('Checking for ' + extras + ' in cache');
 			let fromCache = this._storedFiles.searchCache(path);
+
 			if (!fromCache) {
 				let content = await fileExists(path);
 				return this._logUpdateReturn(extras + ' not found in cache, fetching Image from ' + path, path, content, false);
@@ -417,39 +426,60 @@ export default class BuildFile {
 		let splitFileName = path.split('/');
 		let cutLoc = splitFileName.indexOf(parsedDetail.folderName + '-' + parsedDetail.version) - 1;
 
-		for (let extra of this._config.staticFileTypes) {
-			let fileList;
+		let fileList;
+		let folderList;
+		let filePathList = [];
 
-			// If the folder and version combination is found in the filename
-			if (cutLoc > -1) {
-				this._logger.debug('Searching for ' + extra + ' folder');
+		// If the folder and version combination is found in the filename
+		if (cutLoc > -1) {
+			this._logger.debug('Searching for static folder' /*extra*/);
 
-				// Work out how many chunks to remove from the end
-				let tail = splitFileName.length - cutLoc - 1;
-				splitFileName.splice(cutLoc + 2, tail);
+			// Work out how many chunks to remove from the end
+			let tail = splitFileName.length - cutLoc - 1;
+			splitFileName.splice(cutLoc + 2, tail);
 
-				// Put the useful ones back together and make the path up for the image location
-				let folderPath = splitFileName.join('/')  + '/' + extra + '/';
-				this._logger.debug('checking if folder exists: ' + folderPath);
+			// Put the useful ones back together and make the path up for the image location
+			let folderPath = splitFileName.join('/')  + '/'; /*+ extra + '/'*/
+			this._logger.debug('checking if folder exists: ' + folderPath);
 
-				// Try and find the folder and if it exists extract a list of files within it
-				try {
-					fileList = await folderExists(folderPath);
-					this._logger.debug('Folder found');
-					let filePathList = [];
+			// Try and find the folder and if it exists extract a list of files within it
+			try {
+				folderList = await folderExists(folderPath);
+				this._logger.debug('Folders found');
+				this._logger.warn(folderList);
+
+				for (let folder of folderList) {
+					let subFolderPath = folderPath + folder + '/';
+					try{
+						fileList = await folderExists(subFolderPath);
+					}
+					catch {
+						this._logger.warn(subFolderPath + ' is not a folder')
+						continue;
+					}
+					let subfilePathList = [];
 
 					// make a list of all of the files in the folder
 					for (let file of fileList) {
-						filePathList.push(folderPath + file);
+						for (let extn of this._config.staticFileExtensions) {
+							if (file.indexOf(extn) !== -1) {
+								subfilePathList.push(subFolderPath + file);
+								break;
+							}
+						}
 					}
-				}
-				catch {
-					this._logger.warn('Folder not found');
+
+					filePathList.push({folder, fileList, subfilePathList});
 				}
 			}
+			catch {
+				this._logger.warn('Folder not found');
+			}
+		}
 
+		for (let staticFile of filePathList) {
 			// If the folder was found and fetching the file has not resulted in an error
-			if (fileList !== undefined && typeof fileAddition === 'string') {
+			if (staticFile.fileList !== undefined && staticFile.subfilePathList.length > 0 && typeof fileAddition === 'string') {
 				let matches = fileAddition.match(/url\(.*?\)/g);
 
 				if (matches !== null) {
@@ -460,51 +490,97 @@ export default class BuildFile {
 					// For every match replace the string currently in the file with a
 					//  new one that this CDN will understand when it recieves a request.
 					for (let match of matches) {
-						let anchor = match.split('#')[1];
 						let splitType = '';
-						let anchorSplits = ['\'', '"', ')'];
+						let separators = ['\'', '"', ')'];
 
-						if (anchor !== undefined) {
-							for (let split of anchorSplits) {
-								let splitAnchor = anchor.split(split);
+						for (let split of separators) {
+							let splitMatch = match.split(split);
 
-								if (splitAnchor.length > 1) {
-									anchor = splitAnchor[0];
-									if (split !== ')') {
-										splitType = split;
-									}
-									break;
-								}
-							}
-						}
-						else {
-							for (let split of anchorSplits) {
-								let splitMatch = match.split(split);
-
-								if (splitMatch.length > 2) {
-									splitType = split;
-									break;
-								}
+							if (splitMatch.length > 2) {
+								splitType = split;
+								break;
 							}
 						}
 
-						for (let file of fileList) {
-							let replacement = 'url(' + splitType + '/' + usefulURL.join('/')
-											+ '/' + parsedDetail.folderName
-											+ '-' + parsedDetail.version
-											+ '/' + extra
-											+ '/' + file
-											+ (anchor !== undefined ? '#' + anchor : '') + splitType +  ')';
+						let original = match.match(/url\s*\(\s*([\'"]?)(.*?)[\'"]?\s*\)/);
+						if (
+							original !== null &&
+							(match.indexOf('http://') === -1 &&
+								match.indexOf('https://') === -1 &&
+								match.indexOf('data:') === -1)
+						) {
+							let splitName = filename.split('/');
 
-							if (match.match(new RegExp(file + '(#.*)?[\'"]?')) !== null) {
-								fileAddition = fileAddition.replace(match, replacement);
+							if (splitName.length > 1) {
+								splitName.pop();
+								splitName = splitName.join('/');
 							}
+							else {
+								splitName = '';
+							}
+
+							let url = parsedDetail.folderName
+							+ '-' + parsedDetail.version
+							+ '/' + splitName
+							+ '/' + original[2];
+
+							url = this._normalizePath(url);
+
+							let replacement = 'url(' + splitType
+							+ url
+							+ splitType +  ')';
+
+							// match = original[0].replace(original[2], replacement);
+							fileAddition = fileAddition.replace(match, replacement);
 						}
 					}
 				}
 			}
 		}
+
 		return fileAddition;
+	}
+
+	/**
+	 * Finds the point at which the static request begins
+	 * @param parsedURL the inputURL of which the cut point is to be found
+	 */
+	private _findCut(parsedURL): number | boolean {
+		// declare an order map, mapping the abbreviation of each element to its order
+		let orderMap = new Map<string, number>();
+
+		for (let element of this._config.elements) {
+			orderMap.set(element.abbr, element.order);
+		}
+
+		// iterate through the URL and extract the order for each element, adding to orderList
+		let orderList: number[] = [];
+
+		for (let element of parsedURL) {
+			let str: string[] = element.split('-');
+			if (str.length > 2) {
+				str[0] += '-';
+				for (let k = 1; k < str.length - 1; k++) {
+					str[0] += str[k] + '-';
+				}
+			}
+			else if (str.length > 1) {
+				str[0] += '-';
+			}
+			orderList.push(orderMap.get(str[0]));
+		}
+
+		for (let j = 0; j < orderList.length; j++) {
+
+			// Check that the elements of the URL are in the correct order
+			// Order list can be undefined if an unknown element is requested from the map
+			if (orderList[j] === undefined) {
+				return j;
+			}
+		}
+
+		this._logger.debug('URL modules are all in the correct order.');
+		return false;
 	}
 
 	/**
@@ -516,8 +592,36 @@ export default class BuildFile {
 	 */
 	private _logUpdateReturn(logMessage: string, filename, returnContent, refresh) {
 		this._logger.debug(logMessage);
-		this._storedFiles.updateCache(filename, returnContent.toString(), refresh);
+		this._storedFiles.updateCache(filename, returnContent, refresh);
 		return returnContent;
+	}
+
+	/**
+	 * Takes a url and removes useless elements and shortens
+	 * @param url url which is to be normalized
+	 */
+	private _normalizePath(url): string {
+		let parsedURL = url.split('/');
+		let emptyIndex = parsedURL.indexOf('');
+		while (emptyIndex !== -1) {
+			parsedURL.splice(emptyIndex, 1);
+			emptyIndex = parsedURL.indexOf('');
+		}
+		let thisIndex = parsedURL.indexOf('.');
+		while (thisIndex !== -1) {
+			parsedURL.splice(thisIndex, 1);
+			thisIndex = parsedURL.indexOf('.');
+		}
+		let prevIndex = parsedURL.indexOf('..');
+		while (prevIndex !== -1) {
+			parsedURL.splice(prevIndex - 1, 2);
+			prevIndex = parsedURL.indexOf('..');
+			if (prevIndex === 0) {
+		 		break;
+		 	}
+		}
+		url = parsedURL.join('/');
+		return url;
 	}
 
 	/**

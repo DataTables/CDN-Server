@@ -6,7 +6,6 @@
     "fileNames": ["test"],
     "fileExtensions": [".js", ".min.js", ".css", ".min.css"],
     "staticFileExtensions": [],
-    "staticFileTypes": [],
     "requires": [10],
     "separators": ["/", ","],
     "substitutions": {

@@ -3,6 +3,7 @@ import * as cmp from 'semver-compare';
 import { IConfig } from './config';
 
 import * as util from 'util';
+import { parse } from 'querystring';
 const fileExists = util.promisify(fs.readFile);
 /**
  * This class will validate that the URL given is a valid build path.
@@ -102,6 +103,48 @@ export default class URLValidate {
 	}
 
 	/**
+	 * Finds the point at which the static request begins
+	 * @param parsedURL the inputURL of which the cut point is to be found
+	 */
+	private _findCut(parsedURL): number | boolean {
+		// declare an order map, mapping the abbreviation of each element to its order
+		let orderMap = new Map<string, number>();
+
+		for (let element of this._config.elements) {
+			orderMap.set(element.abbr, element.order);
+		}
+
+		// iterate through the URL and extract the order for each element, adding to orderList
+		let orderList: number[] = [];
+
+		for (let element of parsedURL) {
+			let str: string[] = element.split('-');
+			if (str.length > 2) {
+				str[0] += '-';
+				for (let k = 1; k < str.length - 1; k++) {
+					str[0] += str[k] + '-';
+				}
+			}
+			else if (str.length > 1) {
+				str[0] += '-';
+			}
+			orderList.push(orderMap.get(str[0]));
+		}
+
+		for (let j = 0; j < orderList.length; j++) {
+
+			// Check that the elements of the URL are in the correct order
+			// Order list can be undefined if an unknown element is requested from the map
+			if (orderList[j] === undefined) {
+				return j;
+			}
+		}
+
+		this._logger.debug('URL modules are all in the correct order.');
+		return false;
+	}
+
+	/**
 	 * Finds the latest version of a module according to the config file
 	 * @param mod the abbreviation of the module of which the latest element is to be found
 	 * @returns {string} the latest version for that element
@@ -132,6 +175,42 @@ export default class URLValidate {
    }
 
 	/**
+	 * validates that the static request is legal
+	 * @param parsedURL the URL which is to be validated for a static file request
+	 * @param filename the name of the file requested
+	 */
+	private async _validateExtraRequest(parsedURL, filename) {
+		// Find the point in the requested URL that images is and remove all of the preceeding elementsk
+		// bar one as this should be the folder name. Then construct the path to the file.
+		if (parsedURL[0] === '') {
+			parsedURL.splice(0, 1);
+		}
+
+		let cut = this._findCut(parsedURL);
+
+		if (typeof cut === 'boolean') {
+			this._logger.error('Not a valid static request');
+			return false;
+		}
+
+		parsedURL.splice(0, cut);
+		let path = this._config.packagesDir + parsedURL.join('/') + '/' + filename;
+		try {
+			if (await fileExists(path)) {
+				this._logger.debug(filename + ' found at ' + path);
+				return true;
+			}
+			else {
+				this._logger.error(filename + ' not found at ' + path);
+				return false;
+			}
+		}
+		catch {
+			this._logger.error('Error finding ' + path);
+		}
+	}
+
+	/**
 	 * Validates that the requested filename is valid according to a regex.
 	 * @param filename the filename of the file to be built
 	 * @returns {boolean} returns a boolean value indicating whether the filename requested is valid.
@@ -144,7 +223,6 @@ export default class URLValidate {
 		}
 		else if (filename.search(new RegExp(this._config.staticFileExtensions.join('|\\') + '$')) > 0 &&
 			this._config.staticFileExtensions.length > 0) {
-			console.log(filename, new RegExp('\\' + this._config.staticFileExtensions.join('|\\') + '$'));	
 			return true;
 		}
 		else if (
@@ -159,47 +237,9 @@ export default class URLValidate {
 	}
 
 	/**
-	 * Validates the URL's order, requirements and other specifications
-	 * @param parsedURL The Elements of the original URL which have been broken down by separators
-	 * @returns {boolean} returns a boolean value indicating if the URL has passed validation
+	 * validates that the standard request is legal
+	 * @param parsedURL the URL which is to be validated for a normal file request
 	 */
-	private async _validateURL(parsedURL: string[], filename: string): Promise<boolean> {
-		this._logger.debug('Validating URL');
-		let staticIndex = -1;
-		for (let staticType of this._config.staticFileTypes) {
-			staticIndex = parsedURL.indexOf(staticType);
-			if (staticIndex !== -1) {
-				break;
-			}
-		}
-		// If there is then an image request has to be validated, otherwise validate a file request
-		if (staticIndex !== -1) {
-			this._logger.debug('Validating Static Request');
-			return await this._validateExtraRequest(parsedURL, filename, parsedURL[staticIndex]);
-		}
-		else {
-			this._logger.debug('Validating File Request');
-			return this._validateFileRequest(parsedURL);
-		}
-	}
-
-	private async _validateExtraRequest(parsedURL, filename, extra) {
-		// Find the point in the requested URL that images is and remove all of the preceeding elements
-		// bar one as this should be the folder name. Then construct the path to the file.
-		let cut = parsedURL.indexOf(extra);
-		parsedURL.splice(0, cut - 1);
-		let path = this._config.packagesDir + parsedURL.join('/') + '/' + filename;
-
-		if (await fileExists(path)) {
-			this._logger.debug(extra + ' found at ' + path);
-			return true;
-		}
-		else {
-			this._logger.error(extra + ' not found at ' + path);
-			return false;
-		}
-	}
-
 	private _validateFileRequest(parsedURL) {
 		// if the URL started with a separator then element 0 will be empty so remove it
 		if (parsedURL[0] === '') {
@@ -253,7 +293,7 @@ export default class URLValidate {
 			// Check that the elements of the URL are in the correct order
 			// Order list can be undefined if an unknown element is requested from the map
 			if (orderList[j] === undefined) {
-				this._logger.error('Order of element not recognised');
+				this._logger.error('Order of element not recognised: ' + orderList);
 				return false;
 			}
 			else if (j > 0 && orderList[j] < orderList[j - 1]) {
@@ -297,6 +337,31 @@ export default class URLValidate {
 	}
 
 	/**
+	 * Validates the URL's order, requirements and other specifications
+	 * @param parsedURL The Elements of the original URL which have been broken down by separators
+	 * @returns {boolean} returns a boolean value indicating if the URL has passed validation
+	 */
+	private async _validateURL(parsedURL: string[], filename: string): Promise<boolean> {
+		this._logger.debug('Validating URL');
+		let staticIndex = -1;
+		for (let staticExtension of this._config.staticFileExtensions) {
+			staticIndex = filename.indexOf(staticExtension);
+			if (staticIndex !== -1) {
+				break;
+			}
+		}
+		// If there is then an image request has to be validated, otherwise validate a file request
+		if (staticIndex !== -1) {
+			this._logger.debug('Validating Static Request');
+			return await this._validateExtraRequest(parsedURL, filename);
+		}
+		else {
+			this._logger.debug('Validating File Request');
+			return this._validateFileRequest(parsedURL);
+		}
+	}
+
+	/**
 	 * Validates that the versions requested for each element is valid according to the config
 	 * @param parsedURL The Elements of the original URL which have been broken down by separators
 	 * @returns {boolean} returns a boolean value indicating if the version requested is valid
@@ -316,5 +381,4 @@ export default class URLValidate {
 
 		return false;
 	}
-
 }
