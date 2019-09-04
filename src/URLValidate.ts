@@ -3,24 +3,26 @@ import * as cmp from 'semver-compare';
 import { IConfig } from './config';
 
 import * as util from 'util';
-import { parse } from 'querystring';
+
 const fileExists = util.promisify(fs.readFile);
+
 /**
  * This class will validate that the URL given is a valid build path.
  */
 export default class URLValidate {
 	private _config;
-
 	private _excludes = [];
-
 	private _logger;
+	private _maps;
+
 	/**
 	 * Assigns the config property for this class
 	 * @param configIn The config object whose standards are to be met
 	 */
-	constructor(configIn: IConfig, logger) {
+	constructor(configIn: IConfig, logger, maps) {
 		this._config = configIn;
 		this._logger = logger;
+		this._maps = maps;
 	}
 
 	/**
@@ -107,12 +109,6 @@ export default class URLValidate {
 	 * @param parsedURL the inputURL of which the cut point is to be found
 	 */
 	private _findCut(parsedURL): number | boolean {
-		// declare an order map, mapping the abbreviation of each element to its order
-		let orderMap = new Map<string, number>();
-
-		for (let element of this._config.elements) {
-			orderMap.set(element.abbr, element.order);
-		}
 
 		// iterate through the URL and extract the order for each element, adding to orderList
 		let orderList: number[] = [];
@@ -128,7 +124,7 @@ export default class URLValidate {
 			else if (str.length > 1) {
 				str[0] += '-';
 			}
-			orderList.push(orderMap.get(str[0]));
+			orderList.push(this._maps.orderMap.get(str[0]));
 		}
 
 		for (let j = 0; j < orderList.length; j++) {
@@ -258,13 +254,6 @@ export default class URLValidate {
 		}
 		this._logger.debug('All elements in URL have a module');
 
-		// declare an order map, mapping the abbreviation of each element to its order
-		let orderMap = new Map<string, number>();
-
-		for (let element of this._config.elements) {
-			orderMap.set(element.abbr, element.order);
-		}
-
 		// iterate through the URL and extract the order for each element, adding to orderList
 		let orderList: number[] = [];
 
@@ -279,7 +268,7 @@ export default class URLValidate {
 			else if (str.length > 1) {
 				str[0] += '-';
 			}
-			orderList.push(orderMap.get(str[0]));
+			orderList.push(this._maps.orderMap.get(str[0]));
 		}
 
 		// validate Order, Abbreviation and requirements list.

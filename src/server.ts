@@ -84,7 +84,7 @@ if (argum.help === true) {
 	process.exit(4);
 }
 
-let cache = new Cache(null, logger);
+let cache = new Cache(null, logger, null);
 
 /*
  * This is the server for requesting files to be built.
@@ -101,14 +101,14 @@ http.createServer(async function(req, res) {
 		let input = await readConfig();
 		logger.debug('config Read' + argum.configLoc);
 		config = Object.assign(defaults, input);
-		cache.resetCache(config.cacheSize);
+		cache.resetCache(config.cacheSize, config);
 		logger.debug('Cache Reset');
 		getConfig = false;
 	}
 
 	let t = new Date();
 	let t0 = t.getTime();
-	let url = new URLValidate(config, logger);
+	let url = new URLValidate(config, logger, cache._maps);
 	let splitURL: string[] = req.url.split('?');
 
 	// Ensure a valid request type is being made and validate that the requested url is also valid
@@ -132,7 +132,7 @@ http.createServer(async function(req, res) {
 		else {
 			logger.debug('URL Valid.');
 			let meta = new MetaInformation(config, logger);
-			let bui = new BuildFile(cache, config, argum.debug, logger);
+			let bui = new BuildFile(cache, config, argum.debug, logger, cache._maps);
 			let content: any[] = [];
 			let latestOptions: any[] = [];
 
@@ -160,7 +160,7 @@ http.createServer(async function(req, res) {
 		logger.debug('Requested file. Build commencing.');
 
 		// Build requested file
-		let bui = new BuildFile(cache, config, argum.debug, logger);
+		let bui = new BuildFile(cache, config, argum.debug, logger, cache._maps);
 		let content = await bui.buildFile(splitURL[0]);
 
 		if (content === false) {

@@ -94,7 +94,7 @@ interface IElements {
 	 */
 	order: number;
 	/**
-	 * The order of which the files are to be included in the file
+	 * The order of which the files are to be included in the output file
 	 */
 	buildOrder: number;
 	/**
