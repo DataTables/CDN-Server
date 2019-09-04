@@ -362,6 +362,10 @@ export default class URLValidate {
 						return true;
 					}
 				}
+				if (parsedURL === element.abbr && parsedURL.split('-').length === 0) {
+					this._excludes = this._excludes.concat(element.abbr, element.excludes);
+					return true;
+				}
 			}
 		}
 

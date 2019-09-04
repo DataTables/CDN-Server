@@ -25,9 +25,7 @@
 		"folderName": "DataTables",
 		"moduleName": "DataTables",
 		"outputOrder": 20,
-		"versions": [
-			""
-		]
+		"versions": []
 	}, {
 		"abbr": "se-",
 		"description" : "This element includes the semantic styling of a certain version.",
@@ -54,7 +52,6 @@
 		"moduleName": "SemanticUI",
 		"outputOrder": 20,
 		"versions": [
-			"",
 			"2.2.13"
 		]
 	}, {
@@ -79,9 +76,7 @@
 		"folderName": "SemanticUI",
 		"moduleName": "SemanticUI",
 		"outputOrder": 20,
-		"versions": [
-			""
-		]
+		"versions": []
 	}, {
 		"abbr": "bs4",
 		"description" : "This element includes the bootstrap4 styling.",
@@ -104,9 +99,7 @@
 		"folderName": "Bootstrap-4",
 		"moduleName": "Bootstrap-4",
 		"outputOrder": 20,
-		"versions": [
-			""
-		]
+		"versions": []
 	}, {
 		"abbr": "bs4-",
 		"description" : "This element includes the bootstrap4 styling of a specific version.",
@@ -133,7 +126,6 @@
 		"moduleName": "Bootstrap-4",
 		"outputOrder": 20,
 		"versions": [
-			"",
 			"4.1.1",
 			"4.0.0"
 		]
@@ -159,9 +151,7 @@
 		"folderName": "Bootstrap",
 		"moduleName": "Bootstrap",
 		"outputOrder": 20,
-		"versions": [
-			""
-		]
+		"versions": []
 	}, {
 		"abbr": "bs-",
 		"description" : "This element includes the bootstrap3 styling of a certain version.",
@@ -188,7 +178,6 @@
 		"moduleName": "Bootstrap",
 		"outputOrder": 20,
 		"versions": [
-			"",
 			"3.3.7",
 			"3.3.5",
 			"3.3.6"
@@ -215,9 +204,7 @@
 		"folderName": "Foundation",
 		"moduleName": "Foundation",
 		"outputOrder": 20,
-		"versions": [
-			""
-		]
+		"versions": []
 	}, {
 		"abbr": "zf-",
 		"description" : "This element includes the foundation styling of a specific version.",
@@ -244,7 +231,6 @@
 		"moduleName": "Foundation",
 		"outputOrder": 20,
 		"versions": [
-			"",
 			"6.4.3",
 			"5.5.2"
 		]
@@ -269,9 +255,7 @@
 		"folderName": "jQueryUI",
 		"moduleName": "jQueryUI",
 		"outputOrder": 20,
-		"versions": [
-			""
-		]
+		"versions": []
 	}, {
 		"abbr": "ju-",
 		"description" : "This element includes the jqueryui styling of a specific version.",
@@ -300,7 +284,6 @@
 		"moduleName": "jQueryUI",
 		"outputOrder": 20,
 		"versions": [
-			"",
 			"1.11.4",
 			"1.12.1"
 		]
