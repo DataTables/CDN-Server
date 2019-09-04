@@ -150,7 +150,7 @@ export default class BuildFile {
 				vers = '';
 			}
 
-			order = this._maps.orderMap.get(strParsed[0]);
+			order = this._maps.outputOrderMap.get(strParsed[0]);
 			folderName = this._maps.folderNameMap.get(strParsed[0]);
 			this._logger.debug('Creating list of extensions for ' + strParsed);
 
@@ -538,7 +538,7 @@ export default class BuildFile {
 			else if (str.length > 1) {
 				str[0] += '-';
 			}
-			orderList.push(this._maps.orderMap.get(str[0]));
+			orderList.push(this._maps.outputOrderMap.get(str[0]));
 		}
 
 		for (let j = 0; j < orderList.length; j++) {
@@ -619,8 +619,8 @@ export default class BuildFile {
 				abbrB = abbrB[0] + '-' :
 				abbrB = abbrB[0];
 
-			let ordA = this._maps.buildOrderMap.get(abbrA);
-			let ordB = this._maps.buildOrderMap.get(abbrB);
+			let ordA = this._maps.outputOrderMap.get(abbrA);
+			let ordB = this._maps.outputOrderMap.get(abbrB);
 			if (ordA > ordB) {
 				return 1;
 			}
@@ -628,10 +628,10 @@ export default class BuildFile {
 				return -1;
 			}
 			else if (originalURL.indexOf(a) < originalURL.indexOf(b)) {
-				return 1;
+				return -1;
 			}
 			else if (originalURL.indexOf(a) > originalURL.indexOf(b)) {
-				return -1;
+				return 1;
 			}
 			else {
 				return 0;

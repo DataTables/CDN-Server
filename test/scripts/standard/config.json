@@ -26,8 +26,7 @@
             "fileNames": {},
             "folderName": "StyleNoFiles",
             "moduleName": "StyleNoFiles",
-            "order": 10,
-            "buildOrder": 10,
+            "outputOrder": 10,
             "versions": [""]
         },
         {
@@ -39,8 +38,7 @@
             "fileNames": {},
             "folderName": "",
             "moduleName": "StyleWithFilesStyle",
-            "order": 10,
-            "buildOrder": 10,
+            "outputOrder": 10,
             "versions": [""]
         },
         {
@@ -53,8 +51,7 @@
             },
             "folderName": "StyleWithFiles",
             "moduleName": "StyleWithFiles",
-            "order": 10,
-            "buildOrder": 10,
+            "outputOrder": 10,
             "versions": ["", "0.0.1", "0.0.2"]
         },
         {
@@ -66,8 +63,7 @@
             "fileNames": {},
             "folderName": "localeEn",
             "moduleName": "localeEn",
-            "order": 11,
-            "buildOrder": 11,
+            "outputOrder": 11,
             "versions": [""]
         },
         {
@@ -85,8 +81,7 @@
             },
             "folderName": "ProductA",
             "moduleName": "ProductA",
-            "order": 20,
-            "buildOrder": 20,
+            "outputOrder": 20,
             "versions": ["1.0.0", "1.0.1"]
         },
         {
@@ -99,8 +94,7 @@
             },
             "folderName": "ProductB",
             "moduleName": "ProductB",
-            "order": 15,
-            "buildOrder": 15,
+            "outputOrder": 15,
             "versions": ["2.0.0", "2.0.1", "2.1.0"]
         },
         {
@@ -119,8 +113,7 @@
             },
             "folderName": "ProductC",
             "moduleName": "ProductC",
-            "order": 40,
-            "buildOrder": 40,
+            "outputOrder": 40,
             "versions": ["3.0.0", "3.0.1", "3.0.2", "3.1.0"]
         },
         {
@@ -133,8 +126,7 @@
             },
             "folderName": "ProductD",
             "moduleName": "ProductD",
-            "order": 15,
-            "buildOrder": 15,
+            "outputOrder": 15,
             "versions": ["4.0.0"]
         },
         {
@@ -150,8 +142,7 @@
             },
             "folderName": "ProductDash",
             "moduleName": "Product Dash",
-            "order": 15,
-            "buildOrder": 15,
+            "outputOrder": 15,
             "versions": ["4.0.0"]
         },
         {
@@ -164,8 +155,7 @@
             },
             "folderName": "ExtA",
             "moduleName": "ExtA",
-            "order": 30,
-            "buildOrder": 30,
+            "outputOrder": 30,
             "versions": ["", "10.0.0"]
         }
     ]

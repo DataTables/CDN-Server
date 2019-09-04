@@ -83,16 +83,14 @@ export default class Cache {
 	 */
 	public createMaps(): void {
 		// declare all of the maps that will be used throughout the operation of the server
-		let orderMap = new Map<string, number>();
-		let buildOrderMap = new Map<string, number>();
+		let outputOrderMap = new Map<string, number>();
 		let folderNameMap = new Map<string, string>();
 		let moduleNameMap = new Map<string, string>();
 		let fileNameMap = new Map<string, Map<string, string[]>>();
 		let includesMap = new Map <string, {}>();
 
 		for (let element of this._config.elements) {
-			orderMap.set(element.abbr, element.order);
-			buildOrderMap.set(element.abbr, element.buildOrder);
+			outputOrderMap.set(element.abbr, element.outputOrder);
 			folderNameMap.set(element.abbr, element.folderName);
 			moduleNameMap.set(element.abbr, element.moduleName);
 
@@ -117,12 +115,11 @@ export default class Cache {
 		}
 
 		this._maps = {
-			buildOrderMap,
 			fileNameMap,
 			folderNameMap,
 			includesMap,
 			moduleNameMap,
-			orderMap,
+			outputOrderMap,
 		};
 	}
 }

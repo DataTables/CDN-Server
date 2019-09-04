@@ -60,8 +60,8 @@ export default class URLValidate {
 
 		// Confirm that the all of the orders are present.
 		for (let element of this._config.elements) {
-			if (parsedURL[0] === element.abbr && orderList.indexOf(element.order) !== -1) {
-				orderList.splice(orderList.indexOf(element.order), 1);
+			if (parsedURL[0] === element.abbr && orderList.indexOf(element.outputOrder) !== -1) {
+				orderList.splice(orderList.indexOf(element.outputOrder), 1);
 
 				if (orderList.length === 0) {
 					break;
@@ -124,13 +124,14 @@ export default class URLValidate {
 			else if (str.length > 1) {
 				str[0] += '-';
 			}
-			orderList.push(this._maps.orderMap.get(str[0]));
+			orderList.push(this._maps.outputOrderMap.get(str[0]));
 		}
 
 		for (let j = 0; j < orderList.length; j++) {
 
 			// Check that the elements of the URL are in the correct order
 			// Order list can be undefined if an unknown element is requested from the map
+			// As we are checking for a static file we want to return this point
 			if (orderList[j] === undefined) {
 				return j;
 			}
@@ -268,7 +269,7 @@ export default class URLValidate {
 			else if (str.length > 1) {
 				str[0] += '-';
 			}
-			orderList.push(this._maps.orderMap.get(str[0]));
+			orderList.push(this._maps.outputOrderMap.get(str[0]));
 		}
 
 		// validate Order, Abbreviation and requirements list.
@@ -283,10 +284,6 @@ export default class URLValidate {
 			// Order list can be undefined if an unknown element is requested from the map
 			if (orderList[j] === undefined) {
 				this._logger.error('Order of element not recognised: ' + orderList);
-				return false;
-			}
-			else if (j > 0 && orderList[j] < orderList[j - 1]) {
-				this._logger.error('URL modules are not in the correct order.');
 				return false;
 			}
 		}
