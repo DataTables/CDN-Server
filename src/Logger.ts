@@ -109,6 +109,7 @@ export default class Logger {
 `The following options are available when running the server:
 	-h   help: info on how to run the server
 	-d   debug: prints debug messages to the console when enabled
+	-e   errorLogFile: prints the error messages to a file as specified (FILE MUST BE SPECIFIED)
 	-l   logfile: prints the debug lines to a file as specified (FILE MUST BE SPECIFIED)
 	-m   metrics: allows the server to be monitored using the appmetrics-dash
 	-c   configLoc: allows the server to be run with a custom config file at a location as specified
