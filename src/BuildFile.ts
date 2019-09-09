@@ -2,7 +2,7 @@ import Cache from './Cache';
 import {IConfig} from './config';
 
 import * as fs from 'fs';
-import { parse } from 'querystring';
+import { parse, stringify } from 'querystring';
 import * as util from 'util';
 
 /**
@@ -34,6 +34,7 @@ export default class BuildFile {
 	private _includedFiles: string[] = [];
 	private _debug: boolean = false;
 	private _logger;
+	private _maps;
 
 	/**
 	 * The constructor initialises the cache, reads in the configuration for the
@@ -43,11 +44,12 @@ export default class BuildFile {
 	 *   location of the files and all of their details.
 	 * @param debug A boolean value to defined whether the Server is being run in debug mode.
 	 */
-	constructor(cache: Cache, configIn: IConfig, debug: boolean, logger) {
+	constructor(cache: Cache, configIn: IConfig, debug: boolean, logger, maps) {
 		this._storedFiles = cache;
 		this._config = configIn;
 		this._debug = debug;
 		this._logger = logger;
+		this._maps = maps;
 	}
 
 	/**
@@ -92,7 +94,6 @@ export default class BuildFile {
 
 			// let cut = parsedURL.indexOf(extras);
 			let path = this._config.packagesDir + parsedURL.join('/');
-			this._logger.warn(path);
 			this._logger.debug('Checking for ' + extras + ' in cache');
 			let fromCache = this._storedFiles.searchCache(path);
 
@@ -114,40 +115,6 @@ export default class BuildFile {
 
 		// ReOrder the URL so that the files are added together in the correct order as defined in the config
 		parsedURL = this._reOrderBuild(parsedURL);
-
-		// Create a mapping between the URL Abbreviations, folder names, file names, order and includes
-		let folderNameMap = new Map<string, string>();
-		let moduleNameMap = new Map<string, string>();
-
-		// FileNameMap maps the abbreviation to a map of the file type(js,css,etc...) to an array of the files to be built
-		let fileNameMap = new Map<string, Map<string, string[]>>();
-		let orderMap = new Map <string, number>();
-		let includesMap = new Map <string, {}>();
-
-		for (let element of this._config.elements) {
-			let fileKeys = Object.keys(element.fileNames);
-			let fileValues = Object.values(element.fileNames);
-
-			// This is the map between the file type and the array of files to be built
-			let tempMap = new Map <string, string[]>();
-
-			for (let j = 0; j < fileKeys.length; j++) {
-				tempMap.set(fileKeys[j], fileValues[j]);
-			}
-
-			folderNameMap.set(element.abbr, element.folderName);
-			moduleNameMap.set(element.abbr, element.moduleName);
-			orderMap.set(element.abbr, element.order);
-
-			if (fileKeys.length > 0) {
-				fileNameMap.set(element.abbr, tempMap);
-			}
-
-			// Only create mapping if the includes contains at least one property
-			if (Object.keys(element.fileIncludes).length > 0) {
-				includesMap.set(element.abbr, element.fileIncludes);
-			}
-		}
 
 		// Grab the Folder names, File names, versions, orders and includes and add them to a list.
 		let parsedDetails: IDetails[] = [];
@@ -183,19 +150,32 @@ export default class BuildFile {
 				vers = '';
 			}
 
-			order = orderMap.get(strParsed[0]);
-			folderName = folderNameMap.get(strParsed[0]);
+			order = this._maps.outputOrderMap.get(strParsed[0]);
+			folderName = this._maps.folderNameMap.get(strParsed[0]);
 			this._logger.debug('Creating list of extensions for ' + strParsed);
 
 			// Create the string to replace the `{extensionsList}` macro in the built file as defined in config
 			if (strParsed.length > 1 && i < parsedURL.length - 1) {
-				this._logger.debug('Adding to extensionsList ' + moduleNameMap.get(strParsed[0]));
-				extensionsListArray.push(moduleNameMap.get(strParsed[0]) + ' ' + strParsed[strParsed.length - 1]);
+				this._logger.debug('Adding to extensionsList ' + this._maps.moduleNameMap.get(strParsed[0]));
+				extensionsListArray.push(this._maps.moduleNameMap.get(strParsed[0]) + ' ' + strParsed[strParsed.length - 1]);
 			}
 
-			fileName = fileNameMap.get(strParsed[0]);
+			// It is necessary to create a new copy of the map that does not reference the old one otherwise
+			//   changes made later will affect future builds
+			fileName = this._maps.fileNameMap.get(strParsed[0]);
+			let newMap = new Map<string, string[]>();
+
+			if (fileName !== undefined) {
+				let keys = Array.from(fileName.keys());
+				let values = Array.from(fileName.values());
+
+				for (let j = 0; j < keys.length; j++) {
+					newMap.set(keys[j], values[j]);
+				}
+			}
+
 			parsedDetails.push({
-				fileNameMap: fileName,
+				fileNameMap: newMap,
 				folderName,
 				order,
 				version: vers,
@@ -203,9 +183,9 @@ export default class BuildFile {
 
 			// If the string has styling or similar that need to be included with it
 			//   then this is where they are added to the includes list.
-			if (includesMap.get(strParsed[0]) !== undefined) {
-				let keys: string[] = Object.keys(includesMap.get(strParsed[0]));
-				let vals: string[] = Object.values(includesMap.get(strParsed[0]));
+			if (this._maps.includesMap.get(strParsed[0]) !== undefined) {
+				let keys: string[] = Object.keys(this._maps.includesMap.get(strParsed[0]));
+				let vals: string[] = Object.values(this._maps.includesMap.get(strParsed[0]));
 
 				for (let j = 0; j < keys.length; j++) {
 					includesList[keys[j]] = vals[j];
@@ -446,11 +426,10 @@ export default class BuildFile {
 			try {
 				folderList = await folderExists(folderPath);
 				this._logger.debug('Folders found');
-				this._logger.warn(folderList);
 
 				for (let folder of folderList) {
 					let subFolderPath = folderPath + folder + '/';
-					try{
+					try {
 						fileList = await folderExists(subFolderPath);
 					}
 					catch {
@@ -493,15 +472,6 @@ export default class BuildFile {
 						let splitType = '';
 						let separators = ['\'', '"', ')'];
 
-						for (let split of separators) {
-							let splitMatch = match.split(split);
-
-							if (splitMatch.length > 2) {
-								splitType = split;
-								break;
-							}
-						}
-
 						let original = match.match(/url\s*\(\s*([\'"]?)(.*?)[\'"]?\s*\)/);
 						if (
 							original !== null &&
@@ -526,11 +496,19 @@ export default class BuildFile {
 
 							url = this._normalizePath(url);
 
+							for (let split of separators) {
+								let splitMatch = match.split(split);
+
+								if (splitMatch.length > 2) {
+									splitType = split;
+									break;
+								}
+							}
+
 							let replacement = 'url(' + splitType
 							+ url
 							+ splitType +  ')';
 
-							// match = original[0].replace(original[2], replacement);
 							fileAddition = fileAddition.replace(match, replacement);
 						}
 					}
@@ -546,13 +524,6 @@ export default class BuildFile {
 	 * @param parsedURL the inputURL of which the cut point is to be found
 	 */
 	private _findCut(parsedURL): number | boolean {
-		// declare an order map, mapping the abbreviation of each element to its order
-		let orderMap = new Map<string, number>();
-
-		for (let element of this._config.elements) {
-			orderMap.set(element.abbr, element.order);
-		}
-
 		// iterate through the URL and extract the order for each element, adding to orderList
 		let orderList: number[] = [];
 
@@ -567,7 +538,7 @@ export default class BuildFile {
 			else if (str.length > 1) {
 				str[0] += '-';
 			}
-			orderList.push(orderMap.get(str[0]));
+			orderList.push(this._maps.outputOrderMap.get(str[0]));
 		}
 
 		for (let j = 0; j < orderList.length; j++) {
@@ -631,17 +602,12 @@ export default class BuildFile {
 	 */
 	private _reOrderBuild(parsedURL) {
 
-		// Define and add all of the build Orders to a map
-		let buildOrderMap = new Map<string, number>();
-		for (let element of this._config.elements) {
-			buildOrderMap.set(element.abbr, element.buildOrder);
-		}
 		let filename = parsedURL.pop();
 
 		let originalURL = parsedURL.slice();
 
 		// Sort the array based on the buildOrders of the elements
-		parsedURL.sort(function(a, b) {
+		parsedURL.sort((a, b) => {
 			let abbrA = a.split('-');
 			let abbrB = b.split('-');
 
@@ -653,9 +619,8 @@ export default class BuildFile {
 				abbrB = abbrB[0] + '-' :
 				abbrB = abbrB[0];
 
-			let ordA = buildOrderMap.get(abbrA);
-			let ordB = buildOrderMap.get(abbrB);
-
+			let ordA = this._maps.outputOrderMap.get(abbrA);
+			let ordB = this._maps.outputOrderMap.get(abbrB);
 			if (ordA > ordB) {
 				return 1;
 			}
@@ -663,10 +628,10 @@ export default class BuildFile {
 				return -1;
 			}
 			else if (originalURL.indexOf(a) < originalURL.indexOf(b)) {
-				return 1;
+				return -1;
 			}
 			else if (originalURL.indexOf(a) > originalURL.indexOf(b)) {
-				return -1;
+				return 1;
 			}
 			else {
 				return 0;

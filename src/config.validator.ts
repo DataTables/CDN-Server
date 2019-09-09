@@ -61,11 +61,7 @@ export const IConfigSchema = {
           "description": "The name of the Module to show in the extensions list in top comment",
           "type": "string"
         },
-        "order": {
-          "description": "The order represents the order that the modules must be loaded in.\n\nEg. Modules with order 20 must come before a module of order 30 and after any of order 10.",
-          "type": "number"
-        },
-        "buildOrder":{
+        "outputOrder":{
           "description":"The order of which the files are to be included in the file",
           "type":"number"
         },
@@ -84,8 +80,7 @@ export const IConfigSchema = {
         "fileNames",
         "folderName",
         "moduleName",
-        "order",
-        "buildOrder",
+        "outputOrder",
         "versions"
       ],
       "type": "object"
