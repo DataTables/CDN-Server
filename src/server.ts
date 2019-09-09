@@ -17,6 +17,7 @@ let argum = getopts(process.argv.slice(2), {
 	alias: {
 		configLoc: ['c', 'C'],
 		debug: ['d', 'D'],
+		errorLogFile: ['e', 'E'],
 		help: ['h', 'H'],
 		logfile: ['l', 'L'],
 		metrics: ['m', 'M'],
@@ -24,6 +25,7 @@ let argum = getopts(process.argv.slice(2), {
 	default: {
 		configLoc: './datatables-cdn.config.json',
 		debug: false,
+		errorLogFile: false,
 		help: false,
 		logfile: false,
 		metrics: false,
@@ -54,7 +56,8 @@ let config: IConfig;
 let getConfig = true;
 let loggerDetails = {
 	debug: argum.debug,
-	logfile: argum.logfile
+	errorLogFile: argum.errorLogFile,
+	logfile: argum.logfile,
 };
 
 if (argum.metrics) {
@@ -67,7 +70,7 @@ readConfig();
 let logger = new Logger(loggerDetails);
 
 // If there are more options defined which are not defined then print the help and end server
-if (Object.keys(argum).length > 16) {
+if (Object.keys(argum).length > 19) {
 	logger.help();
 	process.exit(5);
 }
@@ -75,6 +78,10 @@ else if (loggerDetails.logfile === true) {
 	logger.sudoError('Logfile option set to true but no file location specified. Ending.');
 	logger.help();
 	process.exit(1);
+}
+else if (loggerDetails.errorLogFile === true) {
+	logger.sudoError('ErrorLogFile option set to true but no file location specified. Ending.');
+	process.exit(6);
 }
 
 if (argum.help === true) {
@@ -174,10 +181,10 @@ http.createServer(async function(req, res) {
 		else if (splitURL.indexOf('details') === 1 && typeof content === 'string') {
 			logger.debug('Getting Meta Info for build.');
 			let meta = new MetaInformation(config, logger);
-			res.write(JSON.stringify(meta.getDetails(content, await bui.getInclusions(), t0)));
 			res.writeHead(200, {
 				'Cache-Control': 'max-age=' + config.cacheDuration,
 			});
+			res.write(JSON.stringify(meta.getDetails(content, await bui.getInclusions(), t0)));
 			logger.debug('Success. Returning Build Details');
 		}
 		else {

@@ -52,7 +52,7 @@ export default class URLValidate {
 	 * @returns {boolean | string} returns either the valid filename or a boolean value indicating a fail
 	 */
 	public async validateLatest(inputURL: string): Promise <boolean | string> {
-		this._logger('Validating URL for latest request');
+		this._logger.debug('Validating URL for latest request');
 		let parsedURL: string[];
 
 		parsedURL = inputURL.split(new RegExp('[' + this._config.separators.join('') + ']'));
@@ -150,8 +150,13 @@ export default class URLValidate {
 		// Sort the versions for the element using the library and return the biggest one.
 		for (let element of this._config.elements) {
 			if (mod === element.abbr) {
-				let versions = element.versions.sort(cmp);
-				return versions[versions.length - 1];
+				if (element.versions.length > 0) {
+					let versions = element.versions.sort(cmp);
+					return versions[versions.length - 1];
+				}
+				else {
+					return '';
+				}
 			}
 		}
 	}
@@ -362,7 +367,7 @@ export default class URLValidate {
 						return true;
 					}
 				}
-				if (parsedURL === element.abbr && parsedURL.split('-').length === 0) {
+				if (parsedURL === element.abbr && parsedURL.split('-').length === 1) {
 					this._excludes = this._excludes.concat(element.abbr, element.excludes);
 					return true;
 				}
