@@ -1,0 +1,21 @@
+[
+	{
+		"comment": "Set of tests to check that exclusion behaves"
+	},
+	{
+		"description": "one component excludes another",
+		"url" : "snf/pa-1.0.0/pc-3.0.0/test.js",
+		"response": "404"
+	},
+	{
+		"description": "style excludes a component for CSS",
+		"url" : "snf/swf-0.0.1/pa-1.0.0/test.css",
+		"response": "404"
+	},
+	{
+		"description": "style excludes a component for JS",
+		"url" : "snf/swf-0.0.1/pa-1.0.0/test.js",
+		"response": "404"
+	}
+
+]
