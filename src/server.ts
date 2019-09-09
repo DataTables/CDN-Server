@@ -70,7 +70,6 @@ readConfig();
 let logger = new Logger(loggerDetails);
 
 // If there are more options defined which are not defined then print the help and end server
-console.log(Object.keys(argum));
 if (Object.keys(argum).length > 19) {
 	logger.help();
 	process.exit(5);

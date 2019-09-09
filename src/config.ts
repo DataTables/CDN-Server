@@ -30,7 +30,7 @@ export interface IConfig {
 	 */
 	fileExtensions: string[];
 	/**
-	 * A list of the potential image file types that could be requested.
+	 * A list of the potential static file types that could be requested.
 	 */
 	staticFileExtensions: string[];
 	/**
