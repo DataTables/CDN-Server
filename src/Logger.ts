@@ -4,8 +4,11 @@ export default class Logger {
 
 	private _debugger: boolean = false;
 	private _logfile: boolean | string = false;
+	private _errorLogFile: boolean | string = false;
 	private _logger;
+	private _errorLogger;
 	private _logLocation: string;
+	private _errorLogLocation: string;
 
 	constructor(loggerDetails) {
 		// Defined the custom format for the logger
@@ -15,12 +18,23 @@ export default class Logger {
 		this._debugger = loggerDetails.debug;
 
 		// Define whether logging is to take place or not.
-		//  This will only happen if the value of loggerDetails.logfile is a string detailing the location for the logfile
+		//  This will only happen if the value of loggerDetails.logfile/loggerDetails.errorLogFile
+		//   is a string detailing the location for the logfile/errorLogFile
 		this._logfile = typeof loggerDetails.logfile !== 'boolean' ? true : false;
+		this._errorLogFile = typeof loggerDetails.errorLogFile !== 'boolean' ? true : false;
 
-		// Define the location of the logfile based on the input parameter
+		// Define the location of the logfile and errorLogFile based on the input parameter
 		this._logLocation = typeof loggerDetails.logfile !== 'boolean' ? loggerDetails.logfile : '.hidden.log';
+		this._errorLogLocation = typeof loggerDetails.errorLogFile !== 'boolean'
+			? loggerDetails.errorLogFile
+			: '.hidden.log';
 		this._logger = winston.createLogger({
+			defaultMeta: { service: 'user-service'},
+			format: winston.format.json(),
+			level: 'silly',
+		});
+		// Create another logger purely for the errors
+		this._errorLogger = winston.createLogger({
 			defaultMeta: { service: 'user-service'},
 			format: winston.format.json(),
 			level: 'silly',
@@ -34,6 +48,11 @@ export default class Logger {
 		// If the logfile option is enabled then set up a transport to the logfile
 		if (this._logfile) {
 			this._logger.add(new winston.transports.File({filename: this._logLocation}));
+		}
+
+		// Add a transport for the pure error logging
+		if (this._errorLogFile) {
+			this._errorLogger.add(new winston.transports.File({filename: this._errorLogLocation}));
 		}
 	}
 
@@ -67,12 +86,16 @@ export default class Logger {
 			message = '\x1b[31mERROR:\x1b[37m ' + message;
 			this._logger.log({level: 'error', message});
 		}
+		if (this._errorLogFile) {
+			this._errorLogger.log({level: 'error', message});
+		}
 	}
 
 	public sudoError(message: string) {
 		// Prints `error` in red plus a message in white regardless of whether the debugger is enabled or not
 		message = '\x1b[31mERROR:\x1b[37m ' + message;
 		this._logger.log({level: 'error', message});
+		this._errorLogger.log({level: 'error', message});
 	}
 
 	public sudoInfo(message: string) {
