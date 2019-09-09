@@ -146,6 +146,23 @@
             "versions": ["4.0.0"]
         },
         {
+            "abbr": "d-dash-",
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["productdash"],
+                "js": [
+					"?productdash.{styling}.{locale}",
+					"productdash"
+				]
+            },
+            "folderName": "ProductDash",
+            "moduleName": "Product Dash",
+            "order": 20,
+            "buildOrder": 20,
+            "versions": ["4.0.0"]
+        },
+        {
             "abbr": "ea-",
             "excludes": [""],
             "fileIncludes": {},
