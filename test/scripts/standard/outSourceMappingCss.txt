@@ -1,0 +1,9 @@
+extensionsURL >snf/sm-2.0.1<
+extensionsList >Source Mapping test 2.0.1<
+source >"snf/sm-2.0.1"<
+testString >test string<
+
+/*# sourceMapping=bootstrap.css.map */
+./SourceMapping-2.0.1/sourcemapping.css
+
+

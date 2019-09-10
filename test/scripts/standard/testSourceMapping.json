@@ -1,0 +1,17 @@
+[
+	{
+		"comment": "Set of tests to test sourcemappingURL"
+	},
+	{
+		"description": "source mapping CSS",
+		"url" : "snf/sm-2.0.1/test.css",
+		"response": "200",
+		"outfile" : "outSourceMappingCss.txt"
+	},
+	{
+		"description": "source mapping JS",
+		"url" : "snf/sm-2.0.1/test.js",
+		"response": "200",
+		"outfile" : "outSourceMappingJs.txt"
+	}
+]

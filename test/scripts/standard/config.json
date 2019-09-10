@@ -146,23 +146,6 @@
             "versions": ["4.0.0"]
         },
         {
-            "abbr": "d-dash-",
-            "excludes": [],
-            "fileIncludes": {},
-            "fileNames": {
-                "css": ["productdash"],
-                "js": [
-					"?productdash.{styling}.{locale}",
-					"productdash"
-				]
-            },
-            "folderName": "ProductDash",
-            "moduleName": "Product Dash",
-            "order": 20,
-            "outputOrder": 20,
-            "versions": ["4.0.0"]
-        },
-        {
             "abbr": "ea-",
             "excludes": [""],
             "fileIncludes": {},
@@ -174,6 +157,19 @@
             "moduleName": "ExtA",
             "outputOrder": 30,
             "versions": ["", "10.0.0"]
+        },
+        {
+            "abbr": "sm-",
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["sourcemapping"],
+                "js": ["sourcemapping"]
+            },
+            "folderName": "SourceMapping",
+            "moduleName": "Source Mapping test",
+            "outputOrder": 15,
+            "versions": ["2.0.1"]
         }
     ]
 }
