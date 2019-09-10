@@ -1,0 +1,11 @@
+[
+	{
+		"comment": "Cache based tests"
+	},
+	{
+		"description": "different cache observed after signal",
+		"url" : "snf/pb-2.1.0/test.js",
+		"response": "200",
+        "outfile": "outDifferentFile.txt"
+    }
+]
