@@ -22,17 +22,19 @@ run_test() {
 		if [ $result -eq "200" ] ; then
 			if [ "$(md5sum $outfile | cut -d ' ' -f 1)" != "$(md5sum $TMPFILE  | cut -d ' ' -f 1)" ] ; then
 				failed=$((failed+1))
-				echo "*** FAILED: contents different"
-				echo "expected"
-				echo "##########################"
+				printf "\n*** FAILED: contents different"
+				printf "\n... EXPECTED\n"
+				printf "##########################\n"
 				cat $outfile
-				echo "##########################"
-				echo "got"
-				echo "##########################"
+				printf "##########################"
+				printf "\n... GOT\n"
+				printf "##########################\n"
 				cat $TMPFILE
-				echo "##########################"
+				printf "##########################"
+				printf "\n... DIFF\n"
+				printf "##########################\n"
 				diff $outfile $TMPFILE
-				echo "##########################"
+				printf "##########################"
 			else
 				passed=$((passed+1))
 			fi
@@ -88,7 +90,7 @@ show_test() {
 ################################################
 get_tests() {
 	printf "\n=======================================================\n"
-	printf "Running tests from %s\n\n" $1
+	printf "Running tests from suite %s\n\n" $1
 	show_test "Description" "URL" "Resp"
 	
 	# Keep looping through until we get null for the description
@@ -113,12 +115,12 @@ get_tests() {
 		outfile=$(jq -r ".[$num].outfile" < $1)
 
 		show_test "$description" "$url" "$response"
-		run_test "$url" "$response" "$outfile"
+		run_test "$url" "$response" "$(dirname $1)/$outfile"
 
 		num=$((num+1))
 	done
 
-	printf "\nModule tests complete: %s passed, %s failed\n" $((passed-passed_at_start)) $((failed-failed_at_start))
+	printf "\nSuite %s tests complete: %s passed, %s failed\n" $1 $((passed-passed_at_start)) $((failed-failed_at_start))
 }
 
 #############################

@@ -1,0 +1,18 @@
+[
+	{
+		"comment": "Set of tests to check that ordering behaves"
+	},
+	{
+		"description": "components in any order in URL - 1",
+		"url" : "snf/pa-1.0.0/pb-2.1.0/test.js",
+		"response": "200",
+		"outfile" : "out.any.order.1.txt"
+	},
+	{
+		"description": "components in any order in URL - 2",
+		"url" : "snf/pb-2.1.0/pa-1.0.0/test.js",
+		"response": "200",
+		"outfile" : "out.any.order.2.txt"
+	}
+
+]

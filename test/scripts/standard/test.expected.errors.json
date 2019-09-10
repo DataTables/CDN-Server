@@ -16,5 +16,16 @@
 		"description": "bad product version",
 		"url" : "snf/pa-x.0.0/test.js",
 		"response": "404"
-	}
+	},
+	{
+        "description": "duplicating single component",
+        "url" : "snf/pa-1.0.0/pa-1.0.0/test.js",
+        "response": "404"
+    },
+	{
+        "description": "duplicating one of the components",
+        "url" : "snf/pb-2.1.0/pa-1.0.0/pb-2.1.0/test.js",
+        "response": "404"
+    }
+
 ]

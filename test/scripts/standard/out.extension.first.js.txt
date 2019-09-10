@@ -1,0 +1,19 @@
+extensionsURL >snf/ea-10.0.0/pa-1.0.0<
+extensionsList >ProductA 1.0.0, ExtA 10.0.0<
+source >"snf/ea-10.0.0/pa-1.0.0"<
+testString >test string<
+./ProductA-1.0.0/js/ProductA.styleNoFiles.js
+
+
+first -source-
+second "snf/ea-10.0.0/pa-1.0.0"
+
+./ProductA-1.0.0/js/productA.js
+
+
+./Ext-10-3.0.0/js/exta.js
+
+
+./Ext-10-3.0.0/js/exta.styleNoFiles.js
+
+
