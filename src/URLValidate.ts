@@ -278,7 +278,7 @@ export default class URLValidate {
 		}
 
 		// validate Order, Abbreviation and requirements list.
-		let requireList: number[] = this._config.requires;
+		let requireList: number[] = this._config.requires.slice();
 
 		for (let j = 0; j < orderList.length; j++) {
 			if (requireList.indexOf(orderList[j]) > -1) {
@@ -294,7 +294,6 @@ export default class URLValidate {
 		}
 
 		this._logger.debug('URL modules are all in the correct order.');
-
 		if (requireList.length > 0) {
 			this._logger.error('Not all of the required Modules have been included. Still requires: ' + requireList);
 			return false;
