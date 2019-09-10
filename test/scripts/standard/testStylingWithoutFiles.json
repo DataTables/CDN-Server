@@ -4,14 +4,14 @@
 	},
 	{
 		"description": "Styling with files CSS",
-		"url" : "swf/swf-0.0.1/pa-1.0.0/test.css",
+		"url" : "snf/pb-2.1.0/test.css",
 		"response": "200",
-		"outfile" : "outStylingWithFilesCss.txt"
+		"outfile" : "outStylingWithoutFilesCss.txt"
 	},
 	{
 		"description": "Styling with files JS",
-		"url" : "swf/swf-0.0.1/pa-1.0.0/test.js",
+		"url" : "snf/pb-2.1.0/test.js",
 		"response": "200",
-		"outfile" : "outStylingWithFilesJs.txt"
+		"outfile" : "outStylingWithoutFilesJs.txt"
 	}
 ]

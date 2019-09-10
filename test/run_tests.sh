@@ -16,12 +16,13 @@ run_test() {
 	expected=$2
 	outfile=$3
 
+	rm -f ${TMPFILE}
 
 	result=$(curl -o $TMPFILE --silent localhost:$DT_CDN_SERVER_PORT/$url --write-out "%{http_code}")
 	if [ $result -eq $expected ] ; then
 		if [ $result -eq "200" ] ; then
 			if [ "$(md5sum $outfile | cut -d ' ' -f 1)" != "$(md5sum $TMPFILE  | cut -d ' ' -f 1)" ] ; then
-				failed=$((failed+1))
+				show_fail
 				printf "\n*** FAILED: contents different"
 				printf "\n... EXPECTED\n"
 				printf "##########################\n"
@@ -34,19 +35,17 @@ run_test() {
 				printf "\n... DIFF\n"
 				printf "##########################\n"
 				diff $outfile $TMPFILE
-				printf "##########################"
+				printf "##########################\n\n"
 			else
-				passed=$((passed+1))
+				show_pass
 			fi
 		else
-			passed=$((passed+1))
+				show_pass
 		fi
 	else
-		failed=$((failed+1))
+		show_fail
 		echo "*** FAILED: HTTP status different: expected $expected, got $result"
 	fi
-
-	rm -f ${TMPFILE}
 }
 
 ################################################
@@ -84,14 +83,32 @@ stop_server() {
 
 ################################################
 show_test() {
-	printf "[%-40s] [%-40s] [%-5s]\n" "$1" "$2" "$3"
+	printf "[%-40s] [%-40s] " "$1" "$2"
+}
+
+################################################
+show_status() {
+	printf "[%-s]\n" "$1"
+}
+
+################################################
+show_fail() {
+	failed=$((failed+1))
+	show_status "FAIL"
+}
+
+################################################
+show_pass() {
+	passed=$((passed+1))
+	show_status "PASS"
 }
 
 ################################################
 get_tests() {
 	printf "\n=======================================================\n"
 	printf "Running tests from suite %s\n\n" $1
-	show_test "Description" "URL" "Resp"
+	show_test "Description" "URL"
+	show_status "Status"
 	
 	# Keep looping through until we get null for the description
 	num=1
@@ -114,7 +131,7 @@ get_tests() {
 		response=$(jq -r ".[$num].response" < $1)
 		outfile=$(jq -r ".[$num].outfile" < $1)
 
-		show_test "$description" "$url" "$response"
+		show_test "$description" "$url" 
 		run_test "$url" "$response" "$(dirname $1)/$outfile"
 
 		num=$((num+1))

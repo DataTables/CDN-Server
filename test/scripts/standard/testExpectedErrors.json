@@ -26,6 +26,15 @@
         "description": "duplicating one of the components",
         "url" : "snf/pb-2.1.0/pa-1.0.0/pb-2.1.0/test.js",
         "response": "404"
+    },
+	{
+        "description": "missing required, with stying",
+        "url" : "ea-10.0.0/test.js",
+        "response": "404"
+    },
+	{
+        "description": "missing required, without stying",
+        "url" : "pb-2.0.0/test.js",
+        "response": "404"
     }
-
 ]
