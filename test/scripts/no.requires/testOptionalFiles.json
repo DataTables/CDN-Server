@@ -1,0 +1,22 @@
+[
+	{
+		"comment": "Set of tests to ensure optional files are handled as expected"
+	},
+	{
+		"description": "styling file not optional",
+		"url" : "pc-3.0.0/test.css",
+		"response": "404"
+	},
+	{
+		"description": "styling file not optional but present",
+		"url" : "swf/pc-3.0.0/test.css",
+		"response": "200",
+		"outfile": "outStyleFilePresent.txt"
+	},
+	{
+		"description": "styling file optional",
+		"url" : "pc-3.0.0/test.js",
+		"response": "200",
+		"outfile": "outOptionalStyleFile.txt"
+	}
+]

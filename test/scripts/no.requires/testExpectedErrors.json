@@ -1,0 +1,25 @@
+[
+	{
+		"comment": "Set of tests to ensure expected errors are handled as expected"
+	},
+	{
+		"description": "unsupported file extension",
+		"url" : "snf/pb-2.1.0/test.jss",
+		"response": "404"
+	},
+	{
+		"description": "unsupported file name",
+		"url" : "pa-1.0.0/tests.css",
+		"response": "404"
+	},
+	{
+		"description": "another unsupported file name",
+		"url" : "pa-1.0.0/fred.css",
+		"response": "404"
+	},
+	{
+		"description": "missing file name",
+		"url" : "pb-2.1.0.css",
+		"response": "404"
+	}
+]

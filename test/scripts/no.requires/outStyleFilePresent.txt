@@ -1,0 +1,10 @@
+extensionsURL >swf/pc-3.0.0<
+extensionsList >ProductC 3.0.0<
+source >"swf/pc-3.0.0"<
+testString >test string<
+./ProductC-3.0.0/css/productc.css
+
+
+./ProductC-3.0.0/css/ProductC.styleWithFiles.css
+
+
