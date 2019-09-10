@@ -138,7 +138,7 @@ for i in `ls -1d test/scripts/*` ; do
 
 	signal_server $i
 
-	for testfile in $(ls -1 $i/test.*.json) ; do
+	for testfile in $(ls -1 $i/test*.json) ; do
 		get_tests $testfile
 	done
 done
