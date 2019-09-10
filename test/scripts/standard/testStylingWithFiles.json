@@ -6,18 +6,18 @@
 		"description": "extension first js",
 		"url" : "snf/ea-10.0.0/pa-1.0.0/test.js",
 		"response": "200",
-		"outfile" : "out.extension.first.js.txt"
+		"outfile" : "outExtensionFirstJs.txt"
 	},
 	{
 		"description": "just extension",
 		"url" : "snf/ea-10.0.0/test.js",
 		"response": "200",
-		"outfile" : "out.extension.only.js.txt"
+		"outfile" : "outExtensionOnlyJs.txt"
 	},
 	{
 		"description": "product then extension",
 		"url" : "snf/pa-1.0.0/ea-10.0.0/test.js",
 		"response": "200",
-		"outfile" : "out.extension.after.js.txt"
+		"outfile" : "outExtensionAfterJs.txt"
 	}
 ]
