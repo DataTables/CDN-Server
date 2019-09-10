@@ -1,0 +1,17 @@
+[
+	{
+		"comment": "Set of tests to simulate locales in the URL"
+	},
+	{
+		"description": "locale and styling",
+		"url" : "snf/en/pd-4.0.0/test.js",
+		"response": "200",
+		"outfile" : "outStylingLocaleJs.txt"
+	},
+	{
+		"description": "locale and styling minimised",
+		"url" : "snf/en/pd-4.0.0/test.min.js",
+		"response": "200",
+		"outfile" : "outStylingLocaleMinJs.txt"
+	}
+]

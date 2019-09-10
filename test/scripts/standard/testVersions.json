@@ -1,0 +1,29 @@
+[
+	{
+		"comment": "Set of tests to ensure the correct versions are returned"
+	},
+	{
+		"description": "version 1 CSS",
+		"url" : "snf/pa-1.0.0/test.css",
+		"response": "200",
+		"outfile" : "outVersionOneCss.txt"
+	},
+	{
+		"description": "version 1 JS",
+		"url" : "snf/pa-1.0.0/test.js",
+		"response": "200",
+		"outfile" : "outVersionOneJs.txt"
+	},
+	{
+		"description": "version 2 CSS",
+		"url" : "snf/pa-1.0.1/test.css",
+		"response": "200",
+		"outfile" : "outVersionTwoCss.txt"
+	},
+	{
+		"description": "version 2 JS",
+		"url" : "snf/pa-1.0.1/test.js",
+		"response": "200",
+		"outfile" : "outVersionTwoJs.txt"
+	}
+]

@@ -1,0 +1,40 @@
+[
+	{
+		"comment": "Set of tests to ensure expected errors are handled as expected"
+	},
+	{
+		"description": "unsupported file extension",
+		"url" : "snf/pb-2.1.0/test.jpg",
+		"response": "404"
+	},
+	{
+		"description": "unsupported file name",
+		"url" : "snf/swf-0.0.1/pa-1.0.0/not_there.css",
+		"response": "404"
+	},
+	{
+		"description": "bad product version",
+		"url" : "snf/pa-x.0.0/test.js",
+		"response": "404"
+	},
+	{
+        "description": "duplicating single component",
+        "url" : "snf/pa-1.0.0/pa-1.0.0/test.js",
+        "response": "404"
+    },
+	{
+        "description": "duplicating one of the components",
+        "url" : "snf/pb-2.1.0/pa-1.0.0/pb-2.1.0/test.js",
+        "response": "404"
+    },
+	{
+        "description": "missing required, with stying",
+        "url" : "ea-10.0.0/test.js",
+        "response": "404"
+    },
+	{
+        "description": "missing required, without stying",
+        "url" : "pb-2.0.0/test.js",
+        "response": "404"
+    }
+]

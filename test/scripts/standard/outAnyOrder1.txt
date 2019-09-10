@@ -1,0 +1,16 @@
+extensionsURL >snf/pa-1.0.0/pb-2.1.0<
+extensionsList >ProductB 2.1.0, ProductA 1.0.0<
+source >"snf/pa-1.0.0/pb-2.1.0"<
+testString >test string<
+./ProductB-2.1.0/productb.js
+
+
+./ProductA-1.0.0/js/ProductA.styleNoFiles.js
+
+
+first -source-
+second "snf/pa-1.0.0/pb-2.1.0"
+
+./ProductA-1.0.0/js/productA.js
+
+

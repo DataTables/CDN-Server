@@ -1,0 +1,23 @@
+[
+	{
+		"comment": "Set of tests to simulate extensions in the URL"
+	},
+	{
+		"description": "extension first js",
+		"url" : "snf/ea-10.0.0/pa-1.0.0/test.js",
+		"response": "200",
+		"outfile" : "outExtensionFirstJs.txt"
+	},
+	{
+		"description": "just extension",
+		"url" : "snf/ea-10.0.0/test.js",
+		"response": "200",
+		"outfile" : "outExtensionOnlyJs.txt"
+	},
+	{
+		"description": "product then extension",
+		"url" : "snf/pa-1.0.0/ea-10.0.0/test.js",
+		"response": "200",
+		"outfile" : "outExtensionAfterJs.txt"
+	}
+]

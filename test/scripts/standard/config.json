@@ -158,8 +158,8 @@
             },
             "folderName": "ProductDash",
             "moduleName": "Product Dash",
+            "order": 20,
             "outputOrder": 20,
-            "buildOrder": 20,
             "versions": ["4.0.0"]
         },
         {

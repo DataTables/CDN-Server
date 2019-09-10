@@ -1,0 +1,17 @@
+[
+	{
+		"comment": "Set of tests to simulate stylings that contains files"
+	},
+	{
+		"description": "Styling with files CSS",
+		"url" : "swf/swf-0.0.1/pa-1.0.0/test.css",
+		"response": "200",
+		"outfile" : "outStylingWithFilesCss.txt"
+	},
+	{
+		"description": "Styling with files JS",
+		"url" : "swf/swf-0.0.1/pa-1.0.0/test.js",
+		"response": "200",
+		"outfile" : "outStylingWithFilesJs.txt"
+	}
+]

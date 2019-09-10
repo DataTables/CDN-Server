@@ -1,0 +1,24 @@
+[
+	{
+		"comment": "Set of tests to check that extra dashes handled correctly"
+	},
+	{
+		"description": "js files with double dash",
+		"url" : "snf/d-dash-4.0.0/test.js",
+		"response": "200",
+		"outfile" : "outDoubleDashJs.txt"
+	},
+	{
+		"description": "js min files with double dash",
+		"url" : "snf/d-dash-4.0.0/test.min.js",
+		"response": "200",
+		"outfile" : "outDoubleDashMinJs.txt"
+	},
+	{
+		"description": "double dash with styling or locale",
+		"url" : "snf/en/d-dash-4.0.0/test.js",
+		"response": "200",
+		"outfile" : "outDoubleDashEnJs.txt"
+	}
+
+]
