@@ -1,0 +1,23 @@
+[
+	{
+		"comment": "Set of tests to test the separator in the URL"
+	},
+	{
+		"description": "slashes with multiple components",
+		"url" : "snf/ea-10.0.0/pa-1.0.0/test.js",
+		"response": "200",
+		"outfile" : "outExtensionFirstJs.txt"
+	},
+	{
+		"description": "commas with multiple components",
+		"url" : "snf,ea-10.0.0,pa-1.0.0,test.js",
+		"response": "200",
+		"outfile" : "outExtensionFirstJs.txt"
+	},
+	{
+		"description": "commas and locale and styling minimised",
+		"url" : "snf,en,pd-4.0.0,test.min.js",
+		"response": "200",
+		"outfile" : "outStylingLocaleMinJs.txt"
+	}
+]

@@ -91,7 +91,13 @@ stop_server() {
 
 ################################################
 show_test() {
-	printf "[%-40s] [%-40s] " "$1" "$2"
+	thisdesc="$1"
+	thisurl="$2"
+
+	(( ${#thisdesc} > 39 )) && thisdesc="${thisdesc:0:37}..."
+	(( ${#thisurl} > 39 )) && thisurl="${thisurl:0:37}..."
+
+	printf "[%-40s] [%-40s] " "$thisdesc" "$thisurl"
 }
 
 ################################################

@@ -54,7 +54,6 @@ export default class URLValidate {
 	public async validateLatest(inputURL: string): Promise <boolean | string> {
 		this._logger.debug('Validating URL for latest request');
 		let parsedURL: string[];
-		console.log(inputURL)
 
 		parsedURL = inputURL.split(new RegExp('[' + this._config.separators.join('') + ']'));
 		let requiresList = this._config.requires.slice();
@@ -62,9 +61,7 @@ export default class URLValidate {
 		// iterate through the URL and extract the order for each element, adding to orderList
 		let orderList: number[] = [];
 
-		console.log(this._maps.outputOrderMap);
 		for (let element of parsedURL) {
-			console.log(element, this._maps.outputOrderMap.get(element));
 			orderList.push(this._maps.outputOrderMap.get(element));
 		}
 

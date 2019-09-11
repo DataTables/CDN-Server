@@ -39,7 +39,7 @@
             "folderName": "",
             "moduleName": "StyleWithFilesStyle",
             "outputOrder": 10,
-            "versions": [""]
+            "versions": []
         },
         {
             "abbr": "swf-",
@@ -52,7 +52,7 @@
             "folderName": "StyleWithFiles",
             "moduleName": "StyleWithFiles",
             "outputOrder": 10,
-            "versions": ["", "0.0.1", "0.0.2"]
+            "versions": ["0.0.1", "0.0.2"]
         },
         {
             "abbr": "en",
@@ -64,7 +64,7 @@
             "folderName": "localeEn",
             "moduleName": "localeEn",
             "outputOrder": 11,
-            "versions": [""]
+            "versions": []
         },
         {
             "abbr": "pa-",

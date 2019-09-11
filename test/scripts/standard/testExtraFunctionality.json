@@ -9,6 +9,11 @@
 		"outfile" : "outStylingLocaleJs.txt"
 	},
 	{
+		"description": "details with empty URL",
+		"url" : "details?",
+		"response": "404"
+	},
+	{
 		"description": "details query with one product",
 		"url" : "snf/pa-1.0.0/test.js?details",
 		"response": "200",
@@ -28,7 +33,18 @@
 	},
 	{
 		"description": "latest with no params",
-		"url" : "test.js?details",
+		"url" : "latest?",
+		"response": "404"
+	},
+	{
+		"description": "latest ignored when trailing",
+		"url" : "snf/pa-1.0.0/ea-10.0.0/sm-2.0.1/test.js?latest",
+		"response": "200",
+		"outfile" : "outLongUrl.txt"
+	},
+	{
+		"description": "latest with bad product",
+		"url" : "latest?swf,pa-,xx-",
 		"response": "404"
 	}
 ]
