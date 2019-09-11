@@ -21,6 +21,7 @@ let argum = getopts(process.argv.slice(2), {
 		help: ['h', 'H'],
 		logfile: ['l', 'L'],
 		metrics: ['m', 'M'],
+		maxsize: ['s', 's']
 	},
 	default: {
 		configLoc: './datatables-cdn.config.json',
@@ -28,6 +29,7 @@ let argum = getopts(process.argv.slice(2), {
 		errorLogFile: false,
 		help: false,
 		logfile: false,
+		maxsize: 104857600,
 		metrics: false,
 	}
 });
@@ -58,6 +60,7 @@ let loggerDetails = {
 	debug: argum.debug,
 	errorLogFile: argum.errorLogFile,
 	logfile: argum.logfile,
+	maxsize: argum.maxsize
 };
 
 if (argum.metrics) {
@@ -70,7 +73,7 @@ readConfig();
 let logger = new Logger(loggerDetails);
 
 // If there are more options defined which are not defined then print the help and end server
-if (Object.keys(argum).length > 19) {
+if (Object.keys(argum).length > 21) {
 	logger.help();
 	process.exit(5);
 }

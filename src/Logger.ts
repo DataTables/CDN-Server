@@ -9,6 +9,7 @@ export default class Logger {
 	private _errorLogger;
 	private _logLocation: string;
 	private _errorLogLocation: string;
+	private _maxSize;
 
 	constructor(loggerDetails) {
 		// Defined the custom format for the logger
@@ -40,6 +41,8 @@ export default class Logger {
 			level: 'silly',
 		});
 
+		this._maxSize = loggerDetails.maxsize;
+
 		// If the debugger option is enabled then set up a transport to the console
 		if (this._debugger) {
 			this._logger.add(new winston.transports.Console({format: myFormat}));
@@ -47,12 +50,20 @@ export default class Logger {
 
 		// If the logfile option is enabled then set up a transport to the logfile
 		if (this._logfile) {
-			this._logger.add(new winston.transports.File({filename: this._logLocation}));
+			this._logger.add(new winston.transports.File({
+				filename: this._logLocation,
+				maxsize: this._maxSize
+			}));
+			this.info('Max log file size set to ' + this._maxSize);
 		}
 
 		// Add a transport for the pure error logging
 		if (this._errorLogFile) {
-			this._errorLogger.add(new winston.transports.File({filename: this._errorLogLocation}));
+			this._errorLogger.add(new winston.transports.File({
+				filename: this._errorLogLocation,
+				maxsize: this._maxSize
+			}));
+			this.info('Max error log file size set to ' + this._maxSize);
 		}
 	}
 
@@ -113,6 +124,7 @@ export default class Logger {
 	-l   logfile: prints the debug lines to a file as specified (FILE MUST BE SPECIFIED)
 	-m   metrics: allows the server to be monitored using the appmetrics-dash
 	-c   configLoc: allows the server to be run with a custom config file at a location as specified
+	-s   maxsize: sets the maximum size of the log files
 
 There are also a number of predefined npm commands
 	\`npm run all\`      builds the server and then runs it
