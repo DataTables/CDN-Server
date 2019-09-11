@@ -129,7 +129,7 @@ http.createServer(async function(req, res) {
 	}
 
 	// If the URL has a latest parameter run the following to find the latest version of the listed modules
-	else if (splitURL.length > 1 && splitURL[1].split('=').indexOf('latest') === 0) {
+	else if (splitURL.length > 1 && splitURL[1].split('=').indexOf('latest') === 0 && splitURL[1].split('=').length > 1) {
 		logger.debug('Latest versions requested.');
 		let findLatest = splitURL[1].split('=');
 
