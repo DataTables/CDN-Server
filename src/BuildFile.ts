@@ -366,7 +366,7 @@ export default class BuildFile {
 			}
 			else if (await fileExists(filename) && !fromCache) {
 				let content = await fileExists(filename) + '\n\n';
-				this._includedFiles.push(filename);
+				this._includedFiles.push(filename.replace(this._config.packagesDir, ''));
 				return this._logUpdateReturn('File not in Cache, but found in directory: ' + filename, filename, content, false);
 			}
 			else {
