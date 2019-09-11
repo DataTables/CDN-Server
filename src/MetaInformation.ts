@@ -100,7 +100,7 @@ export default class MetaInformation {
 				}
 			},
 			includedFiles,
-			url: URLIn + '...',
+			url: URLIn,
 		};
 	}
 }
