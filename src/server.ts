@@ -129,12 +129,12 @@ http.createServer(async function(req, res) {
 	}
 
 	// If the URL has a latest parameter run the following to find the latest version of the listed modules
-	else if (splitURL.length > 1 && splitURL[1].split('=').indexOf('latest') === 0 && splitURL[1].split('=').length > 1) {
+	else if (splitURL.length > 1 && splitURL[0] === '/latest') {
 		logger.debug('Latest versions requested.');
 		let findLatest = splitURL[1].split('=');
 
 		// Run validateLatest to validate the URL is legal and return the full URL required by the user
-		let latest = await url.validateLatest(findLatest[1]);
+		let latest = await url.validateLatest(findLatest[0]);
 
 		if (!latest) {
 			res.writeHead(404, 'Error 404. Invalid URL.');

@@ -54,23 +54,38 @@ export default class URLValidate {
 	public async validateLatest(inputURL: string): Promise <boolean | string> {
 		this._logger.debug('Validating URL for latest request');
 		let parsedURL: string[];
+		console.log(inputURL)
 
 		parsedURL = inputURL.split(new RegExp('[' + this._config.separators.join('') + ']'));
-		let orderList = this._config.requires.slice();
+		let requiresList = this._config.requires.slice();
+
+		// iterate through the URL and extract the order for each element, adding to orderList
+		let orderList: number[] = [];
+
+		console.log(this._maps.outputOrderMap);
+		for (let element of parsedURL) {
+			console.log(element, this._maps.outputOrderMap.get(element));
+			orderList.push(this._maps.outputOrderMap.get(element));
+		}
 
 		// Confirm that the all of the orders are present.
-		for (let element of this._config.elements) {
-			if (parsedURL[0] === element.abbr && orderList.indexOf(element.outputOrder) !== -1) {
-				orderList.splice(orderList.indexOf(element.outputOrder), 1);
+		for (let order of orderList) {
+			if (requiresList.indexOf(order) !== -1) {
+				requiresList.splice(requiresList.indexOf(order), 1);
 
 				if (orderList.length === 0) {
 					break;
 				}
 			}
+
+			if (order === undefined) {
+				this._logger.error('Order of element not recognised')
+				return false;
+			}
 		}
 
-		if (orderList.length > 0) {
-			this._logger.error('Not all required orders included in request. Orders still to be included: ' + orderList);
+		if (requiresList.length > 0) {
+			this._logger.error('Not all required orders included in request. Orders still to be included: ' + requiresList);
 			return false;
 		}
 		this._logger.debug('All required orders present.');
@@ -81,8 +96,6 @@ export default class URLValidate {
 				this._logger.debug('Invalid Abbreviation included in request: ' + parsedURL[i]);
 				return false;
 			}
-
-			parsedURL[i] += '-';
 		}
 		this._logger.debug('Abbreviations are valid');
 
@@ -168,7 +181,7 @@ export default class URLValidate {
 	private _validateAbbreviation(parsedURL: string): boolean {
 		// Scan all of the modules to find the abbreviation.
 	   for (let element of this._config.elements) {
-		   if (parsedURL === element.abbr.split('-')[0]) {
+		   if (parsedURL === element.abbr) {
 			   return true;
 		   }
 	   }
