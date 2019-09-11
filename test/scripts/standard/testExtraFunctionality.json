@@ -46,5 +46,18 @@
 		"description": "latest with bad product",
 		"url" : "latest?swf,pa-,xx-",
 		"response": "404"
+	},
+	{
+		"description": "latest after valid URL",
+		"url" : "swf/pa-1.0.0/latest?swf,pa-",
+		"response": "404"
+	},
+	{
+		"1" : "basic request",
+		"2" : "optional parameters",
+		"3" : "confirm latest is last in the file",
+		"4" : "separators",
+		"5" : "verify CSS files md5sums"
 	}
+
 ]
