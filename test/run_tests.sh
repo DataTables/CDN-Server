@@ -10,6 +10,13 @@ PID=""
 failed=0
 passed=0
 
+
+################################################
+convert_file() {
+	# parse the tmpfile to remove varying fields (such as timestamps)
+	sed -ri 's/\"returnTime\":[0-9]+//' $TMPFILE
+}
+
 ################################################
 run_test() {
 	url=$1
@@ -21,6 +28,7 @@ run_test() {
 	result=$(curl -o $TMPFILE --silent localhost:$DT_CDN_SERVER_PORT/$url --write-out "%{http_code}")
 	if [ $result -eq $expected ] ; then
 		if [ $result -eq "200" ] ; then
+			convert_file
 			if [ "$(md5sum $outfile | cut -d ' ' -f 1)" != "$(md5sum $TMPFILE  | cut -d ' ' -f 1)" ] ; then
 				show_fail
 				printf "\n*** FAILED: contents different"

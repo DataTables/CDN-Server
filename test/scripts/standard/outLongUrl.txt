@@ -1,0 +1,24 @@
+extensionsURL >snf/pa-1.0.0/ea-10.0.0/sm-2.0.1<
+extensionsList >Source Mapping test 2.0.1, ProductA 1.0.0, ExtA 10.0.0<
+source >"snf/pa-1.0.0/ea-10.0.0/sm-2.0.1"<
+testString >test string<
+
+/*# sourceMapping=bootstrap.css.map */
+./SourceMapping-2.0.1/sourcemapping.js
+
+
+./ProductA-1.0.0/js/ProductA.styleNoFiles.js
+
+
+first -source-
+second "snf/pa-1.0.0/ea-10.0.0/sm-2.0.1"
+
+./ProductA-1.0.0/js/productA.js
+
+
+./Ext-10-3.0.0/js/exta.js
+
+
+./Ext-10-3.0.0/js/exta.styleNoFiles.js
+
+

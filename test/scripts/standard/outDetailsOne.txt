@@ -1,0 +1,1 @@
+{"fileSize":229,"hash":"sha256-2de0932da68c68cf59df14c0fb8bdf365dd8fcd8a41ad55de65342f5845b722e","includedFiles":["ProductA-1.0.0/js/ProductA.styleNoFiles.js","ProductA-1.0.0/js/productA.js"],}
