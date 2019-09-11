@@ -81,6 +81,7 @@ else if (loggerDetails.logfile === true) {
 }
 else if (loggerDetails.errorLogFile === true) {
 	logger.sudoError('ErrorLogFile option set to true but no file location specified. Ending.');
+	logger.help();
 	process.exit(6);
 }
 
