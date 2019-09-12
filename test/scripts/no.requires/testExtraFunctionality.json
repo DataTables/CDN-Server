@@ -1,0 +1,23 @@
+[
+	{
+		"comment": "Set of tests to test the extra functionality mentioned in the docs"
+	},
+	{
+		"description": "details: styling not optional",
+		"url" : "swf/pc-3.0.0/test.css?details",
+		"response": "200",
+		"outfile" : "outStyleFilePresentDetails.txt"
+	},
+	{
+		"description": "details: styling not optional, reorder",
+		"url" : "pc-3.0.0/swf/test.css?details",
+		"response": "200",
+		"outfile" : "outStyleFilePresentDetailsReorder.txt"
+	},
+	{
+		"description": "details when styling optional",
+		"url" : "pc-3.0.0/test.js?details",
+		"response": "200",
+		"outfile" : "outOptionalStyleFileDetails.txt"
+	}
+]

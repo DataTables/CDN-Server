@@ -175,7 +175,5 @@ const rawValidateIConfig = ajv.compile(IConfigSchema) as ValidateFunction<IConfi
 export default function (value: unknown): IConfig {
   if (rawValidateIConfig(value)) {
     return value;
-  } else {
-    console.log("ERROR", rawValidateIConfig.errors!.filter((e: any) => e.keyword !== 'if'), {dataVar: 'IConfig'});
   }
 }

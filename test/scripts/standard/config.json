@@ -39,7 +39,7 @@
             "folderName": "",
             "moduleName": "StyleWithFilesStyle",
             "outputOrder": 10,
-            "versions": [""]
+            "versions": []
         },
         {
             "abbr": "swf-",
@@ -52,7 +52,7 @@
             "folderName": "StyleWithFiles",
             "moduleName": "StyleWithFiles",
             "outputOrder": 10,
-            "versions": ["", "0.0.1", "0.0.2"]
+            "versions": ["0.0.1", "0.0.2"]
         },
         {
             "abbr": "en",
@@ -64,7 +64,7 @@
             "folderName": "localeEn",
             "moduleName": "localeEn",
             "outputOrder": 11,
-            "versions": [""]
+            "versions": []
         },
         {
             "abbr": "pa-",
@@ -156,7 +156,7 @@
             "folderName": "ExtA",
             "moduleName": "ExtA",
             "outputOrder": 30,
-            "versions": ["", "10.0.0"]
+            "versions": ["10.0.0", "10.0.1", "11.0.0"]
         },
         {
             "abbr": "sm-",
@@ -169,7 +169,7 @@
             "folderName": "SourceMapping",
             "moduleName": "Source Mapping test",
             "outputOrder": 15,
-            "versions": ["2.0.1"]
+            "versions": ["2.0.1", "3.0.0", "4.0.0"]
         }
     ]
 }
