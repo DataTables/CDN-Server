@@ -85,12 +85,10 @@ export default class MetaInformation {
 	 *   this is appended with an ellipsis as the file type will need to be selected by the user requestee
 	 * @param filenameIn The name of the file which is in question
 	 */
-	public getLatest(content: any[], includedFiles: boolean | string[], URLIn: string, filenameIn: string): ILatest {
+	public getLatest(content: any[], includedFiles: boolean | string[], URLIn: string): ILatest {
 		this._logger.debug('Call for latest succesful.');
-		console.log(this._config.fileExtensions)
-		console.log(content.length)
 		return {
-			filename: filenameIn,
+			filename: this._config.filenames,
 			files: {
 				css: {
 					debug: 'sha256-' + hash.sha256().update(content[this._config.fileExtensions.indexOf('.css')]).digest('hex'),

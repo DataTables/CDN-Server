@@ -166,8 +166,7 @@ http.createServer(async function(req, res) {
 					meta.getLatest(
 						content,
 						bui.getInclusions(),
-						latest.toString(),
-						config.fileNames[0]
+						latest.toString()
 					)
 				)
 			);
