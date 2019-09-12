@@ -156,7 +156,7 @@ http.createServer(async function(req, res) {
 					res.end();
 					return;
 				}
-				content.push();
+				content.push(contentAddition);
 				latestOptions.push(latest + config.fileNames[0] + extension);
 			}
 

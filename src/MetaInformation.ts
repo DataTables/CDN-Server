@@ -87,6 +87,8 @@ export default class MetaInformation {
 	 */
 	public getLatest(content: any[], includedFiles: boolean | string[], URLIn: string, filenameIn: string): ILatest {
 		this._logger.debug('Call for latest succesful.');
+		console.log(this._config.fileExtensions)
+		console.log(content.length)
 		return {
 			filename: filenameIn,
 			files: {
