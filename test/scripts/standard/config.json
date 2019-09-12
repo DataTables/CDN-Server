@@ -52,7 +52,7 @@
             "folderName": "StyleWithFiles",
             "moduleName": "StyleWithFiles",
             "outputOrder": 10,
-            "versions": ["0.0.1", "0.0.2"]
+            "versions": ["0.0.2", "0.0.1"]
         },
         {
             "abbr": "en",
@@ -82,7 +82,7 @@
             "folderName": "ProductA",
             "moduleName": "ProductA",
             "outputOrder": 20,
-            "versions": ["1.0.0", "1.0.1"]
+            "versions": ["1.0.0", "1.0.1", "0.0.0"]
         },
         {
             "abbr": "pb-",
@@ -95,7 +95,7 @@
             "folderName": "ProductB",
             "moduleName": "ProductB",
             "outputOrder": 15,
-            "versions": ["2.0.0", "2.0.1", "2.1.0"]
+            "versions": ["2.0.0", "2.0.1", "2.1.0", "1.0.0"]
         },
         {
             "abbr": "pc-",
@@ -156,7 +156,7 @@
             "folderName": "ExtA",
             "moduleName": "ExtA",
             "outputOrder": 30,
-            "versions": ["10.0.0", "10.0.1", "11.0.0"]
+            "versions": ["10.0.0", "10.0.1", "11.0.0", "2.5.2"]
         },
         {
             "abbr": "sm-",

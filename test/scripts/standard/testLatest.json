@@ -1,0 +1,50 @@
+[
+	{
+		"comment": "Set of tests to test the extra functionality mentioned in the docs"
+	},
+	{
+		"description": "latest ignored when trailing",
+		"url" : "snf/pa-1.0.0/ea-10.0.0/sm-2.0.1/test.js?latest",
+		"response": "200",
+		"outfile" : "outLongUrl.txt"
+	},
+	{
+		"description": "latest with no params",
+		"url" : "latest?",
+		"response": "404"
+	},
+	{
+		"description": "latest ignored when trailing",
+		"url" : "snf/pa-1.0.0/ea-10.0.0/sm-2.0.1/test.js?latest",
+		"response": "200",
+		"outfile" : "outLongUrl.txt"
+	},
+	{
+		"description": "latest with bad product",
+		"url" : "latest?swf,pa-,xx-",
+		"response": "404"
+	},
+	{
+		"description": "latest after valid URL",
+		"url" : "swf/pa-1.0.0/latest?swf,pa-",
+		"response": "404"
+	},
+	{
+		"description": "basic case with commas",
+		"url" : "latest?swf,pa-",
+		"response": "200",
+		"outfile" : "outLatestBasic.txt"
+	},
+	{
+		"description": "basic case with a slash",
+		"url" : "latest?swf/pa-",
+		"response": "200",
+		"outfile" : "outLatestBasic.txt"
+	},
+	{
+		"description": "test to ensure version is the latest",
+		"url" : "latest?swf/ea-",
+		"response": "200",
+		"outfile" : "outLatestVersion.txt"
+	}
+]

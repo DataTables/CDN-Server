@@ -1,0 +1,33 @@
+[
+	{
+		"comment": "Set of tests to test the extra functionality mentioned in the docs"
+	},
+	{
+		"description": "invalid queries are ignored",
+		"url" : "snf/en/pd-4.0.0/test.js?ignorethis",
+		"response": "200",
+		"outfile" : "outStylingLocaleJs.txt"
+	},
+	{
+		"description": "details with empty URL",
+		"url" : "details?",
+		"response": "404"
+	},
+	{
+		"description": "details query with one product",
+		"url" : "snf/pa-1.0.0/test.js?details",
+		"response": "200",
+		"outfile" : "outDetailsOne.txt"
+	},
+	{
+        "description": "details query with one product",
+        "url" : "snf/pa-1.0.0/test.min.js?details",
+        "response": "500"
+    },
+	{
+		"description": "details query with many products",
+		"url" : "snf/pa-1.0.0/ea-10.0.0/sm-2.0.1/test.js?details",
+		"response": "200",
+		"outfile" : "outDetailsMany.txt"
+	}
+]

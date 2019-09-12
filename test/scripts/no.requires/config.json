@@ -50,7 +50,7 @@
             "folderName": "StyleWithFiles",
             "moduleName": "StyleWithFiles",
             "outputOrder": 10,
-            "versions": ["", "0.0.1", "0.0.2"]
+            "versions": ["0.0.0", "0.0.1"]
         },
         {
             "abbr": "en",

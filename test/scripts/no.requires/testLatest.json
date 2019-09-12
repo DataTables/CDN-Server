@@ -1,0 +1,16 @@
+[
+	{
+		"comment": "Set of tests to test the extra functionality mentioned in the docs"
+	},
+	{
+		"description": "test optional files (css files not optional)",
+		"url" : "latest?pc-"
+		"response": "500",
+	},
+	{
+		"description": "test options when all present",
+		"url" : "latest?swf,pc-",
+		"response": "200",
+		"outfile" : "outLongUrl.txt"
+	}
+]

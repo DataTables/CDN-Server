@@ -5,7 +5,7 @@
 	{
 		"description": "styling file not optional",
 		"url" : "pc-3.0.0/test.css",
-		"response": "404"
+		"response": "500"
 	},
 	{
 		"description": "styling file not optional but present",

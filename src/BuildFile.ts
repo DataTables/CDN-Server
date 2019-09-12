@@ -374,7 +374,7 @@ export default class BuildFile {
 				return '';
 			}
 			else {
-				this._logger.error('Unable to fetch non option file' + filename);
+				this._logger.error('Unable to fetch non optional file: ' + filename);
 				return false;
 			}
 		}
