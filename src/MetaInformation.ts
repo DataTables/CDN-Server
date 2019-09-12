@@ -18,7 +18,7 @@ interface IDetails {
  */
 interface ILatest {
 	url: string;
-	filename: string;
+	filenames: string[];
 	files: IFiles;
 	includedFiles: boolean | string[];
 }
@@ -87,8 +87,9 @@ export default class MetaInformation {
 	 */
 	public getLatest(content: any[], includedFiles: boolean | string[], URLIn: string): ILatest {
 		this._logger.debug('Call for latest succesful.');
+		console.log(this._config.fileNames)
 		return {
-			filename: this._config.filenames,
+			filenames: this._config.fileNames,
 			files: {
 				css: {
 					debug: 'sha256-' + hash.sha256().update(content[this._config.fileExtensions.indexOf('.css')]).digest('hex'),
