@@ -149,7 +149,14 @@ http.createServer(async function(req, res) {
 
 			// For every filetype build the file and push to the array for hashing purposes
 			for (let extension of config.fileExtensions) {
-				content.push(await bui.buildFile(latest + config.fileNames[0] + extension));
+				let contentAddition = await bui.buildFile(latest + config.fileNames[0] + extension);
+				if (!contentAddition) {
+					res.writeHead(500);
+					logger.error('500 Internal Server error.');
+					res.end();
+					return;
+				}
+				content.push();
 				latestOptions.push(latest + config.fileNames[0] + extension);
 			}
 

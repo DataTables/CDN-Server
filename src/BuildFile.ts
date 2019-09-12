@@ -209,10 +209,6 @@ export default class BuildFile {
 			this._logger.error('File unable to be built');
 			return false;
 		}
-		else if (typeof file === 'number') {
-			this._logger.error('File unable to be built');
-			return file;
-		}
 		else if (typeof file === 'string') {
 			this._logger.debug('File built succesfully, replacing macros');
 			let substitutions = this._config.substitutions;
@@ -325,10 +321,7 @@ export default class BuildFile {
 					let fileAddition = await this._fetchReplace(parsedDetails[i], filename, parsedURL);
 
 					// If '500' is returned then a server error has occured so return false
-					if (typeof fileAddition === 'number') {
-						return fileAddition;
-					}
-					else if (fileAddition !== false) {
+					if (fileAddition !== false) {
 						// Add the new addition to the final file
 						fileContent += fileAddition;
 					}
@@ -382,7 +375,7 @@ export default class BuildFile {
 			}
 			else {
 				this._logger.error('Unable to fetch non option file' + filename);
-				return 404;
+				return false;
 			}
 		}
 	}
@@ -401,6 +394,10 @@ export default class BuildFile {
 		// Get the new bit of file
 		this._logger.debug('Fetching sub-file');
 		let fileAddition = await this._fetchFile(path, parsedDetail.folderName, parsedDetail.version);
+
+		if (!fileAddition) {
+			return fileAddition;
+		}
 
 		// Split the filename used to find the file into useful chunks
 		let splitFileName = path.split('/');
