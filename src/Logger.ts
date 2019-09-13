@@ -1,4 +1,5 @@
-import * as winston from 'winston';
+//import * as winston from 'winston';
+//require('winston-daily-rotate-file');
 
 export default class Logger {
 
@@ -10,8 +11,13 @@ export default class Logger {
 	private _logLocation: string;
 	private _errorLogLocation: string;
 	private _maxSize;
+	private _maxFiles;
+	private _frequency;
 
 	constructor(loggerDetails) {
+		var winston = require('winston');
+		require('winston-daily-rotate-file');
+
 		// Defined the custom format for the logger
 		const myFormat = winston.format.printf(({level, message, label, timestamp}) => {
 			return `${message}`;
@@ -42,6 +48,22 @@ export default class Logger {
 		});
 
 		this._maxSize = loggerDetails.maxsize;
+		this._maxFiles = loggerDetails.maxFiles;
+		this._frequency = loggerDetails.frequency;
+
+		var transportError = new (winston.transports.DailyRotateFile)({
+			filename: this._errorLogLocation,
+			frequency: this._frequency,
+			maxFiles: this._maxFiles,
+			maxSize: this._maxSize,
+		});
+
+		console.log({
+			filename: this._errorLogLocation,
+			frequency: this._frequency,
+			maxFiles: this._maxFiles,
+			maxSize: this._maxSize,
+		})
 
 		// If the debugger option is enabled then set up a transport to the console
 		if (this._debugger) {
@@ -59,11 +81,10 @@ export default class Logger {
 
 		// Add a transport for the pure error logging
 		if (this._errorLogFile) {
-			this._errorLogger.add(new winston.transports.File({
-				filename: this._errorLogLocation,
-				maxsize: this._maxSize
-			}));
+			this._errorLogger.add(transportError);
 			this.info('Max error log file size set to ' + this._maxSize);
+			this.info('Max number of error log files set to ' + this._maxFiles);
+			this.info('Frequency of rotation set to ' + this._frequency);
 		}
 	}
 
@@ -118,13 +139,15 @@ export default class Logger {
 	public help() {
 		let message =
 `The following options are available when running the server:
-	-h   help: info on how to run the server
-	-d   debug: prints debug messages to the console when enabled
-	-e   errorLogFile: prints the error messages to a file as specified (FILE MUST BE SPECIFIED)
-	-l   logfile: prints the debug lines to a file as specified (FILE MUST BE SPECIFIED)
-	-m   metrics: allows the server to be monitored using the appmetrics-dash
-	-c   configLoc: allows the server to be run with a custom config file at a location as specified
-	-s   maxsize: sets the maximum size of the log files
+	-h   	help: info on how to run the server
+	-d   	debug: prints debug messages to the console when enabled
+	-e   	errorLogFile: prints the error messages to a file as specified (FILE MUST BE SPECIFIED)
+	-l   	logfile: prints the debug lines to a file as specified (FILE MUST BE SPECIFIED)
+	-m   	metrics: allows the server to be monitored using the appmetrics-dash
+	-c   	configLoc: allows the server to be run with a custom config file at a location as specified
+	-s   	maxsize: sets the maximum size of the log files
+	-f		frequency: sets the frequency of which the log files are to be rotated
+	-x		maxFiles: The maximum number of log files that the server should store before they are rotated
 
 There are also a number of predefined npm commands
 	\`npm run all\`      builds the server and then runs it

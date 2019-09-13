@@ -399,119 +399,55 @@ export default class BuildFile {
 			return fileAddition;
 		}
 
-		// Split the filename used to find the file into useful chunks
-		let splitFileName = path.split('/');
-		let cutLoc = splitFileName.indexOf(parsedDetail.folderName + '-' + parsedDetail.version) - 1;
+		if (filename.split('.').indexOf('css') !== -1 && typeof fileAddition === 'string') {
+			let matches = fileAddition.match(/url\(.*?\)/g);
 
-		let fileList;
-		let folderList;
-		let filePathList = [];
+			if (matches !== null) {
+				this._logger.debug('Number of files found: ' + matches.length);
+				let usefulURL = parsedURL.slice();
+				usefulURL.pop();
 
-		// If the folder and version combination is found in the filename
-		if (cutLoc > -1) {
-			this._logger.debug('Searching for static folder' /*extra*/);
+				// For every match replace the string currently in the file with a
+				//  new one that this CDN will understand when it recieves a request.
+				for (let match of matches) {
+					let original = match.match(/url\s*\(\s*([\'"]?)(.*?)[\'"]?\s*\)/);
 
-			// Work out how many chunks to remove from the end
-			let tail = splitFileName.length - cutLoc - 1;
-			splitFileName.splice(cutLoc + 2, tail);
+					if (
+						original !== null &&
+						(match.indexOf('http://') === -1 &&
+							match.indexOf('https://') === -1 &&
+							match.indexOf('data:') === -1)
+					) {
+						let splitType = '';
+						let separators = ['\'', '"', ')'];
+						let splitName = filename.split('/');
+						if (splitName.length > 1) {
+							splitName.pop();
+							splitName = splitName.join('/');
+						}
+						else {
+							splitName = '';
+						}
 
-			// Put the useful ones back together and make the path up for the image location
-			let folderPath = splitFileName.join('/')  + '/'; /*+ extra + '/'*/
-			this._logger.debug('checking if folder exists: ' + folderPath);
+						let url = parsedDetail.folderName
+						+ '-' + parsedDetail.version
+						+ '/' + splitName
+						+ '/' + original[2];
+						url = this._normalizePath(url);
 
-			// Try and find the folder and if it exists extract a list of files within it
-			try {
-				folderList = await folderExists(folderPath);
-				this._logger.debug('Folders found');
+						for (let split of separators) {
+							let splitMatch = match.split(split);
 
-				for (let folder of folderList) {
-					let subFolderPath = folderPath + folder + '/';
-					try {
-						fileList = await folderExists(subFolderPath);
-					}
-					catch {
-						this._logger.warn(subFolderPath + ' is not a folder')
-						continue;
-					}
-					let subfilePathList = [];
-
-					// make a list of all of the files in the folder
-					for (let file of fileList) {
-						for (let extn of this._config.staticFileExtensions) {
-							if (file.indexOf(extn) !== -1) {
-								subfilePathList.push(subFolderPath + file);
+							if (splitMatch.length > 2) {
+								splitType = split;
 								break;
 							}
 						}
-					}
 
-					filePathList.push({folder, fileList, subfilePathList});
-				}
-			}
-			catch {
-				this._logger.warn('Folder not found');
-			}
-		}
-
-		if (filename.split('.').indexOf('css') !== -1) {
-			for (let staticFile of filePathList) {
-				// If the folder was found and fetching the file has not resulted in an error
-				if (
-					staticFile.fileList !== undefined &&
-					staticFile.subfilePathList.length > 0 &&
-					typeof fileAddition === 'string'
-				) {
-					let matches = fileAddition.match(/url\(.*?\)/g);
-
-					if (matches !== null) {
-						this._logger.debug('Number of files found: ' + matches.length);
-						let usefulURL = parsedURL.slice();
-						usefulURL.pop();
-
-						// For every match replace the string currently in the file with a
-						//  new one that this CDN will understand when it recieves a request.
-						for (let match of matches) {
-							let splitType = '';
-							let separators = ['\'', '"', ')'];
-							let original = match.match(/url\s*\(\s*([\'"]?)(.*?)[\'"]?\s*\)/);
-
-							if (
-								original !== null &&
-								(match.indexOf('http://') === -1 &&
-									match.indexOf('https://') === -1 &&
-									match.indexOf('data:') === -1)
-							) {
-								let splitName = filename.split('/');
-
-								if (splitName.length > 1) {
-									splitName.pop();
-									splitName = splitName.join('/');
-								}
-								else {
-									splitName = '';
-								}
-
-								let url = parsedDetail.folderName
-								+ '-' + parsedDetail.version
-								+ '/' + splitName
-								+ '/' + original[2];
-								url = this._normalizePath(url);
-
-								for (let split of separators) {
-									let splitMatch = match.split(split);
-
-									if (splitMatch.length > 2) {
-										splitType = split;
-										break;
-									}
-								}
-
-								let replacement = 'url(' + splitType
-								+ url
-								+ splitType +  ')';
-								fileAddition = fileAddition.replace(match, replacement);
-							}
-						}
+						let replacement = 'url(' + splitType
+						+ url
+						+ splitType +  ')';
+						fileAddition = fileAddition.replace(match, replacement);
 					}
 				}
 			}
