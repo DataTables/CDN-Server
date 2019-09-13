@@ -427,7 +427,7 @@ export default class BuildFile {
 						else {
 							splitName = '';
 						}
-						let pathAddition = original[2].split(new RegExp('[' + this._config.separators.join('') + ']'));
+						let pathAddition = original[2].split(new RegExp('[' + this._config.separators.join('') + ']')).join('/');
 
 						let url = '/' + parsedDetail.folderName
 						+ '-' + parsedDetail.version
