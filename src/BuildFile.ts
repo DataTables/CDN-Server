@@ -367,7 +367,6 @@ export default class BuildFile {
 			}
 		}
 		catch (error) {
-
 			if (optional) {
 				this._logger.warn('Unable to fetch optional file, may not exist: ' + filename);
 				this._storedFiles.updateCache(filename, '', false);
@@ -428,11 +427,12 @@ export default class BuildFile {
 						else {
 							splitName = '';
 						}
+						let pathAddition = original[2].split(new RegExp('[' + this._config.separators.join('') + ']'));
 
-						let url = parsedDetail.folderName
+						let url = '/' + parsedDetail.folderName
 						+ '-' + parsedDetail.version
 						+ '/' + splitName
-						+ '/' + original[2];
+						+ '/' + pathAddition;
 						url = this._normalizePath(url);
 
 						for (let split of separators) {
@@ -528,7 +528,7 @@ export default class BuildFile {
 		 		break;
 		 	}
 		}
-		url = parsedURL.join('/');
+		url = '/' + parsedURL.join('/');
 		return url;
 	}
 
