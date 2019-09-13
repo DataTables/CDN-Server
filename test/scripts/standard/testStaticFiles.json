@@ -1,0 +1,27 @@
+[
+	{
+		"comment": "test the requests for static files"
+	},
+	{
+		"description": "URL with bad styling",
+		"url" : "xxx/im-4.0.0/Images-4.0.0/static.txt",
+		"response": "404"
+	},
+	{
+		"description": "URL with styling component",
+		"url" : "swf/im-4.0.0/Images-4.0.0/static.txt",
+		"response": "200",
+		"outfile" : "outStatic.txt"
+	},
+	{
+		"description": "direct URL",
+		"url" : "im-4.0.0/Images-4.0.0/static.txt",
+		"response": "200",
+		"outfile" : "outStatic.txt"
+	},
+	{
+		"description": "direct URL where extension not in list",
+		"url" : "im-4.0.0/Images-4.0.0/static.test",
+		"response": "404"
+	}
+]

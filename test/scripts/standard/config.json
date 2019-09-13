@@ -5,7 +5,7 @@
     "cacheSize": 100,
     "fileNames": ["test"],
     "fileExtensions": [".js", ".min.js", ".css", ".min.css"],
-    "staticFileExtensions": [".png", ".test"],
+    "staticFileExtensions": [".png", ".txt"],
     "requires": [10],
     "separators": ["/", ","],
     "substitutions": {
@@ -176,7 +176,7 @@
             "excludes": [],
             "fileIncludes": {},
             "fileNames": {
-                "css": ["image"],
+                "css": ["image", "css/image"],
                 "js": ["image"]
             },
             "folderName": "Images",
