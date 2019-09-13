@@ -1,0 +1,17 @@
+[
+	{
+		"comment": "test the conversion of URLs within the files"
+	},
+	{
+		"description": "one big CSS file with URLs to confirm",
+		"url" : "swf/im-4.0.0/test.css",
+		"response": "200",
+		"outfile" : "outURLConversionCSS.txt"
+	},
+	{
+		"description": "no conversion in JS files",
+		"url" : "swf/im-4.0.0/test.js",
+		"response": "200",
+		"outfile" : "outURLConversionJS.txt"
+	}
+]
