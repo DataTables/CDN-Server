@@ -52,17 +52,21 @@ export default class Logger {
 		this._frequency = loggerDetails.frequency;
 
 		var transportError = new (winston.transports.DailyRotateFile)({
+			datePattern: this._frequency,
 			filename: this._errorLogLocation,
 			frequency: this._frequency,
 			maxFiles: this._maxFiles,
 			maxSize: this._maxSize,
+			auditFile: '/tmp/somethingErrorful.json'
 		});
 
-		console.log({
-			filename: this._errorLogLocation,
+		var transport = new (winston.transports.DailyRotateFile)({
+			datePattern: this._frequency,
+			filename: this._logLocation,
 			frequency: this._frequency,
 			maxFiles: this._maxFiles,
 			maxSize: this._maxSize,
+			auditFile: '/tmp/something.json'
 		})
 
 		// If the debugger option is enabled then set up a transport to the console
@@ -72,11 +76,10 @@ export default class Logger {
 
 		// If the logfile option is enabled then set up a transport to the logfile
 		if (this._logfile) {
-			this._logger.add(new winston.transports.File({
-				filename: this._logLocation,
-				maxsize: this._maxSize
-			}));
+			this._logger.add(transport);
 			this.info('Max log file size set to ' + this._maxSize);
+			this.info('Max number of log files set to ' + this._maxFiles);
+			this.info('Frequency of rotation set to ' + this._frequency);
 		}
 
 		// Add a transport for the pure error logging
@@ -146,7 +149,7 @@ export default class Logger {
 	-m   	metrics: allows the server to be monitored using the appmetrics-dash
 	-c   	configLoc: allows the server to be run with a custom config file at a location as specified
 	-s   	maxsize: sets the maximum size of the log files
-	-f		frequency: sets the frequency of which the log files are to be rotated
+	-f		frequency: sets the frequency of which the log files are to be rotated. This is a string which is layed out in the format of a date. The least significant part of the date will be the log rotation period.
 	-x		maxFiles: The maximum number of log files that the server should store before they are rotated
 
 There are also a number of predefined npm commands
