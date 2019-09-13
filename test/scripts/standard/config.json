@@ -5,7 +5,7 @@
     "cacheSize": 100,
     "fileNames": ["test"],
     "fileExtensions": [".js", ".min.js", ".css", ".min.css"],
-    "staticFileExtensions": [],
+    "staticFileExtensions": [".png", ".test"],
     "requires": [10],
     "separators": ["/", ","],
     "substitutions": {
@@ -169,6 +169,19 @@
             "folderName": "SourceMapping",
             "moduleName": "Source Mapping test",
             "outputOrder": 15,
+            "versions": ["2.0.1", "3.0.0", "4.0.0"]
+        },
+        {
+            "abbr": "im-",
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["image"],
+                "js": ["image"]
+            },
+            "folderName": "Images",
+            "moduleName": "Images Test",
+            "outputOrder": 60,
             "versions": ["2.0.1", "3.0.0", "4.0.0"]
         }
     ]
