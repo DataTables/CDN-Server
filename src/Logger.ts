@@ -135,9 +135,9 @@ export default class Logger {
 	-l   	logfile: prints the debug lines to a file as specified (FILE MUST BE SPECIFIED)
 	-m   	metrics: allows the server to be monitored using the appmetrics-dash
 	-c   	configLoc: allows the server to be run with a custom config file at a location as specified
-	-s   	maxsize: sets the maximum size of the log files
-	-f		frequency: sets the frequency of which the log files are to be rotated. This is a string which is layed out in the format of a date. The least significant part of the date will be the log rotation period.
-	-x		maxFiles: The maximum number of log files that the server should store before they are rotated
+	-s   	maxsize: sets the maximum size of the log files. Uses default of null if not specified.
+	-f		frequency: sets the frequency of which the log files are to be rotated. This is a string which is layed out in the format of a date. The least significant part of the date will be the log rotation period. Uses default of yyyy-MM-dd.
+	-x		maxFiles: The maximum number of log files that the server should store before they are rotated. The default value is 5.
 
 There are also a number of predefined npm commands
 	\`npm run all\`      builds the server and then runs it

@@ -33,7 +33,7 @@ let argum = getopts(process.argv.slice(2), {
 		help: false,
 		logfile: false,
 		maxFiles: 5,
-		maxsize: 104857600,
+		maxsize: null,
 		metrics: false,
 	}
 });
