@@ -54,7 +54,6 @@ export default class Logger {
 		var transportError = new (winston.transports.DailyRotateFile)({
 			datePattern: this._frequency,
 			filename: this._errorLogLocation,
-			frequency: this._frequency,
 			maxFiles: this._maxFiles,
 			maxSize: this._maxSize,
 			auditFile: '/tmp/somethingErrorful.json'
@@ -63,11 +62,10 @@ export default class Logger {
 		var transport = new (winston.transports.DailyRotateFile)({
 			datePattern: this._frequency,
 			filename: this._logLocation,
-			frequency: this._frequency,
 			maxFiles: this._maxFiles,
 			maxSize: this._maxSize,
 			auditFile: '/tmp/something.json'
-		})
+		});
 
 		// If the debugger option is enabled then set up a transport to the console
 		if (this._debugger) {
