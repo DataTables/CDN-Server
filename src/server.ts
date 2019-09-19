@@ -29,7 +29,7 @@ let argum = getopts(process.argv.slice(2), {
 		configLoc: './datatables-cdn.config.json',
 		debug: false,
 		errorLogFile: false,
-		frequency: 'yyyy-MM-dd',
+		frequency: 'YYYY-MM-DD',
 		help: false,
 		logfile: false,
 		maxFiles: 5,
