@@ -76,6 +76,21 @@ if (argum.metrics) {
 // Validation that the config is valid
 readConfig();
 
+if (loggerDetails.maxFiles === true) {
+	console.log('\x1b[31mERROR:\x1b[37m maxSize option set to true, requires a filesize to be specified. Ending.');
+	loggerDetails.maxFiles = 5;
+	let logger = new Logger(loggerDetails);
+	logger.help();
+	process.exit(7);
+}
+else if(loggerDetails.frequency === true){
+	console.log('\x1b[31mERROR:\x1b[37m frequency option set to true, requires a frequency to be specified. Ending.');
+	loggerDetails.frequency = 'yyyy-MM-dd';
+	let logger = new Logger(loggerDetails);
+	logger.help();
+	process.exit(8);
+}
+
 let logger = new Logger(loggerDetails);
 
 // If there are more options defined which are not defined then print the help and end server
