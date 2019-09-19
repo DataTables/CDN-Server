@@ -24,6 +24,7 @@ let argum = getopts(process.argv.slice(2), {
 		maxFiles: ['x', 'X'],
 		maxsize: ['s', 's'],
 		metrics: ['m', 'M'],
+		port: ['p', 'P'],
 	},
 	default: {
 		configLoc: './datatables-cdn.config.json',
@@ -35,6 +36,7 @@ let argum = getopts(process.argv.slice(2), {
 		maxFiles: 5,
 		maxsize: null,
 		metrics: false,
+		port: 8080,
 	}
 });
 
@@ -54,9 +56,7 @@ let defaults: IConfig = {
 };
 
 // See which port we should be using
-let port = process.env.DT_CDN_SERVER_PORT ?
-	process.env.DT_CDN_SERVER_PORT :
-	8080;
+let port = argum.port;
 
 let config: IConfig;
 let getConfig = true;
@@ -83,9 +83,9 @@ if (loggerDetails.maxFiles === true) {
 	logger.help();
 	process.exit(7);
 }
-else if(loggerDetails.frequency === true){
+else if (loggerDetails.frequency === true) {
 	console.log('\x1b[31mERROR:\x1b[37m frequency option set to true, requires a frequency to be specified. Ending.');
-	loggerDetails.frequency = 'yyyy-MM-dd';
+	loggerDetails.frequency = 'YYYY-MM-DD';
 	let logger = new Logger(loggerDetails);
 	logger.help();
 	process.exit(8);
@@ -94,7 +94,7 @@ else if(loggerDetails.frequency === true){
 let logger = new Logger(loggerDetails);
 
 // If there are more options defined which are not defined then print the help and end server
-if (Object.keys(argum).length > 27) {
+if (Object.keys(argum).length > 30) {
 	logger.help();
 	process.exit(5);
 }
@@ -107,6 +107,11 @@ else if (loggerDetails.errorLogFile === true) {
 	console.log('\x1b[31mERROR:\x1b[37m ErrorLogFile option set to true but no file location specified. Ending.');
 	logger.help();
 	process.exit(6);
+}
+else if (port === true) {
+	console.log('\x1b[31mERROR:\x1b[37m port option set to true but no port specified. Ending.');
+	logger.help();
+	process.exit(9);
 }
 
 if (argum.help === true) {
