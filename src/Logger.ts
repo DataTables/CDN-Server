@@ -126,19 +126,6 @@ export default class Logger {
 		}
 	}
 
-	public sudoError(message: string) {
-		// Prints `error` in red plus a message in white regardless of whether the debugger is enabled or not
-		message = '\x1b[31mERROR:\x1b[37m ' + message;
-		this._logger.log({level: 'error', message});
-		this._errorLogger.log({level: 'error', message});
-	}
-
-	public sudoInfo(message: string) {
-		// Prints `info` in green plus a message in white regardless of whether the debugger is enabled or not
-		message = '\x1b[32mINFO:\x1b[37m ' + message;
-		this._logger.log({level: 'error', message});
-	}
-
 	public help() {
 		let message =
 `The following options are available when running the server:

@@ -84,12 +84,12 @@ if (Object.keys(argum).length > 27) {
 	process.exit(5);
 }
 else if (loggerDetails.logfile === true) {
-	logger.sudoError('Logfile option set to true but no file location specified. Ending.');
+	console.log('\x1b[31mERROR:\x1b[37m Logfile option set to true but no file location specified. Ending.');
 	logger.help();
 	process.exit(1);
 }
 else if (loggerDetails.errorLogFile === true) {
-	logger.sudoError('ErrorLogFile option set to true but no file location specified. Ending.');
+	console.log('\x1b[31mERROR:\x1b[37m ErrorLogFile option set to true but no file location specified. Ending.');
 	logger.help();
 	process.exit(6);
 }
@@ -264,4 +264,5 @@ async function readConfig() {
 	return config;
 }
 
-logger.info('Server running. Listening on port ' + port);
+console.log('\x1b[32mINFO:\x1b[37m Server running on 0.0.0.0:' + port);
+logger.info('Server running on 0.0.0.0:' + port)
