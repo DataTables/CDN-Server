@@ -1,7 +1,7 @@
 #!/bin/bash
 #############################
 # A few constants
-export DT_CDN_SERVER_PORT=8090
+DT_CDN_SERVER_PORT=8090
 
 TMPFILE="/tmp/wget.out.$$"
 CONFFILE="test/config.json"
@@ -63,7 +63,7 @@ start_server() {
 	# Needs some config for the server to start so just copy in from one test
 	cp test/scripts/standard/config.json $CONFFILE
 
-	node ./dist/server.js --configLoc $CONFFILE &
+	node ./dist/server.js -p $DT_CDN_SERVER_PORT --configLoc $CONFFILE &
 	sleep 2
 
 	# Get the PID of the server
