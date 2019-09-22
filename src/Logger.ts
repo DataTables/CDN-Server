@@ -6,10 +6,13 @@ export default class Logger {
 	private _debugger: boolean = false;
 	private _logfile: boolean | string = false;
 	private _errorLogFile: boolean | string = false;
+	private _accessLogFile: boolean | string = false;
 	private _logger;
 	private _errorLogger;
+	private _accessLogger;
 	private _logLocation: string;
 	private _errorLogLocation: string;
+	private _accessLogLocation: string;
 	private _maxSize;
 	private _maxFiles;
 	private _frequency;
@@ -29,11 +32,15 @@ export default class Logger {
 		//   is a string detailing the location for the logfile/errorLogFile
 		this._logfile = typeof loggerDetails.logfile !== 'boolean' ? true : false;
 		this._errorLogFile = typeof loggerDetails.errorLogFile !== 'boolean' ? true : false;
+		this._accessLogFile = typeof loggerDetails.accesLogFile !== 'boolean' ? true : false;
 
 		// Define the location of the logfile and errorLogFile based on the input parameter
 		this._logLocation = typeof loggerDetails.logfile !== 'boolean' ? loggerDetails.logfile : '.hidden.log';
 		this._errorLogLocation = typeof loggerDetails.errorLogFile !== 'boolean'
 			? loggerDetails.errorLogFile
+			: '.hidden.log';
+		this._accessLogLocation = typeof loggerDetails.accessLogFile !== 'boolean'
+			? loggerDetails.accessLogFile
 			: '.hidden.log';
 		this._logger = winston.createLogger({
 			defaultMeta: { service: 'user-service'},
@@ -42,6 +49,11 @@ export default class Logger {
 		});
 		// Create another logger purely for the errors
 		this._errorLogger = winston.createLogger({
+			defaultMeta: { service: 'user-service'},
+			format: winston.format.json(),
+			level: 'silly',
+		});
+		this._accessLogger = winston.createLogger({
 			defaultMeta: { service: 'user-service'},
 			format: winston.format.json(),
 			level: 'silly',
@@ -57,6 +69,13 @@ export default class Logger {
 			maxFiles: this._maxFiles,
 			maxSize: this._maxSize,
 			auditFile: '/tmp/somethingErrorful.json'
+		});
+		var transportAccess = new (winston.transports.DailyRotateFile)({
+			datePattern: this._frequency,
+			filename: this._accessLogLocation,
+			maxFiles: this._maxFiles,
+			maxSize: this._maxSize,
+			auditFile: '/tmp/access.json'
 		});
 
 		var transport = new (winston.transports.DailyRotateFile)({
@@ -85,6 +104,13 @@ export default class Logger {
 			this._errorLogger.add(transportError);
 			this.info('Max error log file size set to ' + this._maxSize);
 			this.info('Max number of error log files set to ' + this._maxFiles);
+			this.info('Frequency of rotation set to ' + this._frequency);
+		}
+
+		if (this._accessLogFile && !fail) {
+			this._accessLogger.add(transportAccess);
+			this.info('Max access log file size set to ' + this._maxSize);
+			this.info('Max number of access log files set to ' + this._maxFiles);
 			this.info('Frequency of rotation set to ' + this._frequency);
 		}
 	}
@@ -122,6 +148,10 @@ export default class Logger {
 		if (this._errorLogFile) {
 			this._errorLogger.log({level: 'error', message});
 		}
+	}
+
+	public access(message: string) {
+		this._accessLogger.log({level: 'info', message});
 	}
 
 	public help() {

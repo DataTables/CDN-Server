@@ -15,6 +15,7 @@ import URLValidate from './URLValidate';
 
 let argum = getopts(process.argv.slice(2), {
 	alias: {
+		accessLogFile: ['a', 'A'],
 		configLoc: ['c', 'C'],
 		debug: ['d', 'D'],
 		errorLogFile: ['e', 'E'],
@@ -27,6 +28,7 @@ let argum = getopts(process.argv.slice(2), {
 		port: ['p', 'P'],
 	},
 	default: {
+		accessLogFile: false,
 		configLoc: './datatables-cdn.config.json',
 		debug: false,
 		errorLogFile: false,
@@ -61,6 +63,7 @@ let port = argum.port;
 let config: IConfig;
 let getConfig = true;
 let loggerDetails = {
+	accessLogFile: argum.accessLogFile,
 	debug: argum.debug,
 	errorLogFile: argum.errorLogFile,
 	logfile: argum.logfile,
@@ -78,7 +81,6 @@ readConfig();
 
 let fail = false;
 let exitCode;
-
 if (loggerDetails.maxFiles === true) {
 	console.log('\x1b[31mERROR:\x1b[37m maxFiles option set to true, requires a number of files to be specified. Ending.');
 	loggerDetails.maxFiles = 5;
@@ -106,7 +108,7 @@ if (fail) {
 let logger = new Logger(loggerDetails);
 
 // If there are more options defined which are not defined then print the help and end server
-if (Object.keys(argum).length > 30) {
+if (Object.keys(argum).length > 33) {
 	logger.help();
 	process.exit(5);
 }
@@ -143,6 +145,7 @@ http.createServer(async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
 	logger.info('New Request ' + req.url);
+	logger.access(req.url);
 
 	// If a signal is recieved to re-read the config file then wait until the next request
 	// before reading it (to save signal handler time)
