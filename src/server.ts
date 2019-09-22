@@ -175,8 +175,8 @@ http.createServer(async function(req, res) {
 		let latest = await url.validateLatest(findLatest[0]);
 
 		if (!latest) {
-			res.writeHead(404, 'Error 404. Invalid URL.');
-			logger.error('404 Invalid URL. Failed to find latest version(s) of the module(s) requested.');
+			res.writeHead(404, 'Error 404. Invalid URL.' + req.url);
+			logger.error('404 Invalid URL. Failed to find latest version(s) of the module(s) requested.' + req.url);
 		}
 		else {
 			logger.debug('URL Valid.');
@@ -190,7 +190,7 @@ http.createServer(async function(req, res) {
 				let contentAddition = await bui.buildFile(latest + config.fileNames[0] + extension);
 				if (!contentAddition) {
 					res.writeHead(500);
-					logger.error('500 Internal Server error.');
+					logger.error('500 Internal Server error. ' + req.url);
 					res.end();
 					return;
 				}
@@ -220,11 +220,11 @@ http.createServer(async function(req, res) {
 
 		if (content === false) {
 			res.writeHead(500);
-			logger.error('500 File not found when building file');
+			logger.error('500 File not found when building file ' + req.url);
 		}
 		else if (content === 404) {
 			res.writeHead(404);
-			logger.error('404 File not found when building file');
+			logger.error('404 File not found when building file ' + req.url);
 		}
 		else if (splitURL.indexOf('details') === 1 && typeof content === 'string') {
 			logger.debug('Getting Meta Info for build.');
@@ -251,7 +251,7 @@ http.createServer(async function(req, res) {
 	}
 	else {
 		res.statusCode = 404;
-		logger.error('404 Invalid URL');
+		logger.error('404 Invalid URL' + req.url);
 	}
 	logger.info('Ending Request');
 	res.end();
