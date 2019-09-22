@@ -1,6 +1,6 @@
 {
   "name": "datatables.net-cdn-server",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "DataTables CDN Server",
   "main": "dist/server.js",
   "scripts": {
