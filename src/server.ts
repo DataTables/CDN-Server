@@ -76,19 +76,31 @@ if (argum.metrics) {
 // Validation that the config is valid
 readConfig();
 
+let fail = false;
+let exitCode;
+
 if (loggerDetails.maxFiles === true) {
-	console.log('\x1b[31mERROR:\x1b[37m maxSize option set to true, requires a filesize to be specified. Ending.');
+	console.log('\x1b[31mERROR:\x1b[37m maxFiles option set to true, requires a number of files to be specified. Ending.');
 	loggerDetails.maxFiles = 5;
-	let logger = new Logger(loggerDetails);
-	logger.help();
-	process.exit(7);
+	fail = true;
+	exitCode = 7;
 }
 else if (loggerDetails.frequency === true) {
 	console.log('\x1b[31mERROR:\x1b[37m frequency option set to true, requires a frequency to be specified. Ending.');
 	loggerDetails.frequency = 'YYYY-MM-DD';
-	let logger = new Logger(loggerDetails);
-	logger.help();
-	process.exit(8);
+	fail = true;
+	exitCode = 8;
+}
+else if(loggerDetails.maxsize === true) {
+	console.log('\x1b[31mERROR:\x1b[37m maxFiles option set to true, requires a number of files to be specified. Ending.');
+	loggerDetails.maxsize = '100m';
+	fail = true;
+	exitCode = 9;
+}
+
+if (fail) {
+	newHelp();
+	process.exit(exitCode);
 }
 
 let logger = new Logger(loggerDetails);
@@ -282,6 +294,11 @@ async function readConfig() {
 	}
 
 	return config;
+}
+
+async function newHelp() {
+	let logger = new Logger(loggerDetails, true);
+	logger.help();
 }
 
 console.log('\x1b[32mINFO:\x1b[37m Server running on 0.0.0.0:' + port);

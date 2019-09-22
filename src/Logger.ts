@@ -14,7 +14,7 @@ export default class Logger {
 	private _maxFiles;
 	private _frequency;
 
-	constructor(loggerDetails) {
+	constructor(loggerDetails, fail = false) {
 		var winston = require('winston');
 		require('winston-daily-rotate-file');
 
@@ -73,7 +73,7 @@ export default class Logger {
 		}
 
 		// If the logfile option is enabled then set up a transport to the logfile
-		if (this._logfile) {
+		if (this._logfile && !fail) {
 			this._logger.add(transport);
 			this.info('Max log file size set to ' + this._maxSize);
 			this.info('Max number of log files set to ' + this._maxFiles);
@@ -81,7 +81,7 @@ export default class Logger {
 		}
 
 		// Add a transport for the pure error logging
-		if (this._errorLogFile) {
+		if (this._errorLogFile && !fail) {
 			this._errorLogger.add(transportError);
 			this.info('Max error log file size set to ' + this._maxSize);
 			this.info('Max number of error log files set to ' + this._maxFiles);
