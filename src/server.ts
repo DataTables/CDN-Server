@@ -122,10 +122,15 @@ else if (loggerDetails.errorLogFile === true) {
 	logger.help();
 	process.exit(6);
 }
+else if (loggerDetails.accessLogFile === true){
+	console.log('\x1b[31mERROR:\x1b[37m AccessLogFile option set to true but no file location specified. Ending.');
+	logger.help();
+	process.exit(11);
+}
 else if (port === true) {
 	console.log('\x1b[31mERROR:\x1b[37m port option set to true but no port specified. Ending.');
 	logger.help();
-	process.exit(9);
+	process.exit(10);
 }
 
 if (argum.help === true) {
