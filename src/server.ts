@@ -167,6 +167,7 @@ http.createServer(async function(req, res) {
 	let t0 = t.getTime();
 	let url = new URLValidate(config, logger, cache._maps);
 	let splitURL: string[] = req.url.split('?');
+	
 
 	// Ensure a valid request type is being made and validate that the requested url is also valid
 	if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
@@ -220,6 +221,10 @@ http.createServer(async function(req, res) {
 		}
 	}
 	else if (await url.parseURL(splitURL[0])) {
+		if (config.selectHack) {
+			let parsedURL = splitURL[0].split(new RegExp('[' + config.separators.join('') + ']'));
+			splitURL[0] = url.hackSelect(parsedURL).join('/');
+		}
 		logger.debug('Requested file. Build commencing.');
 
 		// Build requested file

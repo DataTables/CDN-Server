@@ -3,7 +3,8 @@
 	"headerContent": "/*\n * This combined file was created by the DataTables downloader builder:\n *   https://datatables.net/download\n *\n * To rebuild or modify this file with the latest versions of the included\n * software please visit:\n *   https://datatables.net/download/#{extensionsURL}\n *\n * Included libraries:\n *  {extensionsList}\n */\n\n",
 	"cacheDuration": 31557600,
 	"cacheSize": 100,
-	"elements": [{
+	"elements": [
+		{
 		"abbr": "dt",
 		"description" : "This element includes the datatables styling.",
 		"excludes": [
@@ -26,1143 +27,1145 @@
 		"moduleName": "DataTables",
 		"outputOrder": 20,
 		"versions": []
-	}, {
-		"abbr": "se-",
-		"description" : "This element includes the semantic styling of a certain version.",
-		"excludes": [
-			"dt",
-			"se",
-			"bs4",
-			"bs4-",
-			"bs",
-			"bs-",
-			"zf",
-			"zf-",
-			"ju",
-			"ju-"
-		],
-		"fileIncludes": {
-			"styling": "semanticui"
-		},
-		"fileNames": {
-			"css": ["semantic"],
-			"js": ["semantic"]
-		},
-		"folderName": "SemanticUI",
-		"moduleName": "SemanticUI",
-		"outputOrder": 20,
-		"versions": [
-			"2.2.13"
-		]
-	}, {
-		"abbr": "se",
-		"description" : "This element includes the semantic styling.",
-		"excludes": [
-			"dt",
-			"se-",
-			"bs4",
-			"bs4-",
-			"bs",
-			"bs-",
-			"zf",
-			"zf-",
-			"ju",
-			"ju-"
-		],
-		"fileIncludes": {
-			"styling": "semanticui"
-		},
-		"fileNames": {},
-		"folderName": "SemanticUI",
-		"moduleName": "SemanticUI",
-		"outputOrder": 20,
-		"versions": []
-	}, {
-		"abbr": "bs4",
-		"description" : "This element includes the bootstrap4 styling.",
-		"excludes": [
-			"dt",
-			"se",
-			"se-",
-			"bs4-",
-			"bs",
-			"bs-",
-			"zf",
-			"zf-",
-			"ju",
-			"ju-"
-		],
-		"fileIncludes": {
-			"styling": "bootstrap4"
-		},
-		"fileNames": {},
-		"folderName": "Bootstrap-4",
-		"moduleName": "Bootstrap-4",
-		"outputOrder": 20,
-		"versions": []
-	}, {
-		"abbr": "bs4-",
-		"description" : "This element includes the bootstrap4 styling of a specific version.",
-		"excludes": [
-			"dt",
-			"se",
-			"se-",
-			"bs4",
-			"bs",
-			"bs-",
-			"zf",
-			"zf-",
-			"ju",
-			"ju-"
-		],
-		"fileIncludes": {
-			"styling": "bootstrap4"
-		},
-		"fileNames": {
-			"css": ["css/bootstrap"],
-			"js": ["js/bootstrap"]
-		},
-		"folderName": "Bootstrap-4",
-		"moduleName": "Bootstrap-4",
-		"outputOrder": 20,
-		"versions": [
-			"4.1.1",
-			"4.0.0"
-		]
-	}, {
-		"abbr": "bs",
-		"description" : "This element includes the bootstrap3 styling.",
-		"excludes": [
-			"dt",
-			"se",
-			"se-",
-			"bs4",
-			"bs4-",
-			"bs-",
-			"zf",
-			"zf-",
-			"ju",
-			"ju-"
-		],
-		"fileIncludes": {
-			"styling": "bootstrap"
-		},
-		"fileNames": {},
-		"folderName": "Bootstrap",
-		"moduleName": "Bootstrap",
-		"outputOrder": 20,
-		"versions": []
-	}, {
-		"abbr": "bs-",
-		"description" : "This element includes the bootstrap3 styling of a certain version.",
-		"excludes": [
-			"dt",
-			"se",
-			"se-",
-			"bs4",
-			"bs4-",
-			"bs",
-			"zf",
-			"zf-",
-			"ju",
-			"ju-"
-		],
-		"fileIncludes": {
-			"styling": "bootstrap"
-		},
-		"fileNames": {
-			"css": ["css/bootstrap"],
-			"js": ["js/bootstrap"]
-		},
-		"folderName": "Bootstrap",
-		"moduleName": "Bootstrap",
-		"outputOrder": 20,
-		"versions": [
-			"3.3.7",
-			"3.3.5",
-			"3.3.6"
-		]
-	}, {
-		"abbr": "zf",
-		"description" : "This element includes the foundation styling.",
-		"excludes": [
-			"dt",
-			"se",
-			"se-",
-			"bs4",
-			"bs4-",
-			"bs",
-			"bs-",
-			"zf-",
-			"ju",
-			"ju-"
-		],
-		"fileIncludes": {
-			"styling": "foundation"
-		},
-		"fileNames": {},
-		"folderName": "Foundation",
-		"moduleName": "Foundation",
-		"outputOrder": 20,
-		"versions": []
-	}, {
-		"abbr": "zf-",
-		"description" : "This element includes the foundation styling of a specific version.",
-		"excludes": [
-			"dt",
-			"se",
-			"se-",
-			"bs4",
-			"bs4-",
-			"bs",
-			"bs-",
-			"zf",
-			"ju",
-			"ju-"
-		],
-		"fileIncludes": {
-			"styling": "foundation"
-		},
-		"fileNames": {
-			"css": ["css/foundation"],
-			"js": ["js/foundation"]
-		},
-		"folderName": "Foundation",
-		"moduleName": "Foundation",
-		"outputOrder": 20,
-		"versions": [
-			"6.4.3",
-			"5.5.2"
-		]
-	},{
-		"abbr": "ju",
-		"description" : "This element includes the jqueryui styling.",
-		"excludes": [
-			"dt",
-			"se",
-			"se-",
-			"bs4",
-			"bs4-",
-			"bs",
-			"bs-",
-			"zf",
-			"ju-"
-		],
-		"fileIncludes": {
-			"styling": "jqueryui"
-		},
-		"fileNames": {},
-		"folderName": "jQueryUI",
-		"moduleName": "jQueryUI",
-		"outputOrder": 20,
-		"versions": []
-	}, {
-		"abbr": "ju-",
-		"description" : "This element includes the jqueryui styling of a specific version.",
-		"excludes": [
-			"dt",
-			"se",
-			"se-",
-			"bs4",
-			"bs4-",
-			"bs",
-			"bs-",
-			"zf",
-			"ju"
-		],
-		"fileIncludes": {
-			"styling": "jqueryui"
-		},
-		"fileNames": {
-			"css": [
-				"?jquery-ui",
-				"?themes/base/jquery-ui"
+		}, {
+			"abbr": "se-",
+			"description" : "This element includes the semantic styling of a certain version.",
+			"excludes": [
+				"dt",
+				"se",
+				"bs4",
+				"bs4-",
+				"bs",
+				"bs-",
+				"zf",
+				"zf-",
+				"ju",
+				"ju-"
 			],
-			"js": ["jquery-ui"]
-		},
-		"folderName": "jQueryUI",
-		"moduleName": "jQueryUI",
-		"outputOrder": 20,
-		"versions": [
-			"1.11.4",
-			"1.12.1"
-		]
-	}, {
-		"abbr": "jqc-",
-		"description" : "This element includes jQuery below version 2.",
-		"excludes": [
-			"jq-"
-		],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": ["jquery-{version}"]
-		},
-		"folderName": "jQuery",
-		"moduleName": "jQuery",
-		"outputOrder": 1,
-		"versions": [
-			"1.12.4",
-			"1.11.3",
-			"1.12.0",
-			"1.12.3"
-		]
-	}, {
-		"abbr": "jq-",
-		"description" : "This element includes jQuery past version 2.",
-		"excludes": [
-			"jqc-"
-		],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": ["jquery-{version}"]
-		},
-		"folderName": "jQuery",
-		"moduleName": "jQuery",
-		"outputOrder": 1,
-		"versions": [
-			"3.3.1",
-			"2.1.4",
-			"2.2.0",
-			"2.2.3",
-			"3.2.1",
-			"1.12.4"
-		]
-	}, {
-		"abbr": "jszip-",
-		"description" : "This element includes the jszip third party extension.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"jszip"
+			"fileIncludes": {
+				"styling": "semanticui"
+			},
+			"fileNames": {
+				"css": ["semantic"],
+				"js": ["semantic"]
+			},
+			"folderName": "SemanticUI",
+			"moduleName": "SemanticUI",
+			"outputOrder": 20,
+			"versions": [
+				"2.2.13"
 			]
-		},
-		"folderName": "JSZip",
-		"moduleName": "JSZip",
-		"outputOrder": 10,
-		"versions": [
-			"2.5.0",
-			"3.1.3"
-		]
-	}, {
-		"abbr": "pdfmake-",
-		"description" : "This element includes the pdfmake third party extension.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"pdfmake"
-			]
-		},
-		"folderName": "pdfmake",
-		"moduleName": "pdfmake",
-		"outputOrder": 10,
-		"versions": [
-			"0.1.18",
-			"0.1.27",
-			"0.1.32",
-			"0.1.36"
-		]
-	}, {
-		"abbr": "moment-",
-		"description" : "This element includes the moment third party extension.",
-		"excludes": [
-			"momentjs-"
-		],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"moment"
-			]
-		},
-		"folderName": "Moment",
-		"moduleName": "Moment",
-		"outputOrder": 10,
-		"versions": [
-			"2.18.1"
-		]
-	}, {
-		"abbr": "momentjs-",
-		"description" : "This element includes the moment js third party extension.",
-		"excludes": [
-			"moment-"
-		],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"moment"
-			]
-		},
-		"folderName": "MomentJS",
-		"moduleName": "MomentJS",
-		"outputOrder": 10,
-		"versions": [
-			"2.10.6",
-			"2.11.2",
-			"2.14.0",
-			"2.18.1"
-		]
-	}, {
-		"abbr": "selectize-",
-		"description" : "This element includes the selectize third party extension.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/selectize"
+		}, {
+			"abbr": "se",
+			"description" : "This element includes the semantic styling.",
+			"excludes": [
+				"dt",
+				"se-",
+				"bs4",
+				"bs4-",
+				"bs",
+				"bs-",
+				"zf",
+				"zf-",
+				"ju",
+				"ju-"
 			],
-			"js": [
-				"js/selectize"
-			]
-		},
-		"folderName": "Selectize",
-		"moduleName": "Selectize",
-		"outputOrder": 10,
-		"versions": [
-			"0.12.1"
-		]
-	}, {
-		"abbr": "select2-",
-		"description" : "This element includes the select2 third party extension.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/select2"
+			"fileIncludes": {
+				"styling": "semanticui"
+			},
+			"fileNames": {},
+			"folderName": "SemanticUI",
+			"moduleName": "SemanticUI",
+			"outputOrder": 20,
+			"versions": []
+		}, {
+			"abbr": "bs4",
+			"description" : "This element includes the bootstrap4 styling.",
+			"excludes": [
+				"dt",
+				"se",
+				"se-",
+				"bs4-",
+				"bs",
+				"bs-",
+				"zf",
+				"zf-",
+				"ju",
+				"ju-"
 			],
-			"js": [
-				"js/select2"
-			]
-		},
-		"folderName": "Select2",
-		"moduleName": "Select2",
-		"outputOrder": 10,
-		"versions": [
-			"4.0.0",
-			"4.0.1"
-		]
-	}, {
-		"abbr": "quill-",
-		"description" : "This element includes the quill third party extension.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"quill.snow"
+			"fileIncludes": {
+				"styling": "bootstrap4"
+			},
+			"fileNames": {},
+			"folderName": "Bootstrap-4",
+			"moduleName": "Bootstrap-4",
+			"outputOrder": 20,
+			"versions": []
+		}, {
+			"abbr": "bs4-",
+			"description" : "This element includes the bootstrap4 styling of a specific version.",
+			"excludes": [
+				"dt",
+				"se",
+				"se-",
+				"bs4",
+				"bs",
+				"bs-",
+				"zf",
+				"zf-",
+				"ju",
+				"ju-"
 			],
-			"js": [
-				"quill"
+			"fileIncludes": {
+				"styling": "bootstrap4"
+			},
+			"fileNames": {
+				"css": ["css/bootstrap"],
+				"js": ["js/bootstrap"]
+			},
+			"folderName": "Bootstrap-4",
+			"moduleName": "Bootstrap-4",
+			"outputOrder": 20,
+			"versions": [
+				"4.1.1",
+				"4.0.0"
 			]
-		},
-		"folderName": "Quill",
-		"moduleName": "Quill",
-		"outputOrder": 10,
-		"versions": [
-			"0.20.0",
-			"0.20.1",
-			"1.2.4"
-		]
-	}, {
-		"abbr": "mask-",
-		"description" : "This element includes the mark third party extension for editor.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"editor.mask"
-			]
-		},
-		"folderName": "FieldType-Mask",
-		"moduleName": "FieldType-Mask",
-		"outputOrder": 10,
-		"versions": [
-			"1.13.4"
-		]
-	}, {
-		"abbr": "date-",
-		"description" : "This element includes the date picker third party extension.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/bootstrap-datetimepicker"
+		}, {
+			"abbr": "bs",
+			"description" : "This element includes the bootstrap3 styling.",
+			"excludes": [
+				"dt",
+				"se",
+				"se-",
+				"bs4",
+				"bs4-",
+				"bs-",
+				"zf",
+				"zf-",
+				"ju",
+				"ju-"
 			],
-			"js": [
-				"js/bootstrap-datetimepicker"
-			]
-		},
-		"folderName": "bootstrap-datepicker-4.15.35",
-		"moduleName": "bootstrap-datepicker-4.15.35",
-		"outputOrder": 10,
-		"versions": [
-			"4.15.35"
-		]
-	}, {
-		"abbr": "dt-",
-		"description" : "This element includes the DataTables core files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/dataTables.{styling}"
+			"fileIncludes": {
+				"styling": "bootstrap"
+			},
+			"fileNames": {},
+			"folderName": "Bootstrap",
+			"moduleName": "Bootstrap",
+			"outputOrder": 20,
+			"versions": []
+		}, {
+			"abbr": "bs-",
+			"description" : "This element includes the bootstrap3 styling of a certain version.",
+			"excludes": [
+				"dt",
+				"se",
+				"se-",
+				"bs4",
+				"bs4-",
+				"bs",
+				"zf",
+				"zf-",
+				"ju",
+				"ju-"
 			],
-			"js": [
-				"js/jquery.dataTables",
-				"?js/dataTables.{styling}"
+			"fileIncludes": {
+				"styling": "bootstrap"
+			},
+			"fileNames": {
+				"css": ["css/bootstrap"],
+				"js": ["js/bootstrap"]
+			},
+			"folderName": "Bootstrap",
+			"moduleName": "Bootstrap",
+			"outputOrder": 20,
+			"versions": [
+				"3.3.7",
+				"3.3.5",
+				"3.3.6"
 			]
-		},
-		"folderName": "DataTables",
-		"moduleName": "DataTables",
-		"outputOrder": 30,
-		"versions": [
-			"1.10.1",
-			"1.10.2",
-			"1.10.3",
-			"1.10.4",
-			"1.10.5",
-			"1.10.6",
-			"1.10.7",
-			"1.10.8",
-			"1.10.9",
-			"1.10.10",
-			"1.10.11",
-			"1.10.12",
-			"1.10.13",
-			"1.10.14",
-			"1.10.15",
-			"1.10.16",
-			"1.10.17",
-			"1.10.18"
-		]
-	},{
-		"abbr": "af-",
-		"description" : "This element includes the AutoFill extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/autoFill.{styling}"
+		}, {
+			"abbr": "zf",
+			"description" : "This element includes the foundation styling.",
+			"excludes": [
+				"dt",
+				"se",
+				"se-",
+				"bs4",
+				"bs4-",
+				"bs",
+				"bs-",
+				"zf-",
+				"ju",
+				"ju-"
 			],
-			"js": [
-				"js/dataTables.autoFill",
-				"?js/autoFill.{styling}"
-			]
-		},
-		"folderName": "AutoFill",
-		"moduleName": "AutoFill",
-		"outputOrder": 40,
-		"versions": [
-			"2.3.3",
-			"2.3.0",
-			"2.2.2",
-			"2.2.1",
-			"2.2.0",
-			"2.1.3",
-			"2.1.2",
-			"2.1.1",
-			"2.1.0",
-			"2.0.0",
-			"1.2.1",
-			"1.2.0",
-			"1.1.2",
-			"1.1.1",
-			"1.1.0",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "b-",
-		"description" : "This element includes the Buttons extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/buttons.{styling}"
+			"fileIncludes": {
+				"styling": "foundation"
+			},
+			"fileNames": {},
+			"folderName": "Foundation",
+			"moduleName": "Foundation",
+			"outputOrder": 20,
+			"versions": []
+		}, {
+			"abbr": "zf-",
+			"description" : "This element includes the foundation styling of a specific version.",
+			"excludes": [
+				"dt",
+				"se",
+				"se-",
+				"bs4",
+				"bs4-",
+				"bs",
+				"bs-",
+				"zf",
+				"ju",
+				"ju-"
 			],
-			"js": [
-				"js/dataTables.buttons",
-				"?js/buttons.{styling}"
+			"fileIncludes": {
+				"styling": "foundation"
+			},
+			"fileNames": {
+				"css": ["css/foundation"],
+				"js": ["js/foundation"]
+			},
+			"folderName": "Foundation",
+			"moduleName": "Foundation",
+			"outputOrder": 20,
+			"versions": [
+				"6.4.3",
+				"5.5.2"
 			]
-		},
-		"folderName": "Buttons",
-		"moduleName": "Buttons",
-		"outputOrder": 40,
-		"versions": [
-			"1.5.6",
-			"1.5.5",
-			"1.5.2",
-			"1.5.1",
-			"1.5.0",
-			"1.4.2",
-			"1.4.1",
-			"1.4.0",
-			"1.3.1",
-			"1.3.0",
-			"1.2.4",
-			"1.2.3",
-			"1.2.2",
-			"1.2.1",
-			"1.2.0",
-			"1.1.2",
-			"1.1.1",
-			"1.1.0",
-			"1.0.3",
-			"1.0.2",
-			"1.0.1",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "cr-",
-		"description" : "This element includes the ColReorder extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/colReorder.{styling}"
+		},{
+			"abbr": "ju",
+			"description" : "This element includes the jqueryui styling.",
+			"excludes": [
+				"dt",
+				"se",
+				"se-",
+				"bs4",
+				"bs4-",
+				"bs",
+				"bs-",
+				"zf",
+				"ju-"
 			],
-			"js": [
-				"js/dataTables.colReorder",
-				"?js/colReorder.{styling}"
-			]
-		},
-		"folderName": "ColReorder",
-		"moduleName": "ColReorder",
-		"outputOrder": 40,
-		"versions": [
-			"1.5.0",
-			"1.4.1",
-			"1.4.0",
-			"1.3.3",
-			"1.3.2",
-			"1.3.1",
-			"1.3.0",
-			"1.2.0",
-			"1.1.3",
-			"1.1.2",
-			"1.1.1",
-			"1.1.0",
-			"1.0.8",
-			"1.0.7",
-			"1.0.6",
-			"1.0.5",
-			"1.0.4",
-			"1.0.3",
-			"1.0.2",
-			"1.0.1",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "fc-",
-		"description" : "This element includes the FixedColumns extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/fixedColumns.{styling}"
+			"fileIncludes": {
+				"styling": "jqueryui"
+			},
+			"fileNames": {},
+			"folderName": "jQueryUI",
+			"moduleName": "jQueryUI",
+			"outputOrder": 20,
+			"versions": []
+		}, {
+			"abbr": "ju-",
+			"description" : "This element includes the jqueryui styling of a specific version.",
+			"excludes": [
+				"dt",
+				"se",
+				"se-",
+				"bs4",
+				"bs4-",
+				"bs",
+				"bs-",
+				"zf",
+				"ju"
 			],
-			"js": [
-				"js/dataTables.fixedColumns",
-				"?js/fixedColumns.{styling}"
+			"fileIncludes": {
+				"styling": "jqueryui"
+			},
+			"fileNames": {
+				"css": [
+					"?jquery-ui",
+					"?themes/base/jquery-ui"
+				],
+				"js": ["jquery-ui"]
+			},
+			"folderName": "jQueryUI",
+			"moduleName": "jQueryUI",
+			"outputOrder": 20,
+			"versions": [
+				"1.11.4",
+				"1.12.1"
 			]
-		},
-		"folderName": "FixedColumns",
-		"moduleName": "FixedColumns",
-		"outputOrder": 40,
-		"versions": [
-			"3.2.5",
-			"3.2.4",
-			"3.2.3",
-			"3.2.2",
-			"3.2.1",
-			"3.2.0",
-			"3.1.0",
-			"3.0.4",
-			"3.0.3",
-			"3.0.2",
-			"3.0.1",
-			"3.0.0",
-			"2.0.3",
-			"2.0.1",
-			"2.0.0",
-			"1.1.0",
-			"1.0.1",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "fh-",
-		"description" : "This element includes the FixedHeader extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/fixedHeader.{styling}"
+		}, {
+			"abbr": "jqc-",
+			"description" : "This element includes jQuery below version 2.",
+			"excludes": [
+				"jq-"
 			],
-			"js": [
-				"js/dataTables.fixedHeader",
-				"?js/fixedHeader.{styling}"
+			"fileIncludes": {},
+			"fileNames": {
+				"js": ["jquery-{version}"]
+			},
+			"folderName": "jQuery",
+			"moduleName": "jQuery",
+			"outputOrder": 1,
+			"versions": [
+				"1.12.4",
+				"1.11.3",
+				"1.12.0",
+				"1.12.3"
 			]
-		},
-		"folderName": "FixedHeader",
-		"moduleName": "FixedHeader",
-		"outputOrder": 40,
-		"versions": [
-			"3.1.4",
-			"3.1.3",
-			"3.1.2",
-			"3.1.1",
-			"3.1.0",
-			"3.0.0",
-			"2.1.2",
-			"2.1.1",
-			"2.1.0",
-			"2.0.6",
-			"2.0.5",
-			"2.0.4",
-			"2.0.3",
-			"2.0.2",
-			"2.0.1",
-			"2.0.0"
-		]
-	}, {
-		"abbr": "kt-",
-		"description" : "This element includes the KeyTable extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/keyTable.{styling}"
+		}, {
+			"abbr": "jq-",
+			"description" : "This element includes jQuery past version 2.",
+			"excludes": [
+				"jqc-"
 			],
-			"js": [
-				"js/dataTables.keyTable",
-				"?js/keyTable.{styling}"
+			"fileIncludes": {},
+			"fileNames": {
+				"js": ["jquery-{version}"]
+			},
+			"folderName": "jQuery",
+			"moduleName": "jQuery",
+			"outputOrder": 1,
+			"versions": [
+				"3.3.1",
+				"2.1.4",
+				"2.2.0",
+				"2.2.3",
+				"3.2.1",
+				"1.12.4"
 			]
-		},
-		"folderName": "KeyTable",
-		"moduleName": "KeyTable",
-		"outputOrder": 40,
-		"versions": [
-			"2.5.0",
-			"2.4.1",
-			"2.4.0",
-			"2.3.2",
-			"2.3.1",
-			"2.3.0",
-			"2.2.1",
-			"2.2.0",
-			"2.1.3",
-			"2.1.2",
-			"2.1.1",
-			"2.1.0",
-			"2.0.0",
-			"1.2.1",
-			"1.2.0",
-			"1.1.7",
-			"1.1.6",
-			"1.1.5",
-			"1.1.4",
-			"1.1.3",
-			"1.1.2",
-			"1.1.1",
-			"1.1.0",
-			"1.0.4",
-			"1.0.3",
-			"1.0.2",
-			"1.0.1",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "r-",
-		"description" : "This element includes the Responsive extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/responsive.{styling}"
+		}, {
+			"abbr": "jszip-",
+			"description" : "This element includes the jszip third party extension.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"jszip"
+				]
+			},
+			"folderName": "JSZip",
+			"moduleName": "JSZip",
+			"outputOrder": 10,
+			"versions": [
+				"2.5.0",
+				"3.1.3"
+			]
+		}, {
+			"abbr": "pdfmake-",
+			"description" : "This element includes the pdfmake third party extension.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"build/pdfmake"
+				]
+			},
+			"folderName": "pdfmake",
+			"moduleName": "pdfmake",
+			"outputOrder": 10,
+			"versions": [
+				"0.1.18",
+				"0.1.27",
+				"0.1.32",
+				"0.1.36"
+			]
+		}, {
+			"abbr": "moment-",
+			"description" : "This element includes the moment third party extension.",
+			"excludes": [
+				"momentjs-"
 			],
-			"js": [
-				"js/dataTables.responsive",
-				"?js/responsive.{styling}"
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"moment"
+				]
+			},
+			"folderName": "Moment",
+			"moduleName": "Moment",
+			"outputOrder": 10,
+			"versions": [
+				"2.18.1"
 			]
-		},
-		"folderName": "Responsive",
-		"moduleName": "Responsive",
-		"outputOrder": 40,
-		"versions": [
-			"2.2.2",
-			"2.2.1",
-			"2.2.0",
-			"2.1.1",
-			"2.1.0",
-			"2.0.2",
-			"2.0.1",
-			"2.0.0",
-			"1.0.7",
-			"1.0.6",
-			"1.0.5",
-			"1.0.4",
-			"1.0.3",
-			"1.0.2",
-			"1.0.1",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "rg-",
-		"description" : "This element includes the RowGroup extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/rowGroup.{styling}"
+		}, {
+			"abbr": "momentjs-",
+			"description" : "This element includes the moment js third party extension.",
+			"excludes": [
+				"moment-"
 			],
-			"js": [
-				"js/dataTables.rowGroup",
-				"?js/rowGroup.{styling}"
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"moment"
+				]
+			},
+			"folderName": "MomentJS",
+			"moduleName": "MomentJS",
+			"outputOrder": 10,
+			"versions": [
+				"2.10.6",
+				"2.11.2",
+				"2.14.0",
+				"2.18.1"
 			]
-		},
-		"folderName": "RowGroup",
-		"moduleName": "RowGroup",
-		"outputOrder": 40,
-		"versions": [
-			"1.1.0",
-			"1.0.4",
-			"1.0.3",
-			"1.0.2",
-			"1.0.1",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "rr-",
-		"description" : "This element includes the RowReorder extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/rowReorder.{styling}"
-			],
-			"js": [
-				"js/dataTables.rowReorder",
-				"?js/rowReorder.{styling}"
+		}, {
+			"abbr": "selectize-",
+			"description" : "This element includes the selectize third party extension.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/selectize"
+				],
+				"js": [
+					"js/selectize"
+				]
+			},
+			"folderName": "Selectize",
+			"moduleName": "Selectize",
+			"outputOrder": 10,
+			"versions": [
+				"0.12.1"
 			]
-		},
-		"folderName": "RowReorder",
-		"moduleName": "RowReorder",
-		"outputOrder": 40,
-		"versions": [
-			"1.2.4",
-			"1.2.3",
-			"1.2.2",
-			"1.2.1",
-			"1.2.0",
-			"1.1.2",
-			"1.1.1",
-			"1.1.0",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "sc-",
-		"description" : "This element includes the Scroller extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/scroller.{styling}"
-			],
-			"js": [
-				"js/dataTables.scroller",
-				"?js/scroller.{styling}"
+		}, {
+			"abbr": "select2-",
+			"description" : "This element includes the select2 third party extension.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/select2"
+				],
+				"js": [
+					"js/select2"
+				]
+			},
+			"folderName": "Select2",
+			"moduleName": "Select2",
+			"outputOrder": 10,
+			"versions": [
+				"4.0.0",
+				"4.0.1"
 			]
-		},
-		"folderName": "Scroller",
-		"moduleName": "Scroller",
-		"outputOrder": 40,
-		"versions": [
-			"2.0.0",
-			"1.5.0",
-			"1.4.4",
-			"1.4.3",
-			"1.4.2",
-			"1.4.1",
-			"1.4.0",
-			"1.3.0",
-			"1.2.2",
-			"1.2.1",
-			"1.2.0",
-			"1.1.0",
-			"1.0.2",
-			"1.0.1",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "sl-",
-		"description" : "This element includes the Select extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"css": [
-				"css/select.{styling}"
-			],
-			"js": [
-				"js/dataTables.select",
-				"?js/select.{styling}"
+		}, {
+			"abbr": "quill-",
+			"description" : "This element includes the quill third party extension.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"quill.snow"
+				],
+				"js": [
+					"quill"
+				]
+			},
+			"folderName": "Quill",
+			"moduleName": "Quill",
+			"outputOrder": 10,
+			"versions": [
+				"0.20.0",
+				"0.20.1",
+				"1.2.4"
 			]
-		},
-		"folderName": "Select",
-		"moduleName": "Select",
-		"outputOrder": 40,
-		"versions": [
-			"1.3.0",
-			"1.2.6",
-			"1.2.5",
-			"1.2.4",
-			"1.2.3",
-			"1.2.2",
-			"1.2.1",
-			"1.2.0",
-			"1.1.2",
-			"1.1.1",
-			"1.1.0",
-			"1.0.1",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "b-colvis-",
-		"description" : "This element includes the Colvis buttons sub-extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"js/buttons.colVis"
+		}, {
+			"abbr": "mask-",
+			"description" : "This element includes the mark third party extension for editor.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"editor.mask"
+				]
+			},
+			"folderName": "FieldType-Mask",
+			"moduleName": "FieldType-Mask",
+			"outputOrder": 10,
+			"versions": [
+				"1.13.4"
 			]
-		},
-		"folderName": "Buttons",
-		"moduleName": "Column visibility",
-		"outputOrder": 40,
-		"versions": [
-			"1.5.6",
-			"1.5.5",
-			"1.5.2",
-			"1.5.1",
-			"1.5.0",
-			"1.4.2",
-			"1.4.1",
-			"1.4.0",
-			"1.3.1",
-			"1.3.0",
-			"1.2.4",
-			"1.2.3",
-			"1.2.2",
-			"1.2.1",
-			"1.2.0",
-			"1.1.2",
-			"1.1.1",
-			"1.1.0",
-			"1.0.3",
-			"1.0.2",
-			"1.0.1",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "b-flash-",
-		"description" : "This element includes the Flash Export buttons sub-extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"js/buttons.flash"
+		}, {
+			"abbr": "date-",
+			"description" : "This element includes the date picker third party extension.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/bootstrap-datetimepicker"
+				],
+				"js": [
+					"js/bootstrap-datetimepicker"
+				]
+			},
+			"folderName": "bootstrap-datepicker-4.15.35",
+			"moduleName": "bootstrap-datepicker-4.15.35",
+			"outputOrder": 10,
+			"versions": [
+				"4.15.35"
 			]
-		},
-		"folderName": "Buttons",
-		"moduleName": "Flash export",
-		"outputOrder": 40,
-		"versions": [
-			"1.5.6",
-			"1.5.5",
-			"1.5.2",
-			"1.5.1",
-			"1.5.0",
-			"1.4.2",
-			"1.4.1",
-			"1.4.0",
-			"1.3.1",
-			"1.3.0",
-			"1.2.4",
-			"1.2.3",
-			"1.2.2",
-			"1.2.1",
-			"1.2.0",
-			"1.1.2",
-			"1.1.1",
-			"1.1.0",
-			"1.0.3",
-			"1.0.2",
-			"1.0.1",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "b-html5-",
-		"description" : "This element includes the html5 export buttons sub-extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"js/buttons.html5"
+		}, {
+			"abbr": "dt-",
+			"description" : "This element includes the DataTables core files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/dataTables.{styling}"
+				],
+				"js": [
+					"js/jquery.dataTables",
+					"?js/dataTables.{styling}"
+				]
+			},
+			"folderName": "DataTables",
+			"moduleName": "DataTables",
+			"outputOrder": 30,
+			"versions": [
+				"1.10.1",
+				"1.10.2",
+				"1.10.3",
+				"1.10.4",
+				"1.10.5",
+				"1.10.6",
+				"1.10.7",
+				"1.10.8",
+				"1.10.9",
+				"1.10.10",
+				"1.10.11",
+				"1.10.12",
+				"1.10.13",
+				"1.10.14",
+				"1.10.15",
+				"1.10.16",
+				"1.10.17",
+				"1.10.18",
+				"1.10.19"
 			]
-		},
-		"folderName": "Buttons",
-		"moduleName": "HTML5 export",
-		"outputOrder": 40,
-		"versions": [
-			"1.5.6",
-			"1.5.5",
-			"1.5.2",
-			"1.5.1",
-			"1.5.0",
-			"1.4.2",
-			"1.4.1",
-			"1.4.0",
-			"1.3.1",
-			"1.3.0",
-			"1.2.4",
-			"1.2.3",
-			"1.2.2",
-			"1.2.1",
-			"1.2.0",
-			"1.1.2",
-			"1.1.1",
-			"1.1.0",
-			"1.0.3",
-			"1.0.2",
-			"1.0.1",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "b-print-",
-		"description" : "This element includes the print view buttons sub-extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"js/buttons.print"
+		},{
+			"abbr": "af-",
+			"description" : "This element includes the AutoFill extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/autoFill.{styling}"
+				],
+				"js": [
+					"js/dataTables.autoFill",
+					"?js/autoFill.{styling}"
+				]
+			},
+			"folderName": "AutoFill",
+			"moduleName": "AutoFill",
+			"outputOrder": 40,
+			"versions": [
+				"2.3.3",
+				"2.3.0",
+				"2.2.2",
+				"2.2.1",
+				"2.2.0",
+				"2.1.3",
+				"2.1.2",
+				"2.1.1",
+				"2.1.0",
+				"2.0.0",
+				"1.2.1",
+				"1.2.0",
+				"1.1.2",
+				"1.1.1",
+				"1.1.0",
+				"1.0.0"
 			]
-		},
-		"folderName": "Buttons",
-		"moduleName": "Print view",
-		"outputOrder": 40,
-		"versions": [
-			"1.5.6",
-			"1.5.5",
-			"1.5.2",
-			"1.5.1",
-			"1.5.0",
-			"1.4.2",
-			"1.4.1",
-			"1.4.0",
-			"1.3.1",
-			"1.3.0",
-			"1.2.4",
-			"1.2.3",
-			"1.2.2",
-			"1.2.1",
-			"1.2.0",
-			"1.1.2",
-			"1.1.1",
-			"1.1.0",
-			"1.0.3",
-			"1.0.2",
-			"1.0.1",
-			"1.0.0"
-		]
-	}, {
-		"abbr": "ef-display-",
-		"description" : "This element includes the FieldType Display extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"editor.display"
+		}, {
+			"abbr": "b-",
+			"description" : "This element includes the Buttons extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/buttons.{styling}"
+				],
+				"js": [
+					"js/dataTables.buttons",
+					"?js/buttons.{styling}"
+				]
+			},
+			"folderName": "Buttons",
+			"moduleName": "Buttons",
+			"outputOrder": 40,
+			"versions": [
+				"1.5.6",
+				"1.5.5",
+				"1.5.2",
+				"1.5.1",
+				"1.5.0",
+				"1.4.2",
+				"1.4.1",
+				"1.4.0",
+				"1.3.1",
+				"1.3.0",
+				"1.2.4",
+				"1.2.3",
+				"1.2.2",
+				"1.2.1",
+				"1.2.0",
+				"1.1.2",
+				"1.1.1",
+				"1.1.0",
+				"1.0.3",
+				"1.0.2",
+				"1.0.1",
+				"1.0.0"
 			]
-		},
-		"folderName": "FieldType-Display",
-		"moduleName": "FieldType-Display",
-		"outputOrder": 40,
-		"versions": [
-			"1.0.0",
-			"1.5.6",
-			"1.6.2"
-		]
-	}, {
-		"abbr": "ef-quill-",
-		"description" : "This element includes the field type quill extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"editor.quill"
+		}, {
+			"abbr": "cr-",
+			"description" : "This element includes the ColReorder extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/colReorder.{styling}"
+				],
+				"js": [
+					"js/dataTables.colReorder",
+					"?js/colReorder.{styling}"
+				]
+			},
+			"folderName": "ColReorder",
+			"moduleName": "ColReorder",
+			"outputOrder": 40,
+			"versions": [
+				"1.5.0",
+				"1.4.1",
+				"1.4.0",
+				"1.3.3",
+				"1.3.2",
+				"1.3.1",
+				"1.3.0",
+				"1.2.0",
+				"1.1.3",
+				"1.1.2",
+				"1.1.1",
+				"1.1.0",
+				"1.0.8",
+				"1.0.7",
+				"1.0.6",
+				"1.0.5",
+				"1.0.4",
+				"1.0.3",
+				"1.0.2",
+				"1.0.1",
+				"1.0.0"
 			]
-		},
-		"folderName": "FieldType-Quill",
-		"moduleName": "FieldType-Quill",
-		"outputOrder": 40,
-		"versions": [
-			"0.20.0",
-			"0.20.1",
-			"1.5.6",
-			"1.6.2"
-		]
-	}, {
-		"abbr": "ef-select2-",
-		"description" : "This element includes the field type select2 extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"editor.select2"
+		}, {
+			"abbr": "fc-",
+			"description" : "This element includes the FixedColumns extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/fixedColumns.{styling}"
+				],
+				"js": [
+					"js/dataTables.fixedColumns",
+					"?js/fixedColumns.{styling}"
+				]
+			},
+			"folderName": "FixedColumns",
+			"moduleName": "FixedColumns",
+			"outputOrder": 40,
+			"versions": [
+				"3.2.5",
+				"3.2.4",
+				"3.2.3",
+				"3.2.2",
+				"3.2.1",
+				"3.2.0",
+				"3.1.0",
+				"3.0.4",
+				"3.0.3",
+				"3.0.2",
+				"3.0.1",
+				"3.0.0",
+				"2.0.3",
+				"2.0.1",
+				"2.0.0",
+				"1.1.0",
+				"1.0.1",
+				"1.0.0"
 			]
-		},
-		"folderName": "FieldType-Select2",
-		"moduleName": "FieldType-Select2",
-		"outputOrder": 40,
-		"versions": [
-			"1.5.6",
-			"1.6.2",
-			"4.0.1"
-		]
-	}, {
-		"abbr": "ef-selectize",
-		"description" : "This element includes the field type selectize extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"editor.selectize"
+		}, {
+			"abbr": "fh-",
+			"description" : "This element includes the FixedHeader extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/fixedHeader.{styling}"
+				],
+				"js": [
+					"js/dataTables.fixedHeader",
+					"?js/fixedHeader.{styling}"
+				]
+			},
+			"folderName": "FixedHeader",
+			"moduleName": "FixedHeader",
+			"outputOrder": 40,
+			"versions": [
+				"3.1.4",
+				"3.1.3",
+				"3.1.2",
+				"3.1.1",
+				"3.1.0",
+				"3.0.0",
+				"2.1.2",
+				"2.1.1",
+				"2.1.0",
+				"2.0.6",
+				"2.0.5",
+				"2.0.4",
+				"2.0.3",
+				"2.0.2",
+				"2.0.1",
+				"2.0.0"
 			]
-		},
-		"folderName": "FieldType-Selectize",
-		"moduleName": "FieldType-Selectize",
-		"outputOrder": 40,
-		"versions": [
-			"0.12.1",
-			"1.5.6",
-			"1.6.2"
-		]
-	}, {
-		"abbr": "ef-title",
-		"description" : "This element includes the field type title extension files.",
-		"excludes": [],
-		"fileIncludes": {},
-		"fileNames": {
-			"js": [
-				"editor.title"
+		}, {
+			"abbr": "kt-",
+			"description" : "This element includes the KeyTable extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/keyTable.{styling}"
+				],
+				"js": [
+					"js/dataTables.keyTable",
+					"?js/keyTable.{styling}"
+				]
+			},
+			"folderName": "KeyTable",
+			"moduleName": "KeyTable",
+			"outputOrder": 40,
+			"versions": [
+				"2.5.0",
+				"2.4.1",
+				"2.4.0",
+				"2.3.2",
+				"2.3.1",
+				"2.3.0",
+				"2.2.1",
+				"2.2.0",
+				"2.1.3",
+				"2.1.2",
+				"2.1.1",
+				"2.1.0",
+				"2.0.0",
+				"1.2.1",
+				"1.2.0",
+				"1.1.7",
+				"1.1.6",
+				"1.1.5",
+				"1.1.4",
+				"1.1.3",
+				"1.1.2",
+				"1.1.1",
+				"1.1.0",
+				"1.0.4",
+				"1.0.3",
+				"1.0.2",
+				"1.0.1",
+				"1.0.0"
 			]
-		},
-		"folderName": "FieldType-Title",
-		"moduleName": "FieldType-Title",
-		"outputOrder": 40,
-		"versions": [
-			"1.0.0",
-			"1.5.6",
-			"1.6.2"
-		]
-	}],
+		}, {
+			"abbr": "r-",
+			"description" : "This element includes the Responsive extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/responsive.{styling}"
+				],
+				"js": [
+					"js/dataTables.responsive",
+					"?js/responsive.{styling}"
+				]
+			},
+			"folderName": "Responsive",
+			"moduleName": "Responsive",
+			"outputOrder": 40,
+			"versions": [
+				"2.2.2",
+				"2.2.1",
+				"2.2.0",
+				"2.1.1",
+				"2.1.0",
+				"2.0.2",
+				"2.0.1",
+				"2.0.0",
+				"1.0.7",
+				"1.0.6",
+				"1.0.5",
+				"1.0.4",
+				"1.0.3",
+				"1.0.2",
+				"1.0.1",
+				"1.0.0"
+			]
+		}, {
+			"abbr": "rg-",
+			"description" : "This element includes the RowGroup extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/rowGroup.{styling}"
+				],
+				"js": [
+					"js/dataTables.rowGroup",
+					"?js/rowGroup.{styling}"
+				]
+			},
+			"folderName": "RowGroup",
+			"moduleName": "RowGroup",
+			"outputOrder": 40,
+			"versions": [
+				"1.1.0",
+				"1.0.4",
+				"1.0.3",
+				"1.0.2",
+				"1.0.1",
+				"1.0.0"
+			]
+		}, {
+			"abbr": "rr-",
+			"description" : "This element includes the RowReorder extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/rowReorder.{styling}"
+				],
+				"js": [
+					"js/dataTables.rowReorder",
+					"?js/rowReorder.{styling}"
+				]
+			},
+			"folderName": "RowReorder",
+			"moduleName": "RowReorder",
+			"outputOrder": 40,
+			"versions": [
+				"1.2.4",
+				"1.2.3",
+				"1.2.2",
+				"1.2.1",
+				"1.2.0",
+				"1.1.2",
+				"1.1.1",
+				"1.1.0",
+				"1.0.0"
+			]
+		}, {
+			"abbr": "sc-",
+			"description" : "This element includes the Scroller extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/scroller.{styling}"
+				],
+				"js": [
+					"js/dataTables.scroller",
+					"?js/scroller.{styling}"
+				]
+			},
+			"folderName": "Scroller",
+			"moduleName": "Scroller",
+			"outputOrder": 40,
+			"versions": [
+				"2.0.0",
+				"1.5.0",
+				"1.4.4",
+				"1.4.3",
+				"1.4.2",
+				"1.4.1",
+				"1.4.0",
+				"1.3.0",
+				"1.2.2",
+				"1.2.1",
+				"1.2.0",
+				"1.1.0",
+				"1.0.2",
+				"1.0.1",
+				"1.0.0"
+			]
+		}, {
+			"abbr": "sl-",
+			"description" : "This element includes the Select extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/select.{styling}"
+				],
+				"js": [
+					"js/dataTables.select",
+					"?js/select.{styling}"
+				]
+			},
+			"folderName": "Select",
+			"moduleName": "Select",
+			"outputOrder": 40,
+			"versions": [
+				"1.3.0",
+				"1.2.6",
+				"1.2.5",
+				"1.2.4",
+				"1.2.3",
+				"1.2.2",
+				"1.2.1",
+				"1.2.0",
+				"1.1.2",
+				"1.1.1",
+				"1.1.0",
+				"1.0.1",
+				"1.0.0"
+			]
+		}, {
+			"abbr": "b-colvis-",
+			"description" : "This element includes the Colvis buttons sub-extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"js/buttons.colVis"
+				]
+			},
+			"folderName": "Buttons",
+			"moduleName": "Column visibility",
+			"outputOrder": 40,
+			"versions": [
+				"1.5.6",
+				"1.5.5",
+				"1.5.2",
+				"1.5.1",
+				"1.5.0",
+				"1.4.2",
+				"1.4.1",
+				"1.4.0",
+				"1.3.1",
+				"1.3.0",
+				"1.2.4",
+				"1.2.3",
+				"1.2.2",
+				"1.2.1",
+				"1.2.0",
+				"1.1.2",
+				"1.1.1",
+				"1.1.0",
+				"1.0.3",
+				"1.0.2",
+				"1.0.1",
+				"1.0.0"
+			]
+		}, {
+			"abbr": "b-flash-",
+			"description" : "This element includes the Flash Export buttons sub-extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"js/buttons.flash"
+				]
+			},
+			"folderName": "Buttons",
+			"moduleName": "Flash export",
+			"outputOrder": 40,
+			"versions": [
+				"1.5.6",
+				"1.5.5",
+				"1.5.2",
+				"1.5.1",
+				"1.5.0",
+				"1.4.2",
+				"1.4.1",
+				"1.4.0",
+				"1.3.1",
+				"1.3.0",
+				"1.2.4",
+				"1.2.3",
+				"1.2.2",
+				"1.2.1",
+				"1.2.0",
+				"1.1.2",
+				"1.1.1",
+				"1.1.0",
+				"1.0.3",
+				"1.0.2",
+				"1.0.1",
+				"1.0.0"
+			]
+		}, {
+			"abbr": "b-html5-",
+			"description" : "This element includes the html5 export buttons sub-extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"js/buttons.html5"
+				]
+			},
+			"folderName": "Buttons",
+			"moduleName": "HTML5 export",
+			"outputOrder": 40,
+			"versions": [
+				"1.5.6",
+				"1.5.5",
+				"1.5.2",
+				"1.5.1",
+				"1.5.0",
+				"1.4.2",
+				"1.4.1",
+				"1.4.0",
+				"1.3.1",
+				"1.3.0",
+				"1.2.4",
+				"1.2.3",
+				"1.2.2",
+				"1.2.1",
+				"1.2.0",
+				"1.1.2",
+				"1.1.1",
+				"1.1.0",
+				"1.0.3",
+				"1.0.2",
+				"1.0.1",
+				"1.0.0"
+			]
+		}, {
+			"abbr": "b-print-",
+			"description" : "This element includes the print view buttons sub-extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"js/buttons.print"
+				]
+			},
+			"folderName": "Buttons",
+			"moduleName": "Print view",
+			"outputOrder": 40,
+			"versions": [
+				"1.5.6",
+				"1.5.5",
+				"1.5.2",
+				"1.5.1",
+				"1.5.0",
+				"1.4.2",
+				"1.4.1",
+				"1.4.0",
+				"1.3.1",
+				"1.3.0",
+				"1.2.4",
+				"1.2.3",
+				"1.2.2",
+				"1.2.1",
+				"1.2.0",
+				"1.1.2",
+				"1.1.1",
+				"1.1.0",
+				"1.0.3",
+				"1.0.2",
+				"1.0.1",
+				"1.0.0"
+			]
+		}, {
+			"abbr": "ef-display-",
+			"description" : "This element includes the FieldType Display extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"editor.display"
+				]
+			},
+			"folderName": "FieldType-Display",
+			"moduleName": "FieldType-Display",
+			"outputOrder": 40,
+			"versions": [
+				"1.0.0",
+				"1.5.6",
+				"1.6.2"
+			]
+		}, {
+			"abbr": "ef-quill-",
+			"description" : "This element includes the field type quill extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"editor.quill"
+				]
+			},
+			"folderName": "FieldType-Quill",
+			"moduleName": "FieldType-Quill",
+			"outputOrder": 40,
+			"versions": [
+				"0.20.0",
+				"0.20.1",
+				"1.5.6",
+				"1.6.2"
+			]
+		}, {
+			"abbr": "ef-select2-",
+			"description" : "This element includes the field type select2 extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"editor.select2"
+				]
+			},
+			"folderName": "FieldType-Select2",
+			"moduleName": "FieldType-Select2",
+			"outputOrder": 40,
+			"versions": [
+				"1.5.6",
+				"1.6.2",
+				"4.0.1"
+			]
+		}, {
+			"abbr": "ef-selectize",
+			"description" : "This element includes the field type selectize extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"editor.selectize"
+				]
+			},
+			"folderName": "FieldType-Selectize",
+			"moduleName": "FieldType-Selectize",
+			"outputOrder": 40,
+			"versions": [
+				"0.12.1",
+				"1.5.6",
+				"1.6.2"
+			]
+		}, {
+			"abbr": "ef-title",
+			"description" : "This element includes the field type title extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"editor.title"
+				]
+			},
+			"folderName": "FieldType-Title",
+			"moduleName": "FieldType-Title",
+			"outputOrder": 40,
+			"versions": [
+				"1.0.0",
+				"1.5.6",
+				"1.6.2"
+			]
+		}
+	],
 	"fileNames": ["datatables"],
 	"fileExtensions": [".js", ".min.js", ".css", ".min.css"],
 	"staticFileExtensions": [".png", ".eot", ".woff2", ".woff", ".ttf"],
@@ -1172,5 +1175,6 @@
 		"_extensionsList": "{extensionsList}",
 		"_extensionsURL": "{extensionsURL}",
 		"_source": "\"-source-\""
-	}
+	},
+	"selectHack": true
 }

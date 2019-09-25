@@ -42,6 +42,12 @@ export default class URLValidate {
 			return false;
 		}
 		this._logger.debug('Valid filename in request: ' + filename);
+		this._logger.warn(parsedURL)
+		if (this._config.selectHack) {
+			parsedURL = this.hackSelect(parsedURL);
+		}
+		this._logger.warn(parsedURL)
+
 		// Validate the remainder of the URL
 		return await this._validateURL(parsedURL, filename);
 	}
@@ -169,6 +175,19 @@ export default class URLValidate {
 				}
 			}
 		}
+	}
+
+	public hackSelect(parsedURL): string [] {
+		this._logger.warn('Hacking Select abbreviation');
+		for (let i = 1; i < parsedURL.length; i++) {
+			let split = parsedURL[i].split('-');
+			if (split.length > 1 && split[0] === 'se') {
+				this._logger.debug('select found after first element, changing ' + parsedURL[i] + ' to sl-' + split[1]);
+				parsedURL[i] = 'sl-' + split[1];
+			}
+		}
+		this._logger.warn(parsedURL.join('/'));
+		return parsedURL;
 	}
 
 	/**

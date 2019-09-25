@@ -153,6 +153,10 @@ export const IConfigSchema = {
       ],
       "description": "Substitutions to be made throughout the built file.\n\nThere are 2 predefined _substitutions, _extensionURL and _extensionList.\nThese provide the build message with custom data relating to the file that has been requested.\nFor these properties only the value held is replaced by the value of an internal varaible.\nFor custom substitutions the property name is replaced by its value.",
       "type": "object"
+    },
+    "selectHack": {
+      "type": "boolean",
+      "description": "Indicates whether the select hack is in place"
     }
   },
   "required": [

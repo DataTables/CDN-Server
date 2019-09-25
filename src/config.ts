@@ -54,6 +54,10 @@ export interface IConfig {
 	 * For custom substitutions the property name is replaced by its value.
 	 */
 	substitutions: {[key: string]: string};
+	/**
+	 * Select hack to cope with the naming in earlier server versions of datatables.
+	 */
+	selectHack?: boolean;
 }
 
 interface IElements {
