@@ -1,5 +1,5 @@
 {
-	"packagesDir": "./newNameCache/cache/",
+	"packagesDir": "../cache/",
 	"headerContent": "/*\n * This combined file was created by the DataTables downloader builder:\n *   https://datatables.net/download\n *\n * To rebuild or modify this file with the latest versions of the included\n * software please visit:\n *   https://datatables.net/download/#{extensionsURL}\n *\n * Included libraries:\n *  {extensionsList}\n */\n\n",
 	"cacheDuration": 31557600,
 	"cacheSize": 100,
