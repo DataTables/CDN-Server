@@ -140,18 +140,26 @@ export default class Logger {
 	}
 
 	public error(message: string) {
+		let stamp = new Date().toISOString();
+
 		// Prints `error` in red plus a message in white
 		if (this._debugger || this._logfile) {
 			message = '\x1b[31mERROR:\x1b[37m ' + message;
-			this._logger.log({level: 'error', message});
+			this._logger.log({level: 'error', message, stamp});
 		}
 		if (this._errorLogFile) {
-			this._errorLogger.log({level: 'error', message});
+			this._errorLogger.log({level: 'error', message, stamp});
 		}
 	}
 
 	public access(message: string) {
-		this._accessLogger.log({level: 'info', message});
+		let stamp = new Date().toISOString();
+
+		this._accessLogger.log({
+			level: 'info', 
+			message,
+			stamp
+		});
 	}
 
 	public help() {
