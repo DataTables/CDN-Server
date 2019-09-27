@@ -471,16 +471,32 @@
 			"fileIncludes": {},
 			"fileNames": {
 				"js": [
-					"editor.mask"
+					"dist/editor.mask"
 				]
 			},
-			"folderName": "FieldType-Mask",
-			"moduleName": "FieldType-Mask",
+			"folderName": "jquery-mask",
+			"moduleName": "jquery-mask",
 			"outputOrder": 10,
 			"versions": [
 				"1.13.4"
 			]
 		}, {
+                        "abbr": "ed-mask-",
+                        "description" : "This element includes the mark third party extension for editor.",
+                        "excludes": [],
+                        "fileIncludes": {},
+                        "fileNames": {
+                                "js": [
+                                        "dist/editor.mask"
+                                ]
+                        },
+                        "folderName": "jquery-mask",
+                        "moduleName": "jquery-mask",
+                        "outputOrder": 10,
+                        "versions": [
+                                "1.13.4"
+                        ]
+                }, {
 			"abbr": "date-",
 			"description" : "This element includes the date picker third party extension.",
 			"excludes": [],
@@ -1109,6 +1125,24 @@
 				"1.6.2"
 			]
 		}, {
+                        "abbr": "ef-mask-",
+                        "description" : "This element includes the FieldType mask extension files.",
+                        "excludes": [], 
+                        "fileIncludes": {},
+                        "fileNames": {
+                                "js": [
+                                        "editor.mask"
+                                ]
+                        },
+                        "folderName": "FieldType-Mask",
+                        "moduleName": "FieldType-Mask",
+                        "outputOrder": 40,
+                        "versions": [
+                                "1.13.3",
+                                "1.5.6",
+                                "1.6.2"
+                        ]
+                }, {
 			"abbr": "ef-quill-",
 			"description" : "This element includes the field type quill extension files.",
 			"excludes": [],
@@ -1146,7 +1180,7 @@
 				"4.0.1"
 			]
 		}, {
-			"abbr": "ef-selectize",
+			"abbr": "ef-selectize-",
 			"description" : "This element includes the field type selectize extension files.",
 			"excludes": [],
 			"fileIncludes": {},
@@ -1164,7 +1198,7 @@
 				"1.6.2"
 			]
 		}, {
-			"abbr": "ef-title",
+			"abbr": "ef-title-",
 			"description" : "This element includes the field type title extension files.",
 			"excludes": [],
 			"fileIncludes": {},
