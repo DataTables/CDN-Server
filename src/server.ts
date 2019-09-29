@@ -185,7 +185,7 @@ http.createServer(async function(req, res) {
 
 		if (!latest) {
 			res.writeHead(404, 'Error 404. Invalid URL.' + req.url);
-			logger.error('404 Invalid URL. Failed to find latest version(s) of the module(s) requested.' + req.url);
+			logger.error('404 Invalid URL. Failed to find latest version(s) of the module(s) requested. ' + req.url);
 		}
 		else {
 			logger.debug('URL Valid.');
@@ -264,7 +264,7 @@ http.createServer(async function(req, res) {
 	}
 	else {
 		res.statusCode = 404;
-		logger.error('404 Invalid URL' + req.url);
+		logger.error('404 Invalid URL ' + req.url);
 	}
 	logger.info('Ending Request');
 	res.end();
