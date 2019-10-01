@@ -156,7 +156,7 @@ export default class Logger {
 		let stamp = new Date().toISOString();
 
 		this._accessLogger.log({
-			level: 'info', 
+			level: 'info',
 			message,
 			stamp
 		});

@@ -317,7 +317,7 @@ export default class URLValidate {
 			// Check that the elements of the URL are in the correct order
 			// Order list can be undefined if an unknown element is requested from the map
 			if (orderList[j] === undefined) {
-				this._logger.error('Order of element not recognised: ' + orderList);
+				this._logger.error('Order of element not recognised: ' + parsedURL[j]);
 				return false;
 			}
 		}
