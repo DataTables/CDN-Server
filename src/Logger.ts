@@ -166,6 +166,7 @@ export default class Logger {
 		let message =
 `The following options are available when running the server:
 	-h	help: info on how to run the server
+	-a	accessLogFile: prints a message containing the requested URL to a file as specified (FILE MUST BE SPECIFIED)
 	-d	debug: prints debug messages to the console when enabled
 	-e	errorLogFile: prints the error messages to a file as specified (FILE MUST BE SPECIFIED)
 	-l	logfile: prints the debug lines to a file as specified (FILE MUST BE SPECIFIED)
