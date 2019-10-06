@@ -68,14 +68,14 @@ export default class Logger {
 			filename: this._errorLogLocation,
 			maxFiles: this._maxFiles,
 			maxSize: this._maxSize,
-			auditFile: '/tmp/somethingErrorful.json'
+			auditFile: '/tmp/tempCDNErrorLogs.json'
 		});
 		var transportAccess = new (winston.transports.DailyRotateFile)({
 			datePattern: this._frequency,
 			filename: this._accessLogLocation,
 			maxFiles: this._maxFiles,
 			maxSize: this._maxSize,
-			auditFile: '/tmp/access.json'
+			auditFile: '/tmp/tempCDNAccessLogs.json'
 		});
 
 		var transport = new (winston.transports.DailyRotateFile)({
@@ -83,7 +83,7 @@ export default class Logger {
 			filename: this._logLocation,
 			maxFiles: this._maxFiles,
 			maxSize: this._maxSize,
-			auditFile: '/tmp/something.json'
+			auditFile: '/tmp/tempCDNLogs.json'
 		});
 
 		// If the debugger option is enabled then set up a transport to the console
