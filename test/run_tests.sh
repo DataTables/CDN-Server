@@ -18,12 +18,18 @@ convert_file() {
 }
 
 ################################################
+remove_temp_file() {
+	# remove the temp working file
+	rm -f ${TMPFILE}
+}
+
+################################################
 run_test() {
 	url=$1
 	expected=$2
 	outfile=$3
 
-	rm -f ${TMPFILE}
+	remove_temp_file
 
 	result=$(curl -o $TMPFILE --silent localhost:$DT_CDN_SERVER_PORT/$url --write-out "%{http_code}")
 	if [ $result -eq $expected ] ; then
@@ -159,7 +165,6 @@ get_tests() {
 start_server
 
 # Run through all the script directories
-
 for i in `ls -1d test/scripts/*` ; do
 	echo ""
 	echo "#########################################"
@@ -175,6 +180,8 @@ for i in `ls -1d test/scripts/*` ; do
 done
 
 stop_server
+
+remove_temp_file
 
 printf "\n\nAll tests complete: %s passed, %s failed\n" $passed $failed
 exit $failed
