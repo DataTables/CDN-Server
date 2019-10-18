@@ -366,6 +366,27 @@
 				"0.1.36"
 			]
 		}, {
+                        "abbr": "ed-bsdate-",
+                        "description" : "This element includes the Editor display third party extension.",
+                        "excludes": [
+                                "ed-bsdate-"
+                        ],
+                        "fileIncludes": {},
+                        "fileNames": {
+                                "js": [
+                                        "bootstrap-datetimepicker"
+                                ],
+                                "css": [
+                                        "bootstrap-datetimepicker"
+                                ]
+                        },
+                        "folderName": "bootstrap-datetime",
+                        "moduleName": "bootstrap-datetime",
+                        "outputOrder": 10,
+			"versions": [
+				"4.15.35"
+			]
+                }, {
 			"abbr": "moment-",
 			"description" : "This element includes the moment third party extension.",
 			"excludes": [
@@ -381,6 +402,9 @@
 			"moduleName": "Moment",
 			"outputOrder": 10,
 			"versions": [
+				"2.10.6",
+				"2.11.2",
+				"2.13.0",
 				"2.18.1"
 			]
 		}, {
@@ -414,7 +438,7 @@
 					"css/selectize"
 				],
 				"js": [
-					"js/selectize"
+					"js/standalone/selectize"
 				]
 			},
 			"folderName": "Selectize",
@@ -465,13 +489,34 @@
 				"1.2.4"
 			]
 		}, {
+                        "abbr": "ed-quill-",
+                        "description" : "This element includes the quill third party extension.",
+                        "excludes": [],
+                        "fileIncludes": {},
+                        "fileNames": {
+                                "css": [
+                                        "quill.snow"
+                                ],
+                                "js": [
+                                        "quill"
+                                ]
+                        },
+                        "folderName": "Quill",
+                        "moduleName": "Quill",
+                        "outputOrder": 10,
+                        "versions": [
+                                "0.20.0",
+                                "0.20.1",
+                                "1.2.4"
+                        ]
+                }, {
 			"abbr": "mask-",
 			"description" : "This element includes the mark third party extension for editor.",
 			"excludes": [],
 			"fileIncludes": {},
 			"fileNames": {
 				"js": [
-					"dist/editor.mask"
+					"dist/jquery.mask"
 				]
 			},
 			"folderName": "jquery-mask",
@@ -487,7 +532,7 @@
                         "fileIncludes": {},
                         "fileNames": {
                                 "js": [
-                                        "dist/editor.mask"
+                                        "dist/jquery.mask"
                                 ]
                         },
                         "folderName": "jquery-mask",
@@ -551,7 +596,8 @@
 				"1.10.16",
 				"1.10.17",
 				"1.10.18",
-				"1.10.19"
+				"1.10.19",
+				"1.10.20"
 			]
 		},{
 			"abbr": "af-",
@@ -571,6 +617,7 @@
 			"moduleName": "AutoFill",
 			"outputOrder": 40,
 			"versions": [
+				"2.3.4",
 				"2.3.3",
 				"2.3.2",
 				"2.3.0",
@@ -607,6 +654,8 @@
 			"moduleName": "Buttons",
 			"outputOrder": 40,
 			"versions": [
+				"1.6.1",
+				"1.6.0",
 				"1.5.6",
 				"1.5.5",
 				"1.5.4",
@@ -650,6 +699,7 @@
 			"moduleName": "ColReorder",
 			"outputOrder": 40,
 			"versions": [
+				"1.5.2",
 				"1.5.1",
 				"1.5.0",
 				"1.4.1",
@@ -691,6 +741,7 @@
 			"moduleName": "FixedColumns",
 			"outputOrder": 40,
 			"versions": [
+				"3.3.0",
 				"3.2.6",
 				"3.2.5",
 				"3.2.4",
@@ -729,6 +780,7 @@
 			"moduleName": "FixedHeader",
 			"outputOrder": 40,
 			"versions": [
+				"3.1.6",
 				"3.1.5",
 				"3.1.4",
 				"3.1.3",
@@ -765,6 +817,7 @@
 			"moduleName": "KeyTable",
 			"outputOrder": 40,
 			"versions": [
+				"2.5.1",
 				"2.5.0",
 				"2.4.1",
 				"2.4.0",
@@ -848,6 +901,7 @@
 			"moduleName": "RowGroup",
 			"outputOrder": 40,
 			"versions": [
+				"1.1.1",
 				"1.1.0",
 				"1.0.4",
 				"1.0.3",
@@ -873,6 +927,7 @@
 			"moduleName": "RowReorder",
 			"outputOrder": 40,
 			"versions": [
+				"1.2.6",
 				"1.2.5",
 				"1.2.4",
 				"1.2.3",
@@ -902,6 +957,7 @@
 			"moduleName": "Scroller",
 			"outputOrder": 40,
 			"versions": [
+				"2.0.1",
 				"2.0.0",
 				"1.5.0",
 				"1.4.4",
@@ -936,6 +992,7 @@
 			"moduleName": "Select",
 			"outputOrder": 40,
 			"versions": [
+				"1.3.1",
 				"1.3.0",
 				"1.2.6",
 				"1.2.5",
@@ -964,6 +1021,8 @@
 			"moduleName": "Column visibility",
 			"outputOrder": 40,
 			"versions": [
+				"1.6.1",
+				"1.6.0",
 				"1.5.6",
 				"1.5.5",
 				"1.5.4",
@@ -1003,6 +1062,8 @@
 			"moduleName": "Flash export",
 			"outputOrder": 40,
 			"versions": [
+				"1.6.1",
+				"1.6.0",
 				"1.5.6",
 				"1.5.5",
 				"1.5.4",
@@ -1042,6 +1103,8 @@
 			"moduleName": "HTML5 export",
 			"outputOrder": 40,
 			"versions": [
+				"1.6.1",
+				"1.6.0",
 				"1.5.6",
 				"1.5.5",
 				"1.5.4",
@@ -1081,6 +1144,8 @@
 			"moduleName": "Print view",
 			"outputOrder": 40,
 			"versions": [
+				"1.6.1",
+				"1.6.0",
 				"1.5.6",
 				"1.5.5",
 				"1.5.4",
@@ -1107,6 +1172,25 @@
 				"1.0.0"
 			]
 		}, {
+                        "abbr": "ef-bsdatetime-",
+                        "description" : "This element includes the FieldType bootstrap date time picker extension files.",
+                        "excludes": [],
+                        "fileIncludes": {},
+                        "fileNames": {
+                                "js": [
+                                        "editor.bsdatetime"
+                                ]
+                        },
+                        "folderName": "FieldType-BSDateTime",
+                        "moduleName": "FieldType-BSDateTime",
+                        "outputOrder": 40,
+                        "versions": [
+                                "1.0.0",
+                                "1.5.6",
+                                "1.6.2",
+                                "4.15.35"
+                        ]
+                }, {
 			"abbr": "ef-display-",
 			"description" : "This element includes the FieldType Display extension files.",
 			"excludes": [],
