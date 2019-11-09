@@ -68,7 +68,7 @@ export default class MetaInformation {
 	 */
 	public getDetails(content: string, inclusion: string[], t0: number): IDetails {
 		this._logger.debug('Call for details succesful.');
-		return  {
+		return {
 			fileSize: content.length,
 			hash: 'sha256-' + hash.sha256().update(content).digest('hex'),
 			includedFiles: inclusion,

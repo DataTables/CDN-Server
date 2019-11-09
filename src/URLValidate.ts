@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import * as cmp from 'semver-compare';
 import { IConfig } from './config';
 
+import * as utils from './utility-functions';
+
 import * as util from 'util';
 
 const fileExists = util.promisify(fs.readFile);
@@ -57,41 +59,13 @@ export default class URLValidate {
 	 * @param inputURL The URL of which the latest versions are to be found for
 	 * @returns {boolean | string} returns either the valid filename or a boolean value indicating a fail
 	 */
-	public async validateLatest(inputURL: string): Promise <boolean | string> {
+	public async validateLatest(inputURL: string): Promise<boolean | string> {
 		this._logger.debug('Validating URL for latest request');
 		let parsedURL: string[];
-
 		parsedURL = inputURL.split(new RegExp('[' + this._config.separators.join('') + ']'));
-		let requiresList = this._config.requires.slice();
-
-		// iterate through the URL and extract the order for each element, adding to orderList
-		let orderList: number[] = [];
-
-		for (let element of parsedURL) {
-			orderList.push(this._maps.outputOrderMap.get(element));
-		}
-
-		// Confirm that the all of the orders are present.
-		for (let order of orderList) {
-			if (requiresList.indexOf(order) !== -1) {
-				requiresList.splice(requiresList.indexOf(order), 1);
-
-				if (orderList.length === 0) {
-					break;
-				}
-			}
-
-			if (order === undefined) {
-				this._logger.error('Order of element not recognised')
-				return false;
-			}
-		}
-
-		if (requiresList.length > 0) {
-			this._logger.error('Not all required orders included in request. Orders still to be included: ' + requiresList);
+		if (utils.findStaticRequest(parsedURL, this._maps.outputOrderMap, this._config.requires, this._logger) !== -1) {
 			return false;
 		}
-		this._logger.debug('All required orders present.');
 
 		// Confirm that the URL only contains valid abbreviations.
 		for (let i = 1; i < parsedURL.length; i++) {
@@ -120,41 +94,17 @@ export default class URLValidate {
 		return false;
 	}
 
-	/**
-	 * Finds the point at which the static request begins
-	 * @param parsedURL the inputURL of which the cut point is to be found
-	 */
-	private _findCut(parsedURL): number | boolean {
-
-		// iterate through the URL and extract the order for each element, adding to orderList
-		let orderList: number[] = [];
-
-		for (let element of parsedURL) {
-			let str: string[] = element.split('-');
-			if (str.length > 2) {
-				str[0] += '-';
-				for (let k = 1; k < str.length - 1; k++) {
-					str[0] += str[k] + '-';
-				}
-			}
-			else if (str.length > 1) {
-				str[0] += '-';
-			}
-			orderList.push(this._maps.outputOrderMap.get(str[0]));
-		}
-
-		for (let j = 0; j < orderList.length; j++) {
-
-			// Check that the elements of the URL are in the correct order
-			// Order list can be undefined if an unknown element is requested from the map
-			// As we are checking for a static file we want to return this point
-			if (orderList[j] === undefined) {
-				return j;
+	public hackSelect(parsedURL): string[] {
+		this._logger.warn('Hacking Select abbreviation');
+		for (let i = 1; i < parsedURL.length; i++) {
+			let split = parsedURL[i].split('-');
+			if (split.length > 1 && split[0] === 'se') {
+				this._logger.debug('select found after first element, changing ' + parsedURL[i] + ' to sl-' + split[1]);
+				parsedURL[i] = 'sl-' + split[1];
 			}
 		}
-
-		this._logger.debug('URL modules are all in the correct order.');
-		return false;
+		this._logger.warn(parsedURL.join('/'));
+		return parsedURL;
 	}
 
 	/**
@@ -177,49 +127,35 @@ export default class URLValidate {
 		}
 	}
 
-	public hackSelect(parsedURL): string [] {
-		this._logger.warn('Hacking Select abbreviation');
-		for (let i = 1; i < parsedURL.length; i++) {
-			let split = parsedURL[i].split('-');
-			if (split.length > 1 && split[0] === 'se') {
-				this._logger.debug('select found after first element, changing ' + parsedURL[i] + ' to sl-' + split[1]);
-				parsedURL[i] = 'sl-' + split[1];
-			}
-		}
-		this._logger.warn(parsedURL.join('/'));
-		return parsedURL;
-	}
-
 	/**
 	 * @param parsedURL The Elements of the original URL which have been broken down by separators
 	 * @returns {boolean} returns a boolean value indicating whether the abbreviation requested is valid
 	 */
 	private _validateAbbreviation(parsedURL: string): boolean {
 		// Scan all of the modules to find the abbreviation.
-	   for (let element of this._config.elements) {
-		   if (parsedURL === element.abbr) {
-			   return true;
-		   }
-	   }
+		for (let element of this._config.elements) {
+			if (parsedURL === element.abbr) {
+				return true;
+			}
+		}
 
-	   return false;
-   }
+		return false;
+	}
 
 	/**
 	 * validates that the static request is legal
 	 * @param parsedURL the URL which is to be validated for a static file request
 	 * @param filename the name of the file requested
 	 */
-	private async _validateExtraRequest(parsedURL, filename) {
+	private async _validateExtraRequest(parsedURL: string[], filename: string) {
 		// Find the point in the requested URL that images is and remove all of the preceeding elementsk
 		// bar one as this should be the folder name. Then construct the path to the file.
 		if (parsedURL[0] === '') {
 			parsedURL.splice(0, 1);
 		}
 
-		let cut = this._findCut(parsedURL);
-
-		if (typeof cut === 'boolean') {
+		let cut = utils.findStaticRequest(parsedURL, this._maps.outputOrderMap, undefined, this._logger);
+		if (cut === -1) {
 			this._logger.error('Not a valid static request');
 			return false;
 		}
@@ -239,6 +175,8 @@ export default class URLValidate {
 		catch {
 			this._logger.error('Error finding ' + path);
 		}
+
+		return false;
 	}
 
 	/**
@@ -259,8 +197,8 @@ export default class URLValidate {
 		else if (
 			filename.search(
 				new RegExp('(' + this._config.fileNames.join('|') + ')(\\' + this._config.fileExtensions.join('|\\') + ')$')
-				) < 0
-			) {
+			) < 0
+		) {
 			return false;
 		}
 
@@ -271,7 +209,7 @@ export default class URLValidate {
 	 * validates that the standard request is legal
 	 * @param parsedURL the URL which is to be validated for a normal file request
 	 */
-	private _validateFileRequest(parsedURL) {
+	private _validateFileRequest(parsedURL: string[]): boolean {
 		// if the URL started with a separator then element 0 will be empty so remove it
 		if (parsedURL[0] === '') {
 			parsedURL.splice(0, 1);
@@ -289,45 +227,9 @@ export default class URLValidate {
 		}
 		this._logger.debug('All elements in URL have a module');
 
-		// iterate through the URL and extract the order for each element, adding to orderList
-		let orderList: number[] = [];
-
-		for (let element of parsedURL) {
-			let str: string[] = element.split('-');
-			if (str.length > 2) {
-				str[0] += '-';
-				for (let k = 1; k < str.length - 1; k++) {
-					str[0] += str[k] + '-';
-				}
-			}
-			else if (str.length > 1) {
-				str[0] += '-';
-			}
-			orderList.push(this._maps.outputOrderMap.get(str[0]));
-		}
-
-		// validate Order, Abbreviation and requirements list.
-		let requireList: number[] = this._config.requires.slice();
-
-		for (let j = 0; j < orderList.length; j++) {
-			if (requireList.indexOf(orderList[j]) > -1) {
-				requireList.splice(requireList.indexOf(orderList[j]), 1);
-			}
-
-			// Check that the elements of the URL are in the correct order
-			// Order list can be undefined if an unknown element is requested from the map
-			if (orderList[j] === undefined) {
-				this._logger.error('Unknown module ' + parsedURL[j] + ' specified.');
-				return false;
-			}
-		}
-
-		this._logger.debug('URL modules are all in the correct order.');
-		if (requireList.length > 0) {
-			this._logger.error('Not all of the required Modules have been included. Still requires: ' + requireList);
+		if (utils.findStaticRequest(parsedURL, this._maps.outputOrderMap, this._config.requires, this._logger) !== -1) {
 			return false;
 		}
-		this._logger.debug('All of the required modules have been included.');
 
 		// Validate each element has a correct version and that following elements do not include
 		// any of the excludes for the current element.
@@ -341,7 +243,7 @@ export default class URLValidate {
 
 		// Validate that none of the elements have been excluded except themselves
 		for (let element of parsedURL) {
-			let abbr = element.split('-') ;
+			let abbr = element.split('-');
 			if (abbr.length > 1) {
 				abbr[0] += '-';
 			}

@@ -1,5 +1,6 @@
 import Cache from './Cache';
-import {IConfig} from './config';
+import { IConfig } from './config';
+import * as utils from './utility-functions';
 
 import * as fs from 'fs';
 import { parse, stringify } from 'querystring';
@@ -12,7 +13,7 @@ import * as util from 'util';
 interface IDetails {
 	version: string;
 	folderName: string;
-	fileNameMap: Map <string, string[]>;
+	fileNameMap: Map<string, string[]>;
 	order: number;
 }
 
@@ -62,7 +63,7 @@ export default class BuildFile {
 		this._logger.debug('Starting Build File');
 
 		// Split URL into useful chunks and remove the first element if it is empty.
-		let parsedURL = filePath.split(new RegExp('[' + this._config.separators.join('') + ']'));
+		let parsedURL: string[] = filePath.split(new RegExp('[' + this._config.separators.join('') + ']'));
 
 		// If the parsedURL's first element is and empty string then it begins with a separator,
 		//   which is legal but will cause errors further on unless we remove the empty string from the array.
@@ -73,8 +74,8 @@ export default class BuildFile {
 		}
 
 		// Find out if the request is for a static file
-		let extras = '';
-		let extraIndex = -1;
+		let extras: string = '';
+		let extraIndex: number = -1;
 		for (let staticFile of this._config.staticFileExtensions) {
 			extraIndex = parsedURL[parsedURL.length - 1].indexOf(staticFile);
 
@@ -86,14 +87,13 @@ export default class BuildFile {
 		// If an static file is requested then there is a need to return only that file so do the following and return
 		if (extraIndex !== -1) {
 			extras = parsedURL[parsedURL.length - 1];
-			let cut = this._findCut(parsedURL);
-
-			if (typeof cut === 'number') {
+			let cut = utils.findStaticRequest(parsedURL, this._maps.outputOrderMap, undefined, this._logger);
+			if (cut !== -1) {
 				parsedURL.splice(0, cut);
 			}
 
 			// let cut = parsedURL.indexOf(extras);
-			let path = this._config.packagesDir + parsedURL.join('/');
+			let path: string = this._config.packagesDir + parsedURL.join('/');
 			this._logger.debug('Checking for ' + extras + ' in cache');
 			let fromCache = this._storedFiles.searchCache(path);
 
@@ -109,7 +109,7 @@ export default class BuildFile {
 			}
 		}
 
-		let cloneParsedURL = parsedURL.slice();
+		let cloneParsedURL: string[] = parsedURL.slice();
 		cloneParsedURL.pop();
 		filePath = cloneParsedURL.join('/');
 
@@ -125,10 +125,10 @@ export default class BuildFile {
 		this._logger.debug('Retrieving relevant data for build');
 		for (let i = 0; i < parsedURL.length; i++) {
 			let folderName: string;
-			let fileName: Map < string, string [] >;
+			let fileName: Map<string, string[]>;
 			let vers: string;
 			let order: number;
-			let strParsed = parsedURL[i].split('-');
+			let strParsed: string[] = parsedURL[i].split('-');
 
 			// If the URL includes a version add a '-' to the abbreviation as in config,
 			// otherwise no version is associated with this element so push an empty string
@@ -340,7 +340,7 @@ export default class BuildFile {
 	 * This function fetches the sub files from the cache or the dist folder
 	 * @param fileIn The path to the next sub file to be found
 	 */
-	private async _fetchFile(fileIn: string, folder: string, version: string): Promise <string | boolean | number> {
+	private async _fetchFile(fileIn: string, folder: string, version: string): Promise<string | boolean | number> {
 
 		// Try to find the file and return it, if it's not found then return an empty string,
 		// If an error occurs return '500' and log it.
@@ -388,7 +388,7 @@ export default class BuildFile {
 	private async _fetchReplace(parsedDetail, filename, parsedURL) {
 
 		// Create path based on order of the element
-		let path: string = this._config.packagesDir + parsedDetail.folderName + '-' + parsedDetail.version +  '/' + filename;
+		let path: string = this._config.packagesDir + parsedDetail.folderName + '-' + parsedDetail.version + '/' + filename;
 
 		// Get the new bit of file
 		this._logger.debug('Fetching sub-file');
@@ -430,9 +430,9 @@ export default class BuildFile {
 						let pathAddition = original[2].split(new RegExp('[' + this._config.separators.join('') + ']')).join('/');
 
 						let url = '/' + parsedDetail.folderName
-						+ '-' + parsedDetail.version
-						+ '/' + splitName
-						+ '/' + pathAddition;
+							+ '-' + parsedDetail.version
+							+ '/' + splitName
+							+ '/' + pathAddition;
 						url = this._normalizePath(url);
 
 						for (let split of separators) {
@@ -445,8 +445,8 @@ export default class BuildFile {
 						}
 
 						let replacement = 'url(' + splitType
-						+ url
-						+ splitType +  ')';
+							+ url
+							+ splitType + ')';
 						fileAddition = fileAddition.replace(match, replacement);
 					}
 				}
@@ -457,48 +457,13 @@ export default class BuildFile {
 	}
 
 	/**
-	 * Finds the point at which the static request begins
-	 * @param parsedURL the inputURL of which the cut point is to be found
-	 */
-	private _findCut(parsedURL): number | boolean {
-		// iterate through the URL and extract the order for each element, adding to orderList
-		let orderList: number[] = [];
-
-		for (let element of parsedURL) {
-			let str: string[] = element.split('-');
-			if (str.length > 2) {
-				str[0] += '-';
-				for (let k = 1; k < str.length - 1; k++) {
-					str[0] += str[k] + '-';
-				}
-			}
-			else if (str.length > 1) {
-				str[0] += '-';
-			}
-			orderList.push(this._maps.outputOrderMap.get(str[0]));
-		}
-
-		for (let j = 0; j < orderList.length; j++) {
-
-			// Check that the elements of the URL are in the correct order
-			// Order list can be undefined if an unknown element is requested from the map
-			if (orderList[j] === undefined) {
-				return j;
-			}
-		}
-
-		this._logger.debug('URL modules are all in the correct order.');
-		return false;
-	}
-
-	/**
 	 * Function to log a message, update the cache and return the content.
 	 * @param logMessage The message to be logged to the debugger
 	 * @param filename The name of the file being returned
 	 * @param returnContent The content of the file being returned
 	 * @param refresh whether the cache is to be refreshed.
 	 */
-	private _logUpdateReturn(logMessage: string, filename, returnContent, refresh) {
+	private _logUpdateReturn(logMessage: string, filename: string, returnContent, refresh) {
 		this._logger.debug(logMessage);
 		this._storedFiles.updateCache(filename, returnContent, refresh);
 		return returnContent;
@@ -508,25 +473,27 @@ export default class BuildFile {
 	 * Takes a url and removes useless elements and shortens
 	 * @param url url which is to be normalized
 	 */
-	private _normalizePath(url): string {
-		let parsedURL = url.split('/');
-		let emptyIndex = parsedURL.indexOf('');
-		while (emptyIndex !== -1) {
-			parsedURL.splice(emptyIndex, 1);
-			emptyIndex = parsedURL.indexOf('');
+	private _normalizePath(url: string): string {
+		let parsedURL: string[] = url.split('/');
+		let index: number;
+
+		index = parsedURL.indexOf('');
+		while (index !== -1) {
+			parsedURL.splice(index, 1);
+			index = parsedURL.indexOf('');
 		}
-		let thisIndex = parsedURL.indexOf('.');
-		while (thisIndex !== -1) {
-			parsedURL.splice(thisIndex, 1);
-			thisIndex = parsedURL.indexOf('.');
+		index = parsedURL.indexOf('.');
+		while (index !== -1) {
+			parsedURL.splice(index, 1);
+			index = parsedURL.indexOf('.');
 		}
-		let prevIndex = parsedURL.indexOf('..');
-		while (prevIndex !== -1) {
-			parsedURL.splice(prevIndex - 1, 2);
-			prevIndex = parsedURL.indexOf('..');
-			if (prevIndex === 0) {
-		 		break;
-		 	}
+		index = parsedURL.indexOf('..');
+		while (index !== -1) {
+			parsedURL.splice(index - 1, 2);
+			index = parsedURL.indexOf('..');
+			if (index === 0) {
+				break;
+			}
 		}
 		url = '/' + parsedURL.join('/');
 		return url;
@@ -537,27 +504,23 @@ export default class BuildFile {
 	 * This function reorders them so that they are corrected.
 	 * @param parsedURL The Input URL that is to be reordered for building
 	 */
-	private _reOrderBuild(parsedURL) {
-
-		let filename = parsedURL.pop();
-
-		let originalURL = parsedURL.slice();
+	private _reOrderBuild(parsedURL: string[]) {
+		let filename: string = parsedURL.pop();
+		let originalURL: string[] = parsedURL.slice();
 
 		// Sort the array based on the buildOrders of the elements
 		parsedURL.sort((a, b) => {
-			let abbrA = a.split('-');
-			let abbrB = b.split('-');
+			let abbrA: string[] = a.split('-');
+			let abbrB: string[] = b.split('-');
 
-			abbrA = abbrA.length > 1 ?
-				abbrA = abbrA[0] + '-' :
-				abbrA = abbrA[0];
+			let abA: string;
+			let abB: string;
 
-			abbrB = abbrB.length > -1 ?
-				abbrB = abbrB[0] + '-' :
-				abbrB = abbrB[0];
+			abA = abbrA.length > 1 ? abbrA[0] + '-' : abbrA[0];
+			abB = abbrB.length > -1 ? abbrB[0] + '-' : abbrB[0];
 
-			let ordA = this._maps.outputOrderMap.get(abbrA);
-			let ordB = this._maps.outputOrderMap.get(abbrB);
+			let ordA = this._maps.outputOrderMap.get(abA);
+			let ordB = this._maps.outputOrderMap.get(abB);
 			if (ordA > ordB) {
 				return 1;
 			}

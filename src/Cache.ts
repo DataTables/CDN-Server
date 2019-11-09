@@ -87,7 +87,7 @@ export default class Cache {
 		let folderNameMap = new Map<string, string>();
 		let moduleNameMap = new Map<string, string>();
 		let fileNameMap = new Map<string, Map<string, string[]>>();
-		let includesMap = new Map <string, {}>();
+		let includesMap = new Map<string, {}>();
 
 		for (let element of this._config.elements) {
 			outputOrderMap.set(element.abbr, element.outputOrder);
@@ -98,7 +98,7 @@ export default class Cache {
 			let fileValues: string[][] = Object.values(element.fileNames);
 
 			// This is the map between the file type and the array of files to be built
-			let tempMap = new Map <string, string[]>();
+			let tempMap = new Map<string, string[]>();
 
 			for (let j = 0; j < fileKeys.length; j++) {
 				tempMap.set(fileKeys[j], fileValues[j]);

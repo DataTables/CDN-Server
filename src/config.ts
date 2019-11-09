@@ -53,7 +53,7 @@ export interface IConfig {
 	 * For these properties only the value held is replaced by the value of an internal varaible.
 	 * For custom substitutions the property name is replaced by its value.
 	 */
-	substitutions: {[key: string]: string};
+	substitutions: { [key: string]: string };
 	/**
 	 * Select hack to cope with the naming in earlier server versions of datatables.
 	 */
@@ -78,11 +78,11 @@ interface IElements {
 	/**
 	 *  Any entries into file Includes will be replaced in a forward match manner.
 	 */
-	fileIncludes: {[key: string]: string};
+	fileIncludes: { [key: string]: string };
 	/**
 	 * The key in fileNames should be the file type of the given file names inside the corresponding array.
 	 */
-	fileNames: {[key: string]: string[]};
+	fileNames: { [key: string]: string[] };
 	/**
 	 * The name of the target folder that holds the desired files for this module.
 	 */
