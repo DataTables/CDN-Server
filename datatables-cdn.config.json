@@ -25,8 +25,7 @@
 		"fileNames": {},
 		"folderName": "DataTables",
 		"moduleName": "DataTables",
-		"outputOrder": 20,
-		"versions": []
+		"outputOrder": 20
 		}, {
 			"abbr": "se-",
 			"description" : "This element includes the semantic styling of a certain version.",
@@ -51,10 +50,7 @@
 			},
 			"folderName": "SemanticUI",
 			"moduleName": "SemanticUI",
-			"outputOrder": 20,
-			"versions": [
-				"2.2.13"
-			]
+			"outputOrder": 20
 		}, {
 			"abbr": "se",
 			"description" : "This element includes the semantic styling.",
@@ -76,8 +72,7 @@
 			"fileNames": {},
 			"folderName": "SemanticUI",
 			"moduleName": "SemanticUI",
-			"outputOrder": 20,
-			"versions": []
+			"outputOrder": 20
 		}, {
 			"abbr": "bs4",
 			"description" : "This element includes the bootstrap4 styling.",
@@ -99,8 +94,7 @@
 			"fileNames": {},
 			"folderName": "Bootstrap-4",
 			"moduleName": "Bootstrap-4",
-			"outputOrder": 20,
-			"versions": []
+			"outputOrder": 20
 		}, {
 			"abbr": "bs4-",
 			"description" : "This element includes the bootstrap4 styling of a specific version.",
@@ -125,11 +119,7 @@
 			},
 			"folderName": "Bootstrap-4",
 			"moduleName": "Bootstrap-4",
-			"outputOrder": 20,
-			"versions": [
-				"4.1.1",
-				"4.0.0"
-			]
+			"outputOrder": 20
 		}, {
 			"abbr": "bs",
 			"description" : "This element includes the bootstrap3 styling.",
@@ -151,8 +141,7 @@
 			"fileNames": {},
 			"folderName": "Bootstrap",
 			"moduleName": "Bootstrap",
-			"outputOrder": 20,
-			"versions": []
+			"outputOrder": 20
 		}, {
 			"abbr": "bs-",
 			"description" : "This element includes the bootstrap3 styling of a certain version.",
@@ -177,12 +166,7 @@
 			},
 			"folderName": "Bootstrap",
 			"moduleName": "Bootstrap",
-			"outputOrder": 20,
-			"versions": [
-				"3.3.7",
-				"3.3.5",
-				"3.3.6"
-			]
+			"outputOrder": 20
 		}, {
 			"abbr": "zf",
 			"description" : "This element includes the foundation styling.",
@@ -204,8 +188,7 @@
 			"fileNames": {},
 			"folderName": "Foundation",
 			"moduleName": "Foundation",
-			"outputOrder": 20,
-			"versions": []
+			"outputOrder": 20
 		}, {
 			"abbr": "zf-",
 			"description" : "This element includes the foundation styling of a specific version.",
@@ -230,11 +213,7 @@
 			},
 			"folderName": "Foundation",
 			"moduleName": "Foundation",
-			"outputOrder": 20,
-			"versions": [
-				"6.4.3",
-				"5.5.2"
-			]
+			"outputOrder": 20
 		},{
 			"abbr": "ju",
 			"description" : "This element includes the jqueryui styling.",
@@ -255,8 +234,7 @@
 			"fileNames": {},
 			"folderName": "jQueryUI",
 			"moduleName": "jQueryUI",
-			"outputOrder": 20,
-			"versions": []
+			"outputOrder": 20
 		}, {
 			"abbr": "ju-",
 			"description" : "This element includes the jqueryui styling of a specific version.",
@@ -283,11 +261,7 @@
 			},
 			"folderName": "jQueryUI",
 			"moduleName": "jQueryUI",
-			"outputOrder": 20,
-			"versions": [
-				"1.11.4",
-				"1.12.1"
-			]
+			"outputOrder": 20
 		}, {
 			"abbr": "jqc-",
 			"description" : "This element includes jQuery below version 2.",
@@ -300,13 +274,7 @@
 			},
 			"folderName": "jQuery",
 			"moduleName": "jQuery",
-			"outputOrder": 1,
-			"versions": [
-				"1.12.4",
-				"1.11.3",
-				"1.12.0",
-				"1.12.3"
-			]
+			"outputOrder": 1
 		}, {
 			"abbr": "jq-",
 			"description" : "This element includes jQuery past version 2.",
@@ -319,16 +287,7 @@
 			},
 			"folderName": "jQuery",
 			"moduleName": "jQuery",
-			"outputOrder": 1,
-			"versions": [
-				"3.3.1",
-				"2.1.4",
-				"2.2.0",
-				"2.2.3",
-				"2.2.4",
-				"3.2.1",
-				"1.12.4"
-			]
+			"outputOrder": 1
 		}, {
 			"abbr": "jszip-",
 			"description" : "This element includes the jszip third party extension.",
@@ -341,11 +300,7 @@
 			},
 			"folderName": "JSZip",
 			"moduleName": "JSZip",
-			"outputOrder": 10,
-			"versions": [
-				"2.5.0",
-				"3.1.3"
-			]
+			"outputOrder": 10
 		}, {
 			"abbr": "pdfmake-",
 			"description" : "This element includes the pdfmake third party extension.",
@@ -358,13 +313,7 @@
 			},
 			"folderName": "pdfmake",
 			"moduleName": "pdfmake",
-			"outputOrder": 10,
-			"versions": [
-				"0.1.18",
-				"0.1.27",
-				"0.1.32",
-				"0.1.36"
-			]
+			"outputOrder": 10
 		}, {
                         "abbr": "ed-bsdate-",
                         "description" : "This element includes the Editor display third party extension.",
@@ -382,10 +331,7 @@
                         },
                         "folderName": "bootstrap-datetime",
                         "moduleName": "bootstrap-datetime",
-                        "outputOrder": 10,
-			"versions": [
-				"4.15.35"
-			]
+                        "outputOrder": 10
                 }, {
 			"abbr": "moment-",
 			"description" : "This element includes the moment third party extension.",
@@ -400,13 +346,7 @@
 			},
 			"folderName": "Moment",
 			"moduleName": "Moment",
-			"outputOrder": 10,
-			"versions": [
-				"2.10.6",
-				"2.11.2",
-				"2.13.0",
-				"2.18.1"
-			]
+			"outputOrder": 10
 		}, {
 			"abbr": "momentjs-",
 			"description" : "This element includes the moment js third party extension.",
@@ -421,13 +361,7 @@
 			},
 			"folderName": "MomentJS",
 			"moduleName": "MomentJS",
-			"outputOrder": 10,
-			"versions": [
-				"2.10.6",
-				"2.11.2",
-				"2.14.0",
-				"2.18.1"
-			]
+			"outputOrder": 10
 		}, {
 			"abbr": "selectize-",
 			"description" : "This element includes the selectize third party extension.",
@@ -443,10 +377,7 @@
 			},
 			"folderName": "Selectize",
 			"moduleName": "Selectize",
-			"outputOrder": 10,
-			"versions": [
-				"0.12.1"
-			]
+			"outputOrder": 10
 		}, {
 			"abbr": "select2-",
 			"description" : "This element includes the select2 third party extension.",
@@ -462,11 +393,7 @@
 			},
 			"folderName": "Select2",
 			"moduleName": "Select2",
-			"outputOrder": 10,
-			"versions": [
-				"4.0.0",
-				"4.0.1"
-			]
+			"outputOrder": 10
 		}, {
 			"abbr": "quill-",
 			"description" : "This element includes the quill third party extension.",
@@ -482,12 +409,7 @@
 			},
 			"folderName": "Quill",
 			"moduleName": "Quill",
-			"outputOrder": 10,
-			"versions": [
-				"0.20.0",
-				"0.20.1",
-				"1.2.4"
-			]
+			"outputOrder": 10
 		}, {
                         "abbr": "ed-quill-",
                         "description" : "This element includes the quill third party extension.",
@@ -503,12 +425,7 @@
                         },
                         "folderName": "Quill",
                         "moduleName": "Quill",
-                        "outputOrder": 10,
-                        "versions": [
-                                "0.20.0",
-                                "0.20.1",
-                                "1.2.4"
-                        ]
+                        "outputOrder": 10
                 }, {
 			"abbr": "mask-",
 			"description" : "This element includes the mark third party extension for editor.",
@@ -521,10 +438,7 @@
 			},
 			"folderName": "jquery-mask",
 			"moduleName": "jquery-mask",
-			"outputOrder": 10,
-			"versions": [
-				"1.13.4"
-			]
+			"outputOrder": 10
 		}, {
                         "abbr": "ed-mask-",
                         "description" : "This element includes the mark third party extension for editor.",
@@ -537,10 +451,7 @@
                         },
                         "folderName": "jquery-mask",
                         "moduleName": "jquery-mask",
-                        "outputOrder": 10,
-                        "versions": [
-                                "1.13.4"
-                        ]
+                        "outputOrder": 10
                 }, {
 			"abbr": "date-",
 			"description" : "This element includes the date picker third party extension.",
@@ -556,10 +467,7 @@
 			},
 			"folderName": "bootstrap-datepicker-4.15.35",
 			"moduleName": "bootstrap-datepicker-4.15.35",
-			"outputOrder": 10,
-			"versions": [
-				"4.15.35"
-			]
+			"outputOrder": 10
 		}, {
 			"abbr": "dt-",
 			"description" : "This element includes the DataTables core files.",
@@ -576,29 +484,7 @@
 			},
 			"folderName": "DataTables",
 			"moduleName": "DataTables",
-			"outputOrder": 30,
-			"versions": [
-				"1.10.1",
-				"1.10.2",
-				"1.10.3",
-				"1.10.4",
-				"1.10.5",
-				"1.10.6",
-				"1.10.7",
-				"1.10.8",
-				"1.10.9",
-				"1.10.10",
-				"1.10.11",
-				"1.10.12",
-				"1.10.13",
-				"1.10.14",
-				"1.10.15",
-				"1.10.16",
-				"1.10.17",
-				"1.10.18",
-				"1.10.19",
-				"1.10.20"
-			]
+			"outputOrder": 30
 		},{
 			"abbr": "af-",
 			"description" : "This element includes the AutoFill extension files.",
@@ -615,27 +501,7 @@
 			},
 			"folderName": "AutoFill",
 			"moduleName": "AutoFill",
-			"outputOrder": 40,
-			"versions": [
-				"2.3.4",
-				"2.3.3",
-				"2.3.2",
-				"2.3.0",
-				"2.2.2",
-				"2.2.1",
-				"2.2.0",
-				"2.1.3",
-				"2.1.2",
-				"2.1.1",
-				"2.1.0",
-				"2.0.0",
-				"1.2.1",
-				"1.2.0",
-				"1.1.2",
-				"1.1.1",
-				"1.1.0",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "b-",
 			"description" : "This element includes the Buttons extension files.",
@@ -652,35 +518,7 @@
 			},
 			"folderName": "Buttons",
 			"moduleName": "Buttons",
-			"outputOrder": 40,
-			"versions": [
-				"1.6.1",
-				"1.6.0",
-				"1.5.6",
-				"1.5.5",
-				"1.5.4",
-				"1.5.3",
-				"1.5.2",
-				"1.5.1",
-				"1.5.0",
-				"1.4.2",
-				"1.4.1",
-				"1.4.0",
-				"1.3.1",
-				"1.3.0",
-				"1.2.4",
-				"1.2.3",
-				"1.2.2",
-				"1.2.1",
-				"1.2.0",
-				"1.1.2",
-				"1.1.1",
-				"1.1.0",
-				"1.0.3",
-				"1.0.2",
-				"1.0.1",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "cr-",
 			"description" : "This element includes the ColReorder extension files.",
@@ -697,32 +535,7 @@
 			},
 			"folderName": "ColReorder",
 			"moduleName": "ColReorder",
-			"outputOrder": 40,
-			"versions": [
-				"1.5.2",
-				"1.5.1",
-				"1.5.0",
-				"1.4.1",
-				"1.4.0",
-				"1.3.3",
-				"1.3.2",
-				"1.3.1",
-				"1.3.0",
-				"1.2.0",
-				"1.1.3",
-				"1.1.2",
-				"1.1.1",
-				"1.1.0",
-				"1.0.8",
-				"1.0.7",
-				"1.0.6",
-				"1.0.5",
-				"1.0.4",
-				"1.0.3",
-				"1.0.2",
-				"1.0.1",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "fc-",
 			"description" : "This element includes the FixedColumns extension files.",
@@ -739,29 +552,7 @@
 			},
 			"folderName": "FixedColumns",
 			"moduleName": "FixedColumns",
-			"outputOrder": 40,
-			"versions": [
-				"3.3.0",
-				"3.2.6",
-				"3.2.5",
-				"3.2.4",
-				"3.2.3",
-				"3.2.2",
-				"3.2.1",
-				"3.2.0",
-				"3.1.0",
-				"3.0.4",
-				"3.0.3",
-				"3.0.2",
-				"3.0.1",
-				"3.0.0",
-				"2.0.3",
-				"2.0.1",
-				"2.0.0",
-				"1.1.0",
-				"1.0.1",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "fh-",
 			"description" : "This element includes the FixedHeader extension files.",
@@ -778,27 +569,7 @@
 			},
 			"folderName": "FixedHeader",
 			"moduleName": "FixedHeader",
-			"outputOrder": 40,
-			"versions": [
-				"3.1.6",
-				"3.1.5",
-				"3.1.4",
-				"3.1.3",
-				"3.1.2",
-				"3.1.1",
-				"3.1.0",
-				"3.0.0",
-				"2.1.2",
-				"2.1.1",
-				"2.1.0",
-				"2.0.6",
-				"2.0.5",
-				"2.0.4",
-				"2.0.3",
-				"2.0.2",
-				"2.0.1",
-				"2.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "kt-",
 			"description" : "This element includes the KeyTable extension files.",
@@ -815,38 +586,7 @@
 			},
 			"folderName": "KeyTable",
 			"moduleName": "KeyTable",
-			"outputOrder": 40,
-			"versions": [
-				"2.5.1",
-				"2.5.0",
-				"2.4.1",
-				"2.4.0",
-				"2.3.2",
-				"2.3.1",
-				"2.3.0",
-				"2.2.1",
-				"2.2.0",
-				"2.1.3",
-				"2.1.2",
-				"2.1.1",
-				"2.1.0",
-				"2.0.0",
-				"1.2.1",
-				"1.2.0",
-				"1.1.7",
-				"1.1.6",
-				"1.1.5",
-				"1.1.4",
-				"1.1.3",
-				"1.1.2",
-				"1.1.1",
-				"1.1.0",
-				"1.0.4",
-				"1.0.3",
-				"1.0.2",
-				"1.0.1",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "r-",
 			"description" : "This element includes the Responsive extension files.",
@@ -863,26 +603,7 @@
 			},
 			"folderName": "Responsive",
 			"moduleName": "Responsive",
-			"outputOrder": 40,
-			"versions": [
-				"2.2.3",
-				"2.2.2",
-				"2.2.1",
-				"2.2.0",
-				"2.1.1",
-				"2.1.0",
-				"2.0.2",
-				"2.0.1",
-				"2.0.0",
-				"1.0.7",
-				"1.0.6",
-				"1.0.5",
-				"1.0.4",
-				"1.0.3",
-				"1.0.2",
-				"1.0.1",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "rg-",
 			"description" : "This element includes the RowGroup extension files.",
@@ -899,16 +620,7 @@
 			},
 			"folderName": "RowGroup",
 			"moduleName": "RowGroup",
-			"outputOrder": 40,
-			"versions": [
-				"1.1.1",
-				"1.1.0",
-				"1.0.4",
-				"1.0.3",
-				"1.0.2",
-				"1.0.1",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "rr-",
 			"description" : "This element includes the RowReorder extension files.",
@@ -925,20 +637,7 @@
 			},
 			"folderName": "RowReorder",
 			"moduleName": "RowReorder",
-			"outputOrder": 40,
-			"versions": [
-				"1.2.6",
-				"1.2.5",
-				"1.2.4",
-				"1.2.3",
-				"1.2.2",
-				"1.2.1",
-				"1.2.0",
-				"1.1.2",
-				"1.1.1",
-				"1.1.0",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "sc-",
 			"description" : "This element includes the Scroller extension files.",
@@ -955,25 +654,7 @@
 			},
 			"folderName": "Scroller",
 			"moduleName": "Scroller",
-			"outputOrder": 40,
-			"versions": [
-				"2.0.1",
-				"2.0.0",
-				"1.5.0",
-				"1.4.4",
-				"1.4.3",
-				"1.4.2",
-				"1.4.1",
-				"1.4.0",
-				"1.3.0",
-				"1.2.2",
-				"1.2.1",
-				"1.2.0",
-				"1.1.0",
-				"1.0.2",
-				"1.0.1",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "sl-",
 			"description" : "This element includes the Select extension files.",
@@ -990,23 +671,7 @@
 			},
 			"folderName": "Select",
 			"moduleName": "Select",
-			"outputOrder": 40,
-			"versions": [
-				"1.3.1",
-				"1.3.0",
-				"1.2.6",
-				"1.2.5",
-				"1.2.4",
-				"1.2.3",
-				"1.2.2",
-				"1.2.1",
-				"1.2.0",
-				"1.1.2",
-				"1.1.1",
-				"1.1.0",
-				"1.0.1",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "b-colvis-",
 			"description" : "This element includes the Colvis buttons sub-extension files.",
@@ -1019,35 +684,7 @@
 			},
 			"folderName": "Buttons",
 			"moduleName": "Column visibility",
-			"outputOrder": 40,
-			"versions": [
-				"1.6.1",
-				"1.6.0",
-				"1.5.6",
-				"1.5.5",
-				"1.5.4",
-				"1.5.3",
-				"1.5.2",
-				"1.5.1",
-				"1.5.0",
-				"1.4.2",
-				"1.4.1",
-				"1.4.0",
-				"1.3.1",
-				"1.3.0",
-				"1.2.4",
-				"1.2.3",
-				"1.2.2",
-				"1.2.1",
-				"1.2.0",
-				"1.1.2",
-				"1.1.1",
-				"1.1.0",
-				"1.0.3",
-				"1.0.2",
-				"1.0.1",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "b-flash-",
 			"description" : "This element includes the Flash Export buttons sub-extension files.",
@@ -1060,35 +697,7 @@
 			},
 			"folderName": "Buttons",
 			"moduleName": "Flash export",
-			"outputOrder": 40,
-			"versions": [
-				"1.6.1",
-				"1.6.0",
-				"1.5.6",
-				"1.5.5",
-				"1.5.4",
-				"1.5.3",
-				"1.5.2",
-				"1.5.1",
-				"1.5.0",
-				"1.4.2",
-				"1.4.1",
-				"1.4.0",
-				"1.3.1",
-				"1.3.0",
-				"1.2.4",
-				"1.2.3",
-				"1.2.2",
-				"1.2.1",
-				"1.2.0",
-				"1.1.2",
-				"1.1.1",
-				"1.1.0",
-				"1.0.3",
-				"1.0.2",
-				"1.0.1",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "b-html5-",
 			"description" : "This element includes the html5 export buttons sub-extension files.",
@@ -1101,35 +710,7 @@
 			},
 			"folderName": "Buttons",
 			"moduleName": "HTML5 export",
-			"outputOrder": 40,
-			"versions": [
-				"1.6.1",
-				"1.6.0",
-				"1.5.6",
-				"1.5.5",
-				"1.5.4",
-				"1.5.3",
-				"1.5.2",
-				"1.5.1",
-				"1.5.0",
-				"1.4.2",
-				"1.4.1",
-				"1.4.0",
-				"1.3.1",
-				"1.3.0",
-				"1.2.4",
-				"1.2.3",
-				"1.2.2",
-				"1.2.1",
-				"1.2.0",
-				"1.1.2",
-				"1.1.1",
-				"1.1.0",
-				"1.0.3",
-				"1.0.2",
-				"1.0.1",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "b-print-",
 			"description" : "This element includes the print view buttons sub-extension files.",
@@ -1142,35 +723,7 @@
 			},
 			"folderName": "Buttons",
 			"moduleName": "Print view",
-			"outputOrder": 40,
-			"versions": [
-				"1.6.1",
-				"1.6.0",
-				"1.5.6",
-				"1.5.5",
-				"1.5.4",
-				"1.5.3",
-				"1.5.2",
-				"1.5.1",
-				"1.5.0",
-				"1.4.2",
-				"1.4.1",
-				"1.4.0",
-				"1.3.1",
-				"1.3.0",
-				"1.2.4",
-				"1.2.3",
-				"1.2.2",
-				"1.2.1",
-				"1.2.0",
-				"1.1.2",
-				"1.1.1",
-				"1.1.0",
-				"1.0.3",
-				"1.0.2",
-				"1.0.1",
-				"1.0.0"
-			]
+			"outputOrder": 40
 		}, {
                         "abbr": "ef-bsdatetime-",
                         "description" : "This element includes the FieldType bootstrap date time picker extension files.",
@@ -1183,13 +736,7 @@
                         },
                         "folderName": "FieldType-BSDateTime",
                         "moduleName": "FieldType-BSDateTime",
-                        "outputOrder": 40,
-                        "versions": [
-                                "1.0.0",
-                                "1.5.6",
-                                "1.6.2",
-                                "4.15.35"
-                        ]
+                        "outputOrder": 40
                 }, {
 			"abbr": "ef-display-",
 			"description" : "This element includes the FieldType Display extension files.",
@@ -1202,12 +749,7 @@
 			},
 			"folderName": "FieldType-Display",
 			"moduleName": "FieldType-Display",
-			"outputOrder": 40,
-			"versions": [
-				"1.0.0",
-				"1.5.6",
-				"1.6.2"
-			]
+			"outputOrder": 40
 		}, {
                         "abbr": "ef-mask-",
                         "description" : "This element includes the FieldType mask extension files.",
@@ -1220,12 +762,7 @@
                         },
                         "folderName": "FieldType-Mask",
                         "moduleName": "FieldType-Mask",
-                        "outputOrder": 40,
-                        "versions": [
-                                "1.13.3",
-                                "1.5.6",
-                                "1.6.2"
-                        ]
+                        "outputOrder": 40
                 }, {
 			"abbr": "ef-quill-",
 			"description" : "This element includes the field type quill extension files.",
@@ -1238,13 +775,7 @@
 			},
 			"folderName": "FieldType-Quill",
 			"moduleName": "FieldType-Quill",
-			"outputOrder": 40,
-			"versions": [
-				"0.20.0",
-				"0.20.1",
-				"1.5.6",
-				"1.6.2"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "ef-select2-",
 			"description" : "This element includes the field type select2 extension files.",
@@ -1257,12 +788,7 @@
 			},
 			"folderName": "FieldType-Select2",
 			"moduleName": "FieldType-Select2",
-			"outputOrder": 40,
-			"versions": [
-				"1.5.6",
-				"1.6.2",
-				"4.0.1"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "ef-selectize-",
 			"description" : "This element includes the field type selectize extension files.",
@@ -1275,12 +801,7 @@
 			},
 			"folderName": "FieldType-Selectize",
 			"moduleName": "FieldType-Selectize",
-			"outputOrder": 40,
-			"versions": [
-				"0.12.1",
-				"1.5.6",
-				"1.6.2"
-			]
+			"outputOrder": 40
 		}, {
 			"abbr": "ef-title-",
 			"description" : "This element includes the field type title extension files.",
@@ -1293,12 +814,7 @@
 			},
 			"folderName": "FieldType-Title",
 			"moduleName": "FieldType-Title",
-			"outputOrder": 40,
-			"versions": [
-				"1.0.0",
-				"1.5.6",
-				"1.6.2"
-			]
+			"outputOrder": 40
 		}
 	],
 	"fileNames": ["datatables"],

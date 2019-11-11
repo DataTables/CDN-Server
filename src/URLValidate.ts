@@ -60,6 +60,8 @@ export default class URLValidate {
 	 * @returns {boolean | string} returns either the valid filename or a boolean value indicating a fail
 	 */
 	public async validateLatest(inputURL: string): Promise<boolean | string> {
+		this._logger.debug('Entering validateLatest: [' + inputURL + ']');
+
 		this._logger.debug('Validating URL for latest request');
 		let parsedURL: string[];
 		parsedURL = inputURL.split(new RegExp('[' + this._config.separators.join('') + ']'));
@@ -108,17 +110,17 @@ export default class URLValidate {
 	}
 
 	/**
-	 * Finds the latest version of a module according to the config file
+	 * Return last version as already sorted
 	 * @param mod the abbreviation of the module of which the latest element is to be found
 	 * @returns {string} the latest version for that element
 	 */
 	private _findLatestVersion(mod: string): string {
-		// Sort the versions for the element using the library and return the biggest one.
+		this._logger.debug('Entering _findLatestVersion: [' + mod + ']');
+
 		for (let element of this._config.elements) {
 			if (mod === element.abbr) {
 				if (element.versions.length > 0) {
-					let versions = element.versions.sort(cmp);
-					return versions[versions.length - 1];
+					return element.versions[element.versions.length - 1];
 				}
 				else {
 					return '';
@@ -148,6 +150,8 @@ export default class URLValidate {
 	 * @param filename the name of the file requested
 	 */
 	private async _validateExtraRequest(parsedURL: string[], filename: string) {
+		this._logger.debug('Entering _validateExtraRequest: [' + parsedURL + '], [' + filename + ']');
+
 		// Find the point in the requested URL that images is and remove all of the preceeding elementsk
 		// bar one as this should be the folder name. Then construct the path to the file.
 		if (parsedURL[0] === '') {
@@ -210,6 +214,8 @@ export default class URLValidate {
 	 * @param parsedURL the URL which is to be validated for a normal file request
 	 */
 	private _validateFileRequest(parsedURL: string[]): boolean {
+		this._logger.debug('Entering _validateFileRequest: [' + parsedURL + ']');
+
 		// if the URL started with a separator then element 0 will be empty so remove it
 		if (parsedURL[0] === '') {
 			parsedURL.splice(0, 1);
@@ -288,10 +294,13 @@ export default class URLValidate {
 	 * @returns {boolean} returns a boolean value indicating if the version requested is valid
 	 */
 	private _validateVersion(parsedURL: string): boolean {
+		this._logger.debug('Entering _validateVersion: [' + parsedURL + ']');
 		for (let element of this._config.elements) {
 			// if the abbreviation of this element is included in the exclusion list dont bother with checking the versions
 			if (this._excludes.indexOf(element.abbr) === -1) {
 				for (let version of element.versions) {
+					this._logger.debug('_validateVersion2: [' + version + ']');
+
 					if (parsedURL === (element.abbr + version)) {
 						this._excludes = this._excludes.concat(element.abbr, element.excludes);
 						return true;

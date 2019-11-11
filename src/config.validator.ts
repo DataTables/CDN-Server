@@ -64,13 +64,6 @@ export const IConfigSchema = {
         "outputOrder": {
           "description": "The order of which the files are to be included in the file",
           "type": "number"
-        },
-        "versions": {
-          "description": "A list of the available versions for this module.",
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
         }
       },
       "required": [
@@ -80,8 +73,7 @@ export const IConfigSchema = {
         "fileNames",
         "folderName",
         "moduleName",
-        "outputOrder",
-        "versions"
+        "outputOrder"
       ],
       "type": "object"
     }

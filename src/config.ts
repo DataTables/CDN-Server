@@ -60,7 +60,7 @@ export interface IConfig {
 	selectHack?: boolean;
 }
 
-interface IElements {
+export interface IElements {
 	/**
 	 * The abbreviation of the module as seen in the URL.
 	 */
@@ -96,7 +96,7 @@ interface IElements {
 	 */
 	outputOrder: number;
 	/**
-	 * A list of the available versions for this module.
+	 * A list of the available versions for this module. Should not be set in the config file
 	 */
-	versions: string[];
+	versions?: string[];
 }

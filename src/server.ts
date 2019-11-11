@@ -1,17 +1,40 @@
 // Import libraries used within the server
 import * as fileExtension from 'file-extension';
-import * as fs from 'fs';
 import * as getopts from 'getopts';
 import * as http from 'http';
 import * as mime from 'mime-types';
 import * as util from 'util';
+import * as cmp from 'semver-compare';
+
 import BuildFile from './BuildFile';
 import Cache from './Cache';
-import {IConfig} from './config';
+import { IConfig, IElements } from './config';
+import { readdirSync, statSync, readFile } from 'fs';
+import { join } from 'path';
+
 import validate from './config.validator';
 import Logger from './Logger';
 import MetaInformation from './MetaInformation';
 import URLValidate from './URLValidate';
+import { stringify } from 'querystring';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
+
+enum exitCodes {
+	LogFile = 1,
+	Exception,
+	ConfigReload,
+	Help,
+	UnknownOptions,
+	ErrorLogFile,
+	MaxFiles,
+	Frequency,
+	MaxSize,
+	Port,
+	AccessLogFile,
+	NoPackages,
+	BadConfig,
+	VersionsPresent
+};
 
 let argum = getopts(process.argv.slice(2), {
 	alias: {
@@ -85,19 +108,19 @@ if (loggerDetails.maxFiles === true) {
 	console.log('\x1b[31mERROR:\x1b[37m maxFiles option set to true, requires a number of files to be specified. Ending.');
 	loggerDetails.maxFiles = 5;
 	fail = true;
-	exitCode = 7;
+	exitCode = exitCodes.MaxFiles;
 }
 else if (loggerDetails.frequency === true) {
 	console.log('\x1b[31mERROR:\x1b[37m frequency option set to true, requires a frequency to be specified. Ending.');
 	loggerDetails.frequency = 'YYYY-MM-DD';
 	fail = true;
-	exitCode = 8;
+	exitCode = exitCodes.Frequency;
 }
-else if(loggerDetails.maxsize === true) {
+else if (loggerDetails.maxsize === true) {
 	console.log('\x1b[31mERROR:\x1b[37m maxFiles option set to true, requires a number of files to be specified. Ending.');
 	loggerDetails.maxsize = '100m';
 	fail = true;
-	exitCode = 9;
+	exitCode = exitCodes.MaxSize;
 }
 
 if (fail) {
@@ -110,34 +133,34 @@ let logger = new Logger(loggerDetails);
 // If there are more options defined which are not defined then print the help and end server
 if (Object.keys(argum).length > 33) {
 	logger.help();
-	process.exit(5);
+	process.exit(exitCodes.UnknownOptions);
 }
 else if (loggerDetails.logfile === true) {
 	console.log('\x1b[31mERROR:\x1b[37m Logfile option set to true but no file location specified. Ending.');
 	logger.help();
-	process.exit(1);
+	process.exit(exitCodes.LogFile);
 }
 else if (loggerDetails.errorLogFile === true) {
 	console.log('\x1b[31mERROR:\x1b[37m ErrorLogFile option set to true but no file location specified. Ending.');
 	logger.help();
-	process.exit(6);
+	process.exit(exitCodes.ErrorLogFile);
 }
-else if (loggerDetails.accessLogFile === true){
+else if (loggerDetails.accessLogFile === true) {
 	console.log('\x1b[31mERROR:\x1b[37m AccessLogFile option set to true but no file location specified. Ending.');
 	logger.help();
-	process.exit(11);
+	process.exit(exitCodes.AccessLogFile);
 }
 else if (port === true) {
 	console.log('\x1b[31mERROR:\x1b[37m port option set to true but no port specified. Ending.');
 	logger.help();
-	process.exit(10);
+	process.exit(exitCodes.Port);
 }
 
 if (argum.help === true) {
 	loggerDetails.debug = true;
 	logger = new Logger(loggerDetails);
 	logger.help();
-	process.exit(4);
+	process.exit(exitCodes.Help);
 }
 
 let cache = new Cache(null, logger, null);
@@ -146,7 +169,7 @@ let cache = new Cache(null, logger, null);
  * This is the server for requesting files to be built.
  * It validates the URL that it takes and builds the file before returning them to the user.
  */
-http.createServer(async function(req, res) {
+http.createServer(async function (req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
 	logger.info('New Request ' + req.url);
@@ -167,7 +190,6 @@ http.createServer(async function(req, res) {
 	let t0 = t.getTime();
 	let url = new URLValidate(config, logger, cache._maps);
 	let splitURL: string[] = req.url.split('?');
-	
 
 	// Ensure a valid request type is being made and validate that the requested url is also valid
 	if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
@@ -282,29 +304,126 @@ process.on('unhandledRejection', (reason, p) => {
 
 process.on('uncaughtException', err => {
 	logger.error(err + ' Uncaught exception thrown');
-	process.exit(2);
+	process.exit(exitCodes.Exception);
 });
+
+function updateConfig(element: string, versions: string[]): void {
+	let sorted = versions.sort(cmp);
+	logger.debug('Updating config: element [' + element + '], versions: [' + versions + ']');
+
+	let el: IElements;
+	for (el of config.elements) {
+		if (el.folderName === element) {
+			el.versions = versions;
+		}
+	}
+}
+
+function validateDirectory(dir: string): string[] {
+	// must be at a.x.y.z
+	if (dir.length === 0) return undefined;
+
+	let hyphen: number = dir.lastIndexOf('-');
+	if (hyphen < 1 || hyphen > dir.length - 5) return undefined;
+
+	let element: string = dir.slice(0, hyphen);
+	let version: string = dir.slice(hyphen + 1);
+
+	if (version.match(/^\d+(\.\d+){2}$/g) === null) return undefined;
+
+	return [element, version];
+}
+
+
+function setMissingVersions(): void {
+	let el: IElements;
+	for (el of config.elements) {
+		if (el.versions === undefined) {
+			el.versions = [];
+		}
+	}
+}
+
+function getPackagesDirectoryContents() {
+	logger.debug('Reading packages directory [' + config.packagesDir + ']');
+	let dirs: string[] = readdirSync(config.packagesDir).filter(function (file: string) {
+		return statSync(join(config.packagesDir, file)).isDirectory();
+	});
+
+	if (dirs.length === 0) {
+		logger.error('Fatal error: No packages found');
+		process.exit(exitCodes.NoPackages);
+	}
+
+	let dir: string;
+	let currentElement: string;
+	let versions: string[] = [];
+
+	for (dir of dirs) {
+		let thisElement = validateDirectory(dir);
+		if (thisElement === undefined) {
+			// Must be at least a-x.y.z
+			logger.debug('Skipping directory [' + dir + ']');
+			continue;
+		}
+
+		if (thisElement[0] !== currentElement) {
+			if (currentElement !== undefined) {
+				updateConfig(currentElement, versions);
+			}
+
+			currentElement = thisElement[0];
+			versions = [thisElement[1]];
+		}
+		else {
+			versions.push(thisElement[1])
+		}
+	}
+
+	updateConfig(currentElement, versions);
+
+	// Set the versions of unseen elements to an empy array (saves handling undefined all over the code)
+	setMissingVersions()
+}
+
+function checkVersionsPresent() {
+	let el: IElements;
+	for (el of config.elements) {
+		if (el.versions !== undefined) {
+			return true;
+		}
+	}
+
+	return false;
+}
 
 async function readConfig() {
 	try {
-		let input = await util.promisify(fs.readFile)(argum.configLoc);
+		let input = await util.promisify(readFile)(argum.configLoc);
 		config = JSON.parse(input.toString()) as IConfig;
 		logger.debug('Config file loaded');
 	}
 	catch (error) {
 		logger.error('Error reloading config file');
-		process.exit(3);
+		process.exit(exitCodes.BadConfig);
 	}
 
 	logger.debug('Validating Config File');
 
-	if (validate(config)) {
-		logger.debug('Config File Valid');
+	if (!validate(config)) {
+		logger.error('Error Validating config file');
+		process.exit(exitCodes.BadConfig);
+
+	}
+	else if (checkVersionsPresent()) {
+		logger.error('Error Validating config file - versions present');
+		process.exit(exitCodes.VersionsPresent);
 	}
 	else {
-		logger.error('Error Validating config file.');
-		process.exit(6);
+		logger.debug('Config File Valid');
 	}
+
+	getPackagesDirectoryContents();
 
 	return config;
 }
@@ -315,4 +434,4 @@ async function newHelp() {
 }
 
 console.log('\x1b[32mINFO:\x1b[37m Server running on 0.0.0.0:' + port);
-logger.info('Server running on 0.0.0.0:' + port)
+logger.info('Server running on 0.0.0.0:' + port);

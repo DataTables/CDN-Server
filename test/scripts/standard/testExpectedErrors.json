@@ -36,5 +36,15 @@
         "description": "missing required, without stying",
         "url" : "pb-2.0.0/test.js",
         "response": "404"
+    },
+	{
+        "description": "not present as not x.y.z version",
+        "url" : "sbf/ea-21.0/test.js",
+        "response": "404"
+    },
+	{
+        "description": "not present as a file in the product directory",
+        "url" : "sbf/ea-20.0.0/test.js",
+        "response": "404"
     }
 ]
