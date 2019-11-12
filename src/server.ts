@@ -319,8 +319,10 @@ function updateConfig(element: string, versions: string[]): void {
 	}
 }
 
+/**
+ * Checks directory found in packagesDir is a-x.y.z compliant
+ */
 function validateDirectory(dir: string): string[] {
-	// must be at a.x.y.z
 	if (dir.length === 0) return undefined;
 
 	let hyphen: number = dir.lastIndexOf('-');
@@ -334,16 +336,22 @@ function validateDirectory(dir: string): string[] {
 	return [element, version];
 }
 
-
+/**
+ * Fill in versions not found in packagesDir with empty array (could arguably flag an error)
+ */
 function setMissingVersions(): void {
 	let el: IElements;
 	for (el of config.elements) {
 		if (el.versions === undefined) {
+			logger.debug('No packages found for [' + el.moduleName + ']');
 			el.versions = [];
 		}
 	}
 }
 
+/**
+ * Gets all the valid packages found in packagesDir
+ */
 function getPackagesDirectoryContents() {
 	logger.debug('Reading packages directory [' + config.packagesDir + ']');
 	let dirs: string[] = readdirSync(config.packagesDir).filter(function (file: string) {
@@ -386,6 +394,9 @@ function getPackagesDirectoryContents() {
 	setMissingVersions()
 }
 
+/**
+ * See if any versions are present in the config file (they're not supposed to be!)
+ */
 function checkVersionsPresent() {
 	let el: IElements;
 	for (el of config.elements) {
