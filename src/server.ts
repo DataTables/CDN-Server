@@ -9,7 +9,7 @@ import * as cmp from 'semver-compare';
 import BuildFile from './BuildFile';
 import Cache from './Cache';
 import { IConfig, IElements } from './config';
-import { readdirSync, statSync, readFile } from 'fs';
+import { readdirSync, statSync, readFile, watch, fstat, FSWatcher } from 'fs';
 import { join } from 'path';
 
 import validate from './config.validator';
@@ -18,6 +18,165 @@ import MetaInformation from './MetaInformation';
 import URLValidate from './URLValidate';
 import { stringify } from 'querystring';
 import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
+
+/**
+ * Updates the in-memory config with versions found in packagesDir
+ */
+function updateVersions(element: string, versions: string[]): void {
+	let sorted = versions.sort(cmp);
+	logger.debug('Updating config: element [' + element + '], versions: [' + versions + ']');
+
+	let el: IElements;
+	for (el of config.elements) {
+		if (el.folderName === element) {
+			el.versions = versions;
+		}
+	}
+}
+
+/**
+ * Checks directory found in packagesDir is a-x.y.z compliant
+ */
+function validateDirectory(dir: string): string[] {
+	if (dir.length === 0) return undefined;
+
+	let hyphen: number = dir.lastIndexOf('-');
+	if (hyphen < 1 || hyphen > dir.length - 5) return undefined;
+
+	let element: string = dir.slice(0, hyphen);
+	let version: string = dir.slice(hyphen + 1);
+
+	if (version.match(/^\d+(\.\d+){2}$/g) === null) return undefined;
+
+	return [element, version];
+}
+
+/**
+ * Fill in versions not found in packagesDir with empty array (could arguably flag an error)
+ */
+function setMissingVersions(): void {
+	let el: IElements;
+	for (el of config.elements) {
+		if (el.versions === undefined) {
+			logger.debug('No packages found for [' + el.moduleName + ']');
+			el.versions = [];
+		}
+	}
+}
+
+/**
+ * Gets all the valid packages found in packagesDir
+ */
+function getPackagesDirectoryContents() {
+	logger.debug('Reading packages directory [' + config.packagesDir + ']');
+	let dirs: string[] = readdirSync(config.packagesDir).filter(function (file: string) {
+		return statSync(join(config.packagesDir, file)).isDirectory();
+	});
+
+	if (dirs.length === 0) {
+		logger.error('Fatal error: No packages found');
+		process.exit(exitCodes.NoPackages);
+	}
+
+	let dir: string;
+	let currentElement: string;
+	let versions: string[] = [];
+
+	for (dir of dirs) {
+		let thisElement = validateDirectory(dir);
+		if (thisElement === undefined) {
+			// Must be at least a-x.y.z
+			logger.debug('Skipping directory [' + dir + ']');
+			continue;
+		}
+
+		if (thisElement[0] !== currentElement) {
+			if (currentElement !== undefined) {
+				updateVersions(currentElement, versions);
+			}
+
+			currentElement = thisElement[0];
+			versions = [thisElement[1]];
+		}
+		else {
+			versions.push(thisElement[1])
+		}
+	}
+
+	updateVersions(currentElement, versions);
+
+	// Set the versions of unseen elements to an empy array (saves handling undefined all over the code)
+	setMissingVersions()
+}
+
+/**
+ * See if any versions are present in the config file (they're not supposed to be!)
+ */
+function checkVersionsPresent() {
+	let el: IElements;
+	for (el of config.elements) {
+		if (el.versions !== undefined) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Create a watch on the file system in case files change
+ */
+function watchDirectory() {
+	// remove previous watch if one present
+	if (watcher !== undefined) {
+		logger.debug('Clearing watch');
+		watcher.close();
+	}
+	// add a watch for the current directory
+	logger.debug('Adding watch for [' + config.packagesDir + ']');
+	watcher = watch(config.packagesDir , function () {
+		logger.debug('Reread config as file system has changed');
+		getConfig = true;
+	});
+}
+
+async function readConfig() {
+	try {
+		let input = await util.promisify(readFile)(argum.configLoc);
+		config = JSON.parse(input.toString()) as IConfig;
+		logger.debug('Config file loaded');
+	}
+	catch (error) {
+		logger.error('Error reloading config file');
+		process.exit(exitCodes.BadConfig);
+	}
+
+	logger.debug('Validating Config File');
+
+	if (!validate(config)) {
+		logger.error('Error Validating config file');
+		process.exit(exitCodes.BadConfig);
+
+	}
+	else if (checkVersionsPresent()) {
+		logger.error('Error Validating config file - versions present');
+		process.exit(exitCodes.VersionsPresent);
+	}
+	else {
+		logger.debug('Config File Valid');
+	}
+
+	getPackagesDirectoryContents();
+	watchDirectory();
+
+	return config;
+}
+
+async function newHelp() {
+	let logger = new Logger(loggerDetails, true);
+	logger.help();
+}
+
 
 enum exitCodes {
 	LogFile = 1,
@@ -94,6 +253,8 @@ let loggerDetails = {
 	maxFiles: argum.maxFiles,
 	frequency: argum.frequency
 };
+
+let watcher: FSWatcher; // directory to watch for new packages
 
 if (argum.metrics) {
 	require('appmetrics-dash').monitor();
@@ -306,143 +467,6 @@ process.on('uncaughtException', err => {
 	logger.error(err + ' Uncaught exception thrown');
 	process.exit(exitCodes.Exception);
 });
-
-function updateConfig(element: string, versions: string[]): void {
-	let sorted = versions.sort(cmp);
-	logger.debug('Updating config: element [' + element + '], versions: [' + versions + ']');
-
-	let el: IElements;
-	for (el of config.elements) {
-		if (el.folderName === element) {
-			el.versions = versions;
-		}
-	}
-}
-
-/**
- * Checks directory found in packagesDir is a-x.y.z compliant
- */
-function validateDirectory(dir: string): string[] {
-	if (dir.length === 0) return undefined;
-
-	let hyphen: number = dir.lastIndexOf('-');
-	if (hyphen < 1 || hyphen > dir.length - 5) return undefined;
-
-	let element: string = dir.slice(0, hyphen);
-	let version: string = dir.slice(hyphen + 1);
-
-	if (version.match(/^\d+(\.\d+){2}$/g) === null) return undefined;
-
-	return [element, version];
-}
-
-/**
- * Fill in versions not found in packagesDir with empty array (could arguably flag an error)
- */
-function setMissingVersions(): void {
-	let el: IElements;
-	for (el of config.elements) {
-		if (el.versions === undefined) {
-			logger.debug('No packages found for [' + el.moduleName + ']');
-			el.versions = [];
-		}
-	}
-}
-
-/**
- * Gets all the valid packages found in packagesDir
- */
-function getPackagesDirectoryContents() {
-	logger.debug('Reading packages directory [' + config.packagesDir + ']');
-	let dirs: string[] = readdirSync(config.packagesDir).filter(function (file: string) {
-		return statSync(join(config.packagesDir, file)).isDirectory();
-	});
-
-	if (dirs.length === 0) {
-		logger.error('Fatal error: No packages found');
-		process.exit(exitCodes.NoPackages);
-	}
-
-	let dir: string;
-	let currentElement: string;
-	let versions: string[] = [];
-
-	for (dir of dirs) {
-		let thisElement = validateDirectory(dir);
-		if (thisElement === undefined) {
-			// Must be at least a-x.y.z
-			logger.debug('Skipping directory [' + dir + ']');
-			continue;
-		}
-
-		if (thisElement[0] !== currentElement) {
-			if (currentElement !== undefined) {
-				updateConfig(currentElement, versions);
-			}
-
-			currentElement = thisElement[0];
-			versions = [thisElement[1]];
-		}
-		else {
-			versions.push(thisElement[1])
-		}
-	}
-
-	updateConfig(currentElement, versions);
-
-	// Set the versions of unseen elements to an empy array (saves handling undefined all over the code)
-	setMissingVersions()
-}
-
-/**
- * See if any versions are present in the config file (they're not supposed to be!)
- */
-function checkVersionsPresent() {
-	let el: IElements;
-	for (el of config.elements) {
-		if (el.versions !== undefined) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-async function readConfig() {
-	try {
-		let input = await util.promisify(readFile)(argum.configLoc);
-		config = JSON.parse(input.toString()) as IConfig;
-		logger.debug('Config file loaded');
-	}
-	catch (error) {
-		logger.error('Error reloading config file');
-		process.exit(exitCodes.BadConfig);
-	}
-
-	logger.debug('Validating Config File');
-
-	if (!validate(config)) {
-		logger.error('Error Validating config file');
-		process.exit(exitCodes.BadConfig);
-
-	}
-	else if (checkVersionsPresent()) {
-		logger.error('Error Validating config file - versions present');
-		process.exit(exitCodes.VersionsPresent);
-	}
-	else {
-		logger.debug('Config File Valid');
-	}
-
-	getPackagesDirectoryContents();
-
-	return config;
-}
-
-async function newHelp() {
-	let logger = new Logger(loggerDetails, true);
-	logger.help();
-}
 
 console.log('\x1b[32mINFO:\x1b[37m Server running on 0.0.0.0:' + port);
 logger.info('Server running on 0.0.0.0:' + port);
