@@ -59,7 +59,7 @@ export default class URLValidate {
 	 * @param inputURL The URL of which the latest versions are to be found for
 	 * @returns {boolean | string} returns either the valid filename or a boolean value indicating a fail
 	 */
-	public async validateLatest(inputURL: string): Promise<boolean | string> {
+	public async validateLatest(inputURL: string, skipValidation: boolean): Promise<boolean | string> {
 		this._logger.debug('Entering validateLatest: [' + inputURL + ']');
 
 		this._logger.debug('Validating URL for latest request');
@@ -87,7 +87,7 @@ export default class URLValidate {
 		}
 
 		// Validate the generated URL to make sure that it is legal.
-		if (await this._validateURL(parsedURL, filename)) {
+		if (skipValidation || await this._validateURL(parsedURL, filename)) {
 			this._logger.debug('Generated URL to be requested is legal');
 			return filename;
 		}
@@ -299,7 +299,7 @@ export default class URLValidate {
 			// if the abbreviation of this element is included in the exclusion list dont bother with checking the versions
 			if (this._excludes.indexOf(element.abbr) === -1) {
 				for (let version of element.versions) {
-					this._logger.debug('_validateVersion2: [' + version + ']');
+					this._logger.debug('_validateVersion2: [' + element.abbr + version + ']');
 
 					if (parsedURL === (element.abbr + version)) {
 						this._excludes = this._excludes.concat(element.abbr, element.excludes);

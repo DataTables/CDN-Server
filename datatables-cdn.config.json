@@ -23,7 +23,6 @@
 			"styling": "dataTables"
 		},
 		"fileNames": {},
-		"folderName": "DataTables",
 		"moduleName": "DataTables",
 		"outputOrder": 20
 		}, {
@@ -70,7 +69,6 @@
 				"styling": "semanticui"
 			},
 			"fileNames": {},
-			"folderName": "SemanticUI",
 			"moduleName": "SemanticUI",
 			"outputOrder": 20
 		}, {
@@ -92,7 +90,6 @@
 				"styling": "bootstrap4"
 			},
 			"fileNames": {},
-			"folderName": "Bootstrap-4",
 			"moduleName": "Bootstrap-4",
 			"outputOrder": 20
 		}, {
@@ -139,7 +136,6 @@
 				"styling": "bootstrap"
 			},
 			"fileNames": {},
-			"folderName": "Bootstrap",
 			"moduleName": "Bootstrap",
 			"outputOrder": 20
 		}, {
@@ -186,7 +182,6 @@
 				"styling": "foundation"
 			},
 			"fileNames": {},
-			"folderName": "Foundation",
 			"moduleName": "Foundation",
 			"outputOrder": 20
 		}, {
@@ -232,7 +227,6 @@
 				"styling": "jqueryui"
 			},
 			"fileNames": {},
-			"folderName": "jQueryUI",
 			"moduleName": "jQueryUI",
 			"outputOrder": 20
 		}, {
@@ -465,8 +459,8 @@
 					"js/bootstrap-datetimepicker"
 				]
 			},
-			"folderName": "bootstrap-datepicker-4.15.35",
-			"moduleName": "bootstrap-datepicker-4.15.35",
+			"folderName": "bootstrap-datepicker",
+			"moduleName": "bootstrap-datepicker",
 			"outputOrder": 10
 		}, {
 			"abbr": "dt-",

@@ -14,6 +14,11 @@
 		"response": "404"
 	},
 	{
+		"description": "latestAll when not configured",
+		"url" : "latest",
+		"response": "404"
+	},
+	{
 		"description": "latest ignored when trailing",
 		"url" : "snf/pa-1.0.0/ea-10.0.0/sm-2.0.1/test.js?latest",
 		"response": "200",

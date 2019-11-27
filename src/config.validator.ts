@@ -71,7 +71,6 @@ export const IConfigSchema = {
         "excludes",
         "fileIncludes",
         "fileNames",
-        "folderName",
         "moduleName",
         "outputOrder"
       ],
@@ -149,6 +148,10 @@ export const IConfigSchema = {
     "selectHack": {
       "type": "boolean",
       "description": "Indicates whether the select hack is in place"
+    },
+    "latestAll": {
+      "type": "boolean",
+      "description": "Indicates whether the latest versions of all modules can be requested"
     }
   },
   "required": [

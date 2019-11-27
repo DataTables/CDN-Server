@@ -4,13 +4,19 @@
 	},
 	{
 		"description": "test optional files (css files not optional)",
-		"url" : "latest?pc-"
-		"response": "500",
+		"url" : "latest?pc-",
+		"response": "500"
 	},
 	{
 		"description": "test options when all present",
 		"url" : "latest?swf,pc-",
 		"response": "200",
-		"outfile" : "outLongUrl.txt"
+		"outfile" : "outLatest.txt"
+	},
+	{
+		"description": "latestAll when enabled in the config",
+		"url" : "latest",
+		"response": "200",
+		"outfile" : "outLatestAll.txt"
 	}
 ]

@@ -58,6 +58,10 @@ export interface IConfig {
 	 * Select hack to cope with the naming in earlier server versions of datatables.
 	 */
 	selectHack?: boolean;
+	/**
+	 * Indicates whether the latest versions of all modules can be requested
+	 */
+	latestAll?: boolean;
 }
 
 export interface IElements {
@@ -86,7 +90,7 @@ export interface IElements {
 	/**
 	 * The name of the target folder that holds the desired files for this module.
 	 */
-	folderName: string;
+	folderName?: string;
 	/**
 	 * The name of the Module to show in the extensions list in top comment
 	 */

@@ -15,6 +15,11 @@ passed=0
 convert_file() {
 	# parse the tmpfile to remove varying fields (such as timestamps)
 	sed -ri 's/\"returnTime\":[0-9]+//' $TMPFILE
+
+	# Add a newline onto the end if one not present
+	if [ $(wc -l $TMPFILE | cut -d ' ' -f 1) -eq 0 ] ; then
+		echo "" >> $TMPFILE
+	fi
 }
 
 ################################################
@@ -141,6 +146,7 @@ get_tests() {
 		description=$(jq -r ".[$num].description" < $1)
 
 		if [ $? -ne 0 ] ; then
+			failed=$((failed+1))
 			echo "FATAL ERROR: cannot parse JSON file"
 			break
 		fi

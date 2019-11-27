@@ -140,6 +140,24 @@ function watchDirectory() {
 	});
 }
 
+/**
+ * Build a string with all the elements included (used by '/latest')
+ */
+function getAllElements(): string {
+	let str: string = '';
+	let el: IElements;
+
+	for (el of config.elements) {
+		if (str !== '') {
+			str += ',';
+		}
+
+		str +=  el.abbr;
+	}
+
+	return str;
+}
+
 async function readConfig() {
 	try {
 		let input = await util.promisify(readFile)(argum.configLoc);
@@ -165,6 +183,8 @@ async function readConfig() {
 	else {
 		logger.debug('Config File Valid');
 	}
+
+	logger.debug('STAN: ' + config.latestAll);
 
 	getPackagesDirectoryContents();
 	watchDirectory();
@@ -231,8 +251,10 @@ let defaults: IConfig = {
 	fileExtensions: [],
 	fileNames: [],
 	headerContent: '',
+	latestAll: false,
 	packagesDir: './dist',
 	requires: [],
+	selectHack: false,
 	separators: ['/', ','],
 	staticFileExtensions: [],
 	staticFileTypes: [],
@@ -341,7 +363,12 @@ http.createServer(async function (req, res) {
 	if (getConfig) {
 		let input = await readConfig();
 		logger.debug('config Read' + argum.configLoc);
+
 		config = Object.assign(defaults, input);
+
+		// DD-1267 - the value in the config isn't being reread when server is signalled.
+		config.latestAll = input.latestAll;
+
 		cache.resetCache(config.cacheSize, config);
 		logger.debug('Cache Reset');
 		getConfig = false;
@@ -359,13 +386,27 @@ http.createServer(async function (req, res) {
 	}
 
 	// If the URL has a latest parameter run the following to find the latest version of the listed modules
-	else if (splitURL.length > 1 && splitURL[0] === '/latest') {
+	else if (splitURL[0] === '/latest' && splitURL.length === 1 && !config.latestAll) {
+		res.writeHead(404, 'Error 404. Invalid URL.' + req.url);
+		logger.error('404 Invalid URL. latestAll not enabled but was requested.');
+	}
+	else if (splitURL[0] === '/latest') {
 		logger.debug('Latest versions requested.');
-		let findLatest = splitURL[1].split('=');
+
+		let skipValidation: boolean = false;
+		let findLatest: string;
 
 		// Run validateLatest to validate the URL is legal and return the full URL required by the user
-		let latest = await url.validateLatest(findLatest[0]);
-
+		// but don't bother validating if user wants all versions (since some are incompatible)
+		if (splitURL.length === 1) {
+			findLatest  = getAllElements();
+			skipValidation = true;
+		}
+		else {
+			findLatest = splitURL[1];
+			skipValidation = false;
+		}
+		let latest = await url.validateLatest(findLatest, skipValidation);
 		if (!latest) {
 			res.writeHead(404, 'Error 404. Invalid URL.' + req.url);
 			logger.error('404 Invalid URL. Failed to find latest version(s) of the module(s) requested. ' + req.url);

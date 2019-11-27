@@ -8,6 +8,7 @@
     "staticFileExtensions": [],
     "requires": [],
     "separators": ["/", ","],
+	"latestAll": true,
     "substitutions": {
         "_extensionsList": "{extensionsList}",
         "_extensionsURL": "{extensionsURL}",
