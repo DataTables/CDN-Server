@@ -184,8 +184,6 @@ async function readConfig() {
 		logger.debug('Config File Valid');
 	}
 
-	logger.debug('STAN: ' + config.latestAll);
-
 	getPackagesDirectoryContents();
 	watchDirectory();
 
