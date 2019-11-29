@@ -58,7 +58,7 @@ function setMissingVersions(): void {
 	let el: IElements;
 	for (el of config.elements) {
 		if (el.versions === undefined) {
-			logger.debug('No packages found for [' + el.moduleName + ']');
+			logger.debug('No packages found for [' + el.abbr + ']');
 			el.versions = [];
 		}
 	}
@@ -169,10 +169,23 @@ async function readConfig() {
 		process.exit(exitCodes.BadConfig);
 	}
 
+	// Allow the elements property to be an object, where the key is the `abbr` name
+	if (! Array.isArray(config.elements)) {
+		config.elements = Object.keys(config.elements).map((key) => {
+			let element = config.elements[key];
+
+			element.abbr = key;
+
+			return element;
+		});
+	}
+
 	logger.debug('Validating Config File');
 
-	if (!validate(config)) {
-		logger.error('Error Validating config file');
+	let validation = validate(config);
+
+	if (typeof validation === 'string') {
+		logger.error('Error Validating config file: ' + validation);
 		process.exit(exitCodes.BadConfig);
 
 	}

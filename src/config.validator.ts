@@ -169,10 +169,14 @@ export const IConfigSchema = {
   ],
   "type": "object"
 };
+
 export type ValidateFunction<T> = ((data: unknown) => data is T) & Pick<Ajv.ValidateFunction, 'errors'>
 const rawValidateIConfig = ajv.compile(IConfigSchema) as ValidateFunction<IConfig>;
-export default function (value: unknown): IConfig {
+
+export default function (value: unknown): IConfig | string {
   if (rawValidateIConfig(value)) {
     return value;
   }
+
+  return JSON.stringify(rawValidateIConfig.errors);
 }
