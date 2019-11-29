@@ -162,7 +162,7 @@ async function readConfig() {
 	try {
 		let input = await util.promisify(readFile)(argum.configLoc);
 		config = JSON.parse(input.toString()) as IConfig;
-		logger.debug('Config file loaded');
+		logger.debug('Config file loaded: ' + argum.configLoc);
 	}
 	catch (error) {
 		logger.error('Error reloading config file');
