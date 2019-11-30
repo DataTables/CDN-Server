@@ -134,10 +134,16 @@ function watchDirectory() {
 	}
 	// add a watch for the current directory
 	logger.debug('Adding watch for [' + config.packagesDir + ']');
-	watcher = watch(config.packagesDir , function () {
-		logger.debug('Reread config as file system has changed');
-		getConfig = true;
-	});
+	try {
+		watcher = watch(config.packagesDir, function () {
+			logger.debug('Reread config as file system has changed');
+			getConfig = true;
+		});
+	}
+	catch (error) {
+		logger.debug('Filesystem watch failed (' + error + ')');
+		logger.error('Continuing with filesystem watching disabled');
+	}
 }
 
 /**
@@ -163,8 +169,7 @@ async function readConfig() {
 		let input = await util.promisify(readFile)(argum.configLoc);
 		config = JSON.parse(input.toString()) as IConfig;
 		logger.debug('Config file loaded: ' + argum.configLoc);
-	}
-	catch (error) {
+	} catch (error) {
 		logger.error('Error reloading config file');
 		process.exit(exitCodes.BadConfig);
 	}
