@@ -5,6 +5,7 @@ import * as utils from './utility-functions';
 import * as fs from 'fs';
 import { parse, stringify } from 'querystring';
 import * as util from 'util';
+import Logger from './Logger';
 
 /**
  * This interface defines the format of the object to hold the details of all of the individual
@@ -313,7 +314,6 @@ export default class BuildFile {
 				parsedDetails[i].fileNameMap.set(folder, updateFile);
 
 				for (let filename of updateFile) {
-
 					// Append the minify and type to the filename
 					filename += minify + extension;
 
@@ -393,7 +393,7 @@ export default class BuildFile {
 		// Get the new bit of file
 		this._logger.debug('Fetching sub-file');
 		let fileAddition = await this._fetchFile(path, parsedDetail.folderName, parsedDetail.version);
-
+		filename = filename.split('?').join('');
 		if (!fileAddition) {
 			return fileAddition;
 		}
@@ -420,6 +420,7 @@ export default class BuildFile {
 						let splitType = '';
 						let separators = ['\'', '"', ')'];
 						let splitName = filename.split('/');
+
 						if (splitName.length > 1) {
 							splitName.pop();
 							splitName = splitName.join('/');
@@ -427,6 +428,7 @@ export default class BuildFile {
 						else {
 							splitName = '';
 						}
+
 						let pathAddition = original[2].split(new RegExp('[' + this._config.separators.join('') + ']')).join('/');
 
 						let url = '/' + parsedDetail.folderName
