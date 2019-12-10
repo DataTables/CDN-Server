@@ -393,9 +393,17 @@ export default class BuildFile {
 		// Get the new bit of file
 		this._logger.debug('Fetching sub-file');
 		let fileAddition = await this._fetchFile(path, parsedDetail.folderName, parsedDetail.version);
-		filename = filename.split('?').join('');
+
 		if (!fileAddition) {
 			return fileAddition;
+		}
+
+		if (filename.charAt(0) === '?') {
+			let fileSplit = filename.split('?');
+			filename = '';
+			for (let i = 1; i < fileSplit.length; i++) {
+				filename += fileSplit[i];
+			}
 		}
 
 		if (filename.split('.').indexOf('css') !== -1 && typeof fileAddition === 'string') {
