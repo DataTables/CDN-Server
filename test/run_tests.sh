@@ -72,7 +72,7 @@ start_server() {
 	echo "Starting server on port [$DT_CDN_SERVER_PORT]"
 
 	# Needs some config for the server to start so just copy in from one test
-	cp test/scripts/standard/config.json $CONFFILE
+	cp test/scripts/no.requires/config.json $CONFFILE
 
 	node ./dist/server.js -p $DT_CDN_SERVER_PORT --configLoc $CONFFILE &
 	sleep 2
@@ -87,7 +87,7 @@ start_server() {
 ################################################
 signal_server() {
 	printf "Signalling server [%s] to use config for %s\n" $PID $1
-	cp $1/config.json $CONFFILE
+	cp $1 $CONFFILE
 	kill -SIGUSR1 $PID
 
 	sleep 2
@@ -171,17 +171,20 @@ get_tests() {
 start_server
 
 # Run through all the script directories
-for i in `ls -1d test/scripts/*` ; do
+for dir in `ls -1d test/scripts/*` ; do
 	echo ""
 	echo "#########################################"
-	echo "Loading $(basename $i) config into server"
+	echo "Loading $(basename $dir) config into server"
 	echo "#########################################"
 	echo ""
 
-	signal_server $i
+	for conf in `ls -1 $dir/config.*json` ; do
+		# Can have multiple config files in each directory
+		signal_server $conf
 
-	for testfile in $(ls -1 $i/test*.json) ; do
-		get_tests $testfile
+		for testfile in $(ls -1 $dir/test*.json) ; do
+			get_tests $testfile
+		done
 	done
 done
 

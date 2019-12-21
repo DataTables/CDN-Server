@@ -1,0 +1,164 @@
+{
+    "packagesDir": "./test/cache/",
+    "headerContent": "extensionsURL >{extensionsURL}<\nextensionsList >{extensionsList}<\nsource >\"-source-\"<\ntestString >{testString}<\n",
+    "cacheDuration": 31557600,
+    "cacheSize": 100,
+    "fileNames": ["test"],
+    "fileExtensions": [".js", ".min.js", ".css", ".min.css"],
+    "staticFileExtensions": [".png", ".txt"],
+    "requires": [10],
+    "separators": ["/", ","],
+    "substitutions": {
+        "_extensionsList": "{extensionsList}",
+        "_extensionsURL": "{extensionsURL}",
+        "_source": "\"-source-\"",
+		"{testString}" : "test string"
+    },
+    "elements": {
+        "snf": {
+			"description": "this should be ignored",
+			"fred": "bleh",
+            "excludes": ["swf", "swf-"],
+            "fileIncludes": {
+                "styling": "styleNoFiles"
+            },
+            "fileNames": {},
+            "folderName": "StyleNoFiles",
+            "moduleName": "StyleNoFiles",
+            "outputOrder": 10
+        },
+        "swf": {
+            "excludes": ["snf"],
+            "fileIncludes": {
+                "styling": "styleWithFiles"
+            },
+            "fileNames": {},
+            "folderName": "",
+            "moduleName": "StyleWithFilesStyle",
+            "outputOrder": 10
+        },
+        "swf-": {
+            "excludes": ["snf"],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["css/style", "css/style.{styling}"],
+                "js": ["js/style", "js/style.{styling}"]
+            },
+            "folderName": "StyleWithFiles",
+            "moduleName": "StyleWithFiles",
+            "outputOrder": 10
+        },
+		"en": {
+            "excludes": [],
+            "fileIncludes": {
+                "locale": "en"
+            },
+            "fileNames": {},
+            "folderName": "localeEn",
+            "moduleName": "localeEn",
+            "outputOrder": 11
+        },
+        "pa-": {
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": [
+					"css/producta"
+				],
+                "js": [
+					"js/ProductA.{styling}",
+					"js/productA"
+				]
+            },
+            "folderName": "ProductA",
+            "moduleName": "ProductA",
+            "outputOrder": 20
+        },
+        "pb-": {
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["productb"],
+                "js": ["productb"]
+            },
+            "folderName": "ProductB",
+            "moduleName": "ProductB",
+            "outputOrder": 15
+        },
+        "pc-": {
+            "excludes": ["pa-", "pb-"],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": [
+					"css/productc",
+					"css/ProductC.{styling}"
+				],
+                "js": [
+					"js/ProductC.{styling}",
+					"js/productC"
+				]
+            },
+            "folderName": "ProductC",
+            "moduleName": "ProductC",
+            "outputOrder": 40
+        },
+        "pd-": {
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["productd"],
+                "js": ["productd.{styling}.{locale}"]
+            },
+            "folderName": "ProductD",
+            "moduleName": "ProductD",
+            "outputOrder": 15
+        },
+        "d-dash-": {
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["productdash"],
+                "js": [
+					"?productdash.{styling}.{locale}",
+					"productdash"
+				]
+            },
+            "folderName": "ProductDash",
+            "moduleName": "Product Dash",
+            "outputOrder": 15
+        },
+        "ea-": {
+            "excludes": [""],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["css/exta", "css/exta.{styling}"],
+                "js": ["js/exta", "js/exta.{styling}"]
+            },
+            "folderName": "ExtA",
+            "moduleName": "ExtA",
+            "outputOrder": 30
+        },
+        "sm-": {
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["sourcemapping"],
+                "js": ["sourcemapping"]
+            },
+            "folderName": "SourceMapping",
+            "moduleName": "Source Mapping test",
+            "outputOrder": 15
+        },
+        "im-": {
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["image", "css/image"],
+                "js": ["image"]
+            },
+            "folderName": "Images",
+            "moduleName": "Images Test",
+            "outputOrder": 60
+        }
+	}
+}
