@@ -280,7 +280,8 @@ export default class BuildFile {
 	): Promise<string | boolean | number> {
 
 		// Assigns _build message from the config file to a variable which will be appended to the top of the file
-		let fileContent: string = this._config.headerContent;
+		let fileHeader: string = this._config.headerContent;
+		let fileContent: string = '';
 
 		// Set minify to the correct value dependant on parameters
 		let minify: string = min ? '.min' : '';
@@ -332,8 +333,16 @@ export default class BuildFile {
 			}
 		}
 
-		// Return the finished product
-		return fileContent;
+		// If there is no content then the header would be returned by itself - instead return an error
+		if (fileContent.length === 0) {
+			this._logger.error('File to be returned is empty before header');
+			return false;
+		}
+		else {
+			// Return the finished product
+			return fileHeader + fileContent;
+		}
+
 	}
 
 	/**

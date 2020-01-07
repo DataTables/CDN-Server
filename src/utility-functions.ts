@@ -33,11 +33,6 @@ export function findStaticRequest(
 		requireList = requires.slice();
 	}
 
-	if (orderList.length === 1 && orderList[0] === 20) {
-			logger.error('No Code requested -  only styling');
-			return 0;
-	}
-
 	for (let j = 0; j < orderList.length; j++) {
 		if (requires !== undefined) {
 			if (requireList.indexOf(orderList[j]) > -1) {
