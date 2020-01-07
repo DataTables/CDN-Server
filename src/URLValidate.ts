@@ -44,11 +44,11 @@ export default class URLValidate {
 			return false;
 		}
 		this._logger.debug('Valid filename in request: ' + filename);
-		this._logger.warn(parsedURL)
+		this._logger.warn(parsedURL);
 		if (this._config.selectHack) {
 			parsedURL = this.hackSelect(parsedURL);
 		}
-		this._logger.warn(parsedURL)
+		this._logger.warn(parsedURL);
 
 		// Validate the remainder of the URL
 		return await this._validateURL(parsedURL, filename);
