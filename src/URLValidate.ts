@@ -311,10 +311,6 @@ export default class URLValidate {
 					return true;
 				}
 			}
-			else {
-				this._logger.error(`Clashing libraries requested: ${parsedURL} is ruled out by previously included libraries.`);
-				break;
-			}
 		}
 
 		return false;
