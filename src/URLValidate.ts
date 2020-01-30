@@ -98,13 +98,20 @@ export default class URLValidate {
 
 	public hackSelect(parsedURL): string[] {
 		this._logger.warn('Hacking Select abbreviation');
+
+		if (parsedURL[0] === '') {
+			parsedURL.splice(0, 1);
+		}
+
 		for (let i = 1; i < parsedURL.length; i++) {
 			let split = parsedURL[i].split('-');
+
 			if (split.length > 1 && split[0] === 'se') {
 				this._logger.debug('select found after first element, changing ' + parsedURL[i] + ' to sl-' + split[1]);
 				parsedURL[i] = 'sl-' + split[1];
 			}
 		}
+
 		this._logger.warn(parsedURL.join('/'));
 		return parsedURL;
 	}
