@@ -2,12 +2,12 @@
  * This class controls and acts as the Cache for the CDN Server
  */
 export default class Cache {
+	public _maps;
 	private _cacheMap = new Map<string, string | Buffer>();
 	private _cacheList: string[] = [];
 	private _cacheSize = 1;
 	private _config;
 	private _logger;
-	public _maps;
 
 	/**
 	 * Defines the size of the cache as per the config

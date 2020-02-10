@@ -109,7 +109,9 @@ export default class URLValidate {
 			let split = parsedURL[i].split('-');
 
 			if (split.length > 1 && split[0] === 'se') {
-				this._logger.debug(this._id + ' - select found after first element, changing ' + parsedURL[i] + ' to sl-' + split[1]);
+				this._logger.debug(
+					this._id + ' - select found after first element, changing ' + parsedURL[i] + ' to sl-' + split[1]
+				);
 				parsedURL[i] = 'sl-' + split[1];
 			}
 		}

@@ -3,21 +3,21 @@ import * as fileExtension from 'file-extension';
 import * as getopts from 'getopts';
 import * as http from 'http';
 import * as mime from 'mime-types';
-import * as util from 'util';
 import * as cmp from 'semver-compare';
+import * as util from 'util';
 
+import { fstat, FSWatcher, readdirSync, readFile, statSync, watch } from 'fs';
+import { join } from 'path';
 import BuildFile from './BuildFile';
 import Cache from './Cache';
 import { IConfig, IElements } from './config';
-import { readdirSync, statSync, readFile, watch, fstat, FSWatcher } from 'fs';
-import { join } from 'path';
 
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
+import { stringify } from 'querystring';
 import validate from './config.validator';
 import Logger from './Logger';
 import MetaInformation from './MetaInformation';
 import URLValidate from './URLValidate';
-import { stringify } from 'querystring';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 /**
  * Updates the in-memory config with versions found in packagesDir
@@ -69,7 +69,7 @@ function setMissingVersions(): void {
  */
 function getPackagesDirectoryContents() {
 	logger.debug('Reading packages directory [' + config.packagesDir + ']');
-	let dirs: string[] = readdirSync(config.packagesDir).filter(function (file: string) {
+	let dirs: string[] = readdirSync(config.packagesDir).filter(function(file: string) {
 		return statSync(join(config.packagesDir, file)).isDirectory();
 	});
 
@@ -99,14 +99,14 @@ function getPackagesDirectoryContents() {
 			versions = [thisElement[1]];
 		}
 		else {
-			versions.push(thisElement[1])
+			versions.push(thisElement[1]);
 		}
 	}
 
 	updateVersions(currentElement, versions);
 
 	// Set the versions of unseen elements to an empy array (saves handling undefined all over the code)
-	setMissingVersions()
+	setMissingVersions();
 }
 
 /**
@@ -135,7 +135,7 @@ function watchDirectory() {
 	// add a watch for the current directory
 	logger.debug('Adding watch for [' + config.packagesDir + ']');
 	try {
-		watcher = watch(config.packagesDir, function () {
+		watcher = watch(config.packagesDir, function() {
 			logger.debug('Reread config as file system has changed');
 			getConfig = true;
 		});
@@ -169,7 +169,8 @@ async function readConfig() {
 		let input = await util.promisify(readFile)(argum.configLoc);
 		config = JSON.parse(input.toString()) as IConfig;
 		logger.debug('Config file loaded: ' + argum.configLoc);
-	} catch (error) {
+	}
+	catch (error) {
 		logger.error('Error reloading config file');
 		process.exit(exitCodes.BadConfig);
 	}
@@ -209,10 +210,9 @@ async function readConfig() {
 }
 
 async function newHelp() {
-	let logger = new Logger(loggerDetails, true);
-	logger.help();
+	let helpLogger = new Logger(loggerDetails, true);
+	helpLogger.help();
 }
-
 
 enum exitCodes {
 	LogFile = 1,
@@ -229,7 +229,7 @@ enum exitCodes {
 	NoPackages,
 	BadConfig,
 	VersionsPresent
-};
+}
 
 let argum = getopts(process.argv.slice(2), {
 	alias: {
@@ -286,10 +286,10 @@ let loggerDetails = {
 	accessLogFile: argum.accessLogFile,
 	debug: argum.debug,
 	errorLogFile: argum.errorLogFile,
+	frequency: argum.frequency,
 	logfile: argum.logfile,
-	maxsize: argum.maxsize,
 	maxFiles: argum.maxFiles,
-	frequency: argum.frequency
+	maxsize: argum.maxsize
 };
 
 let watcher: FSWatcher; // directory to watch for new packages
@@ -368,7 +368,7 @@ let cache = new Cache(null, logger, null);
  * This is the server for requesting files to be built.
  * It validates the URL that it takes and builds the file before returning them to the user.
  */
-http.createServer(async function (req, res) {
+http.createServer(async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
 	let id = (Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6)).toUpperCase();
@@ -381,7 +381,7 @@ http.createServer(async function (req, res) {
 		let input = await readConfig();
 		logger.debug('config Read' + argum.configLoc);
 
-		config = Object.assign(defaults, input);
+		config = {...defaults, ...input};
 
 		// DD-1267 - the value in the config isn't being reread when server is signalled.
 		config.latestAll = input.latestAll;
@@ -399,7 +399,9 @@ http.createServer(async function (req, res) {
 	// Ensure a valid request type is being made and validate that the requested url is also valid
 	if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
 		res.writeHead(405);
-		logger.error(id + ' - 405 Bad Request. Types not permitted "POST", "PUT" and "DELETE". Type method attempted ' + req.method);
+		logger.error(
+			id + ' - 405 Bad Request. Types not permitted "POST", "PUT" and "DELETE". Type method attempted ' + req.method
+		);
 	}
 
 	// If the URL has a latest parameter run the following to find the latest version of the listed modules

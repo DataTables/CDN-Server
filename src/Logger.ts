@@ -1,5 +1,5 @@
-//import * as winston from 'winston';
-//require('winston-daily-rotate-file');
+// import * as winston from 'winston';
+// require('winston-daily-rotate-file');
 
 export default class Logger {
 
@@ -18,7 +18,7 @@ export default class Logger {
 	private _frequency;
 
 	constructor(loggerDetails, fail = false) {
-		var winston = require('winston');
+		let winston = require('winston');
 		require('winston-daily-rotate-file');
 
 		// Defined the custom format for the logger
@@ -63,27 +63,28 @@ export default class Logger {
 		this._maxFiles = loggerDetails.maxFiles;
 		this._frequency = loggerDetails.frequency;
 
-		var transportError = new (winston.transports.DailyRotateFile)({
+		let transportError = new (winston.transports.DailyRotateFile)({
+			auditFile: '/tmp/tempCDNErrorLogs.json',
 			datePattern: this._frequency,
 			filename: this._errorLogLocation,
 			maxFiles: this._maxFiles,
 			maxSize: this._maxSize,
-			auditFile: '/tmp/tempCDNErrorLogs.json'
 		});
-		var transportAccess = new (winston.transports.DailyRotateFile)({
+
+		let transportAccess = new (winston.transports.DailyRotateFile)({
+			auditFile: '/tmp/tempCDNAccessLogs.json',
 			datePattern: this._frequency,
 			filename: this._accessLogLocation,
 			maxFiles: this._maxFiles,
 			maxSize: this._maxSize,
-			auditFile: '/tmp/tempCDNAccessLogs.json'
 		});
 
-		var transport = new (winston.transports.DailyRotateFile)({
+		let transport = new (winston.transports.DailyRotateFile)({
+			auditFile: '/tmp/tempCDNLogs.json',
 			datePattern: this._frequency,
 			filename: this._logLocation,
 			maxFiles: this._maxFiles,
 			maxSize: this._maxSize,
-			auditFile: '/tmp/tempCDNLogs.json'
 		});
 
 		// If the debugger option is enabled then set up a transport to the console
