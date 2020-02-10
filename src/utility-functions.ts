@@ -43,19 +43,19 @@ export function findStaticRequest(
 		// Check that the elements of the URL are in the correct order
 		// Order list can be undefined if an unknown element is requested from the map
 		if (orderList[j] === undefined) {
-			logger.error('Unknown module ' + parsedURL[j] + ' specified.');
+			logger.error(this._id + ' - Unknown module ' + parsedURL[j] + ' specified.');
 			return j;
 		}
 	}
 
-	logger.debug('URL modules are all in the correct order.');
+	logger.debug(this._id + ' - URL modules are all in the correct order.');
 
 	if (requires !== undefined) {
 		if (requireList.length > 0) {
-			logger.error('Not all of the required Modules have been included. Still requires: ' + requireList);
+			logger.error(this._id + ' - Not all of the required Modules have been included. Still requires: ' + requireList);
 			return 0;
 		}
-		logger.debug('All of the required modules have been included.');
+		logger.debug(this._id + ' - All of the required modules have been included.');
 	}
 
 	return -1;

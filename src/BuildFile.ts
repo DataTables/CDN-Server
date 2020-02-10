@@ -37,6 +37,7 @@ export default class BuildFile {
 	private _debug: boolean = false;
 	private _logger;
 	private _maps;
+	private _id;
 
 	/**
 	 * The constructor initialises the cache, reads in the configuration for the
@@ -46,12 +47,13 @@ export default class BuildFile {
 	 *   location of the files and all of their details.
 	 * @param debug A boolean value to defined whether the Server is being run in debug mode.
 	 */
-	constructor(cache: Cache, configIn: IConfig, debug: boolean, logger, maps) {
+	constructor(cache: Cache, configIn: IConfig, debug: boolean, logger, maps, id) {
 		this._storedFiles = cache;
 		this._config = configIn;
 		this._debug = debug;
 		this._logger = logger;
 		this._maps = maps;
+		this._id = id;
 	}
 
 	/**
@@ -61,7 +63,7 @@ export default class BuildFile {
 	 *   to indicate a failure.
 	 */
 	public async buildFile(filePath: string): Promise<boolean | string | number | Buffer> {
-		this._logger.debug('Starting Build File');
+		this._logger.debug(this._id + ' - Starting Build File');
 
 		// Split URL into useful chunks and remove the first element if it is empty.
 		let parsedURL: string[] = filePath.split(new RegExp('[' + this._config.separators.join('') + ']'));
@@ -95,8 +97,8 @@ export default class BuildFile {
 
 			// let cut = parsedURL.indexOf(extras);
 			let path: string = this._config.packagesDir + parsedURL.join('/');
-			this._logger.debug('Checking for ' + extras + ' in cache');
-			let fromCache = this._storedFiles.searchCache(path);
+			this._logger.debug(this._id + ' - Checking for ' + extras + ' in cache');
+			let fromCache = this._storedFiles.searchCache(path, this._id);
 
 			if (!fromCache) {
 				let content = await fileExists(path);
@@ -123,7 +125,7 @@ export default class BuildFile {
 		let extensionsList: string = '';
 		let extensionsListArray: string[] = [];
 
-		this._logger.debug('Retrieving relevant data for build');
+		this._logger.debug(this._id + ' - Retrieving relevant data for build');
 		for (let i = 0; i < parsedURL.length; i++) {
 			let folderName: string;
 			let fileName: Map<string, string[]>;
@@ -134,7 +136,7 @@ export default class BuildFile {
 			// If the URL includes a version add a '-' to the abbreviation as in config,
 			// otherwise no version is associated with this element so push an empty string
 			if (strParsed.length > 1) {
-				this._logger.debug('Version included in module');
+				this._logger.debug(this._id + ' - Version included in module');
 				strParsed[0] += '-';
 				vers = strParsed[strParsed.length - 1];
 
@@ -147,17 +149,17 @@ export default class BuildFile {
 				}
 			}
 			else {
-				this._logger.debug('Version not included in module');
+				this._logger.debug(this._id + ' - Version not included in module');
 				vers = '';
 			}
 
 			order = this._maps.outputOrderMap.get(strParsed[0]);
 			folderName = this._maps.folderNameMap.get(strParsed[0]);
-			this._logger.debug('Creating list of extensions for ' + strParsed);
+			this._logger.debug(this._id + ' - Creating list of extensions for ' + strParsed);
 
 			// Create the string to replace the `{extensionsList}` macro in the built file as defined in config
 			if (strParsed.length > 1 && i < parsedURL.length - 1) {
-				this._logger.debug('Adding to extensionsList ' + this._maps.moduleNameMap.get(strParsed[0]));
+				this._logger.debug(this._id + ' - Adding to extensionsList ' + this._maps.moduleNameMap.get(strParsed[0]));
 				extensionsListArray.push(this._maps.moduleNameMap.get(strParsed[0]) + ' ' + strParsed[strParsed.length - 1]);
 			}
 
@@ -200,18 +202,18 @@ export default class BuildFile {
 		let splitFileName: string[] = parsedURL[parsedURL.length - 1].split('.');
 		let type: string = '.' + splitFileName[splitFileName.length - 1];
 		let min: boolean = splitFileName.length > 2 ? true : false;
-		this._logger.debug('Constructing file');
+		this._logger.debug(this._id + ' - Constructing file');
 
 		// Call function to _build the required file
 		let file = await this._build(parsedURL, type, min, parsedDetails, includesList);
 
 		// Replace macros in the file as defined in the this._config
 		if (!file) {
-			this._logger.error('File unable to be built');
+			this._logger.error(this._id + ' - File unable to be built');
 			return false;
 		}
 		else if (typeof file === 'string') {
-			this._logger.debug('File built succesfully, replacing macros');
+			this._logger.debug(this._id + ' - File built succesfully, replacing macros');
 			let substitutions = this._config.substitutions;
 			for (let substitution of Object.keys(substitutions)) {
 				if (substitution === '_extensionsList') {
@@ -242,7 +244,7 @@ export default class BuildFile {
 			let matches = file.match(sourceMapReg);
 
 			if (matches !== null) {
-				this._logger.debug('Replacing Source Maps.');
+				this._logger.debug(this._id + ' - Replacing Source Maps.');
 
 				for (let match of matches) {
 					file = file.replace(match, '');
@@ -250,7 +252,7 @@ export default class BuildFile {
 			}
 		}
 
-		this._logger.debug('File built. Returning file.');
+		this._logger.debug(this._id + ' - File built. Returning file.');
 		return file;
 	}
 
@@ -335,7 +337,7 @@ export default class BuildFile {
 
 		// If there is no content then the header would be returned by itself - instead return an error
 		if (fileContent.length === 0) {
-			this._logger.error('File to be returned is empty before header');
+			this._logger.error(this._id + ' - File to be returned is empty before header');
 			return false;
 		}
 		else {
@@ -357,7 +359,7 @@ export default class BuildFile {
 		let filename = fileIn.split('?').join('');
 
 		try {
-			let fromCache = this._storedFiles.searchCache(filename);
+			let fromCache = this._storedFiles.searchCache(filename, this._id);
 
 			if (optional && typeof fromCache === 'string' && fromCache === '') {
 				return this._logUpdateReturn('Found empty optional file in cache: ' + filename, filename, '', true);
@@ -377,12 +379,12 @@ export default class BuildFile {
 		}
 		catch (error) {
 			if (optional) {
-				this._logger.warn('Unable to fetch optional file, may not exist: ' + filename);
-				this._storedFiles.updateCache(filename, '', false);
+				this._logger.warn(this._id + ' - Unable to fetch optional file, may not exist: ' + filename);
+				this._storedFiles.updateCache(filename, '', false, this._id);
 				return '';
 			}
 			else {
-				this._logger.error('Unable to fetch non optional file: ' + filename);
+				this._logger.error(this._id + ' - Unable to fetch non optional file: ' + filename);
 				return false;
 			}
 		}
@@ -400,7 +402,7 @@ export default class BuildFile {
 		let path: string = this._config.packagesDir + parsedDetail.folderName + '-' + parsedDetail.version + '/' + filename;
 
 		// Get the new bit of file
-		this._logger.debug('Fetching sub-file');
+		this._logger.debug(this._id + ' - Fetching sub-file');
 		let fileAddition = await this._fetchFile(path, parsedDetail.folderName, parsedDetail.version);
 
 		if (!fileAddition) {
@@ -419,7 +421,7 @@ export default class BuildFile {
 			let matches = fileAddition.match(/url\(.*?\)/g);
 
 			if (matches !== null) {
-				this._logger.debug('Number of files found: ' + matches.length);
+				this._logger.debug(this._id + ' - Number of files found: ' + matches.length);
 				let usefulURL = parsedURL.slice();
 				usefulURL.pop();
 
@@ -483,8 +485,8 @@ export default class BuildFile {
 	 * @param refresh whether the cache is to be refreshed.
 	 */
 	private _logUpdateReturn(logMessage: string, filename: string, returnContent, refresh) {
-		this._logger.debug(logMessage);
-		this._storedFiles.updateCache(filename, returnContent, refresh);
+		this._logger.debug(this._id + ' - ' + logMessage);
+		this._storedFiles.updateCache(filename, returnContent, refresh, this._id);
 		return returnContent;
 	}
 

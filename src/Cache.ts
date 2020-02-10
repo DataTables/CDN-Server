@@ -41,13 +41,13 @@ export default class Cache {
 	 * @param filename The name of the file to search the cache for
 	 * @returns {boolean | string} Returns the file if it is found and false if it is not
 	 */
-	public searchCache(filename: string): boolean | string | Buffer {
+	public searchCache(filename: string, id: string): boolean | string | Buffer {
 		if (this._cacheMap.has(filename)) {
-			this._logger.debug('File is present in cache, returning file.');
+			this._logger.debug(id + ' - File is present in cache, returning file.');
 			return this._cacheMap.get(filename);
 		}
 		else {
-			this._logger.debug('File is not present in cache.');
+			this._logger.debug(id + ' - File is not present in cache.');
 			return false;
 		}
 	}
@@ -57,25 +57,25 @@ export default class Cache {
 	 * @param filename Filename which is currently being added to the cache
 	 * @param fileContent The content of the file that is currently being added to the cache
 	 */
-	public updateCache(filename: string, fileContent: string | Buffer, refresh: boolean): void {
-		this._logger.debug((refresh ? 'Refresh' : 'Update') + ' Cache Request');
+	public updateCache(filename: string, fileContent: string | Buffer, refresh: boolean, id: string): void {
+		this._logger.debug(id + ' - ' + (refresh ? 'Refresh' : 'Update') + ' Cache Request');
 
 		// If the _cacheMap is approaching the limit size then delete the first element in the list
 		if (this._cacheMap.size >= this._cacheSize) {
-			this._logger.debug('Cache at size limit, removing content');
+			this._logger.debug(id + ' - Cache at size limit, removing content');
 			this._cacheMap.delete(this._cacheList[0]);
 			this._cacheList.splice(0, 1);
 		}
 
 		// If the filename is not present in the cache then add it and the content to the map
 		if (!this._cacheMap.has(filename)) {
-			this._logger.debug('File is not yet present in Cache, adding to map');
+			this._logger.debug(id + ' - File is not yet present in Cache, adding to map');
 			this._cacheMap.set(filename, fileContent);
 		}
 
 		// Add the filename to the end of the _cacheList
 		this._cacheList.push(filename);
-		this._logger.debug((refresh ? 'Refresh filing in' : 'Adding file to') + ' Cache ' + filename);
+		this._logger.debug(id + ' - ' + (refresh ? 'Refresh filing in' : 'Adding file to') + ' Cache ' + filename);
 	}
 
 	/**

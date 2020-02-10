@@ -49,14 +49,16 @@ interface ITypes {
 export default class MetaInformation {
 	private _config;
 	private _logger;
+	private _id;
 
 	/**
 	 * Assigns the _config property to the config JSON file
 	 * @param configIn the config JSON file to be refered to
 	 */
-	constructor(configIn: IConfig, logger) {
+	constructor(configIn: IConfig, logger, id: string) {
 		this._config = configIn;
 		this._logger = logger;
+		this._id = id;
 	}
 
 	/**
@@ -67,7 +69,7 @@ export default class MetaInformation {
 	 * @param t0 The time at which the request started
 	 */
 	public getDetails(content: string, inclusion: string[], t0: number): IDetails {
-		this._logger.debug('Call for details succesful.');
+		this._logger.debug(this._id + ' - Call for details succesful.');
 		return {
 			fileSize: content.length,
 			hash: 'sha256-' + hash.sha256().update(content).digest('hex'),
@@ -86,7 +88,7 @@ export default class MetaInformation {
 	 * @param filenameIn The name of the file which is in question
 	 */
 	public getLatest(content: any[], includedFiles: boolean | string[], URLIn: string): ILatest {
-		this._logger.debug('Call for latest succesful.');
+		this._logger.debug(this._id + ' - Call for latest succesful.');
 		return {
 			filenames: this._config.fileNames,
 			files: {

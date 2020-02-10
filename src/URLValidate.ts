@@ -16,15 +16,17 @@ export default class URLValidate {
 	private _excludes = [];
 	private _logger;
 	private _maps;
+	private _id;
 
 	/**
 	 * Assigns the config property for this class
 	 * @param configIn The config object whose standards are to be met
 	 */
-	constructor(configIn: IConfig, logger, maps) {
+	constructor(configIn: IConfig, logger, maps, id) {
 		this._config = configIn;
 		this._logger = logger;
 		this._maps = maps;
+		this._id = id;
 	}
 
 	/**
@@ -40,15 +42,15 @@ export default class URLValidate {
 		// The last element should be a valid file name, so assign it to filename and validate.
 		let filename: string = parsedURL.pop();
 		if (!this._validateFilename(filename)) {
-			this._logger.error('Invalid filename in request: ' + filename);
+			this._logger.error(this._id + ' - Invalid filename in request: ' + filename);
 			return false;
 		}
-		this._logger.debug('Valid filename in request: ' + filename);
-		this._logger.warn(parsedURL);
+		this._logger.debug(this._id + ' - Valid filename in request: ' + filename);
+		this._logger.warn(this._id + ' - ' + parsedURL);
 		if (this._config.selectHack) {
 			parsedURL = this.hackSelect(parsedURL);
 		}
-		this._logger.warn(parsedURL);
+		this._logger.warn(this._id + ' - ' + parsedURL);
 
 		// Validate the remainder of the URL
 		return await this._validateURL(parsedURL, filename);
@@ -60,9 +62,9 @@ export default class URLValidate {
 	 * @returns {boolean | string} returns either the valid filename or a boolean value indicating a fail
 	 */
 	public async validateLatest(inputURL: string, skipValidation: boolean): Promise<boolean | string> {
-		this._logger.debug('Entering validateLatest: [' + inputURL + ']');
+		this._logger.debug(this._id + ' - Entering validateLatest: [' + inputURL + ']');
 
-		this._logger.debug('Validating URL for latest request');
+		this._logger.debug(this._id + ' - Validating URL for latest request');
 		let parsedURL: string[];
 		parsedURL = inputURL.split(new RegExp('[' + this._config.separators.join('') + ']'));
 		if (utils.findStaticRequest(parsedURL, this._maps.outputOrderMap, this._config.requires, this._logger) !== -1) {
@@ -72,11 +74,11 @@ export default class URLValidate {
 		// Confirm that the URL only contains valid abbreviations.
 		for (let i = 1; i < parsedURL.length; i++) {
 			if (!this._validateAbbreviation(parsedURL[i])) {
-				this._logger.debug('Invalid Abbreviation included in request: ' + parsedURL[i]);
+				this._logger.debug(this._id + ' - Invalid Abbreviation included in request: ' + parsedURL[i]);
 				return false;
 			}
 		}
-		this._logger.debug('Abbreviations are valid');
+		this._logger.debug(this._id + ' - Abbreviations are valid');
 
 		// Generate the necessary URL by finding all of the latest versions.
 		let filename: string = '';
@@ -88,16 +90,16 @@ export default class URLValidate {
 
 		// Validate the generated URL to make sure that it is legal.
 		if (skipValidation || await this._validateURL(parsedURL, filename)) {
-			this._logger.debug('Generated URL to be requested is legal');
+			this._logger.debug(this._id + ' - Generated URL to be requested is legal');
 			return filename;
 		}
 
-		this._logger.error('Generated URL to be requested is illegal :/');
+		this._logger.error(this._id + ' - Generated URL to be requested is illegal :/');
 		return false;
 	}
 
 	public hackSelect(parsedURL): string[] {
-		this._logger.warn('Hacking Select abbreviation');
+		this._logger.warn(this._id + ' - Hacking Select abbreviation');
 
 		if (parsedURL[0] === '') {
 			parsedURL.splice(0, 1);
@@ -107,12 +109,12 @@ export default class URLValidate {
 			let split = parsedURL[i].split('-');
 
 			if (split.length > 1 && split[0] === 'se') {
-				this._logger.debug('select found after first element, changing ' + parsedURL[i] + ' to sl-' + split[1]);
+				this._logger.debug(this._id + ' - select found after first element, changing ' + parsedURL[i] + ' to sl-' + split[1]);
 				parsedURL[i] = 'sl-' + split[1];
 			}
 		}
 
-		this._logger.warn(parsedURL.join('/'));
+		this._logger.warn(this._id + ' - ' + parsedURL.join('/'));
 		return parsedURL;
 	}
 
@@ -122,7 +124,7 @@ export default class URLValidate {
 	 * @returns {string} the latest version for that element
 	 */
 	private _findLatestVersion(mod: string): string {
-		this._logger.debug('Entering _findLatestVersion: [' + mod + ']');
+		this._logger.debug(this._id + ' - Entering _findLatestVersion: [' + mod + ']');
 
 		for (let element of this._config.elements) {
 			if (mod === element.abbr) {
@@ -157,7 +159,7 @@ export default class URLValidate {
 	 * @param filename the name of the file requested
 	 */
 	private async _validateExtraRequest(parsedURL: string[], filename: string) {
-		this._logger.debug('Entering _validateExtraRequest: [' + parsedURL + '], [' + filename + ']');
+		this._logger.debug(this._id + ' - Entering _validateExtraRequest: [' + parsedURL + '], [' + filename + ']');
 
 		// Find the point in the requested URL that images is and remove all of the preceeding elementsk
 		// bar one as this should be the folder name. Then construct the path to the file.
@@ -167,7 +169,7 @@ export default class URLValidate {
 
 		let cut = utils.findStaticRequest(parsedURL, this._maps.outputOrderMap, undefined, this._logger);
 		if (cut === -1) {
-			this._logger.error('Not a valid static request');
+			this._logger.error(this._id + ' - Not a valid static request');
 			return false;
 		}
 
@@ -175,16 +177,16 @@ export default class URLValidate {
 		let path = this._config.packagesDir + parsedURL.join('/') + '/' + filename;
 		try {
 			if (await fileExists(path)) {
-				this._logger.debug(filename + ' found at ' + path);
+				this._logger.debug(this._id + ' - ' + filename + ' found at ' + path);
 				return true;
 			}
 			else {
-				this._logger.error(filename + ' not found at ' + path);
+				this._logger.error(this._id + ' - ' + filename + ' not found at ' + path);
 				return false;
 			}
 		}
 		catch {
-			this._logger.error('Error finding ' + path);
+			this._logger.error(this._id + ' - Error finding ' + path);
 		}
 
 		return false;
@@ -198,7 +200,7 @@ export default class URLValidate {
 	private _validateFilename(filename: string): boolean {
 		// Validate that the ending of the URL is valid
 		if (Object.values(this._config.fileNames).indexOf('') !== -1) {
-			this._logger.warn('Empty filename in config - not allowed');
+			this._logger.warn(this._id + ' - Empty filename in config - not allowed');
 			return false;
 		}
 		else if (filename.search(new RegExp(this._config.staticFileExtensions.join('|\\') + '$')) > 0 &&
@@ -221,7 +223,7 @@ export default class URLValidate {
 	 * @param parsedURL the URL which is to be validated for a normal file request
 	 */
 	private _validateFileRequest(parsedURL: string[]): boolean {
-		this._logger.debug('Entering _validateFileRequest: [' + parsedURL + ']');
+		this._logger.debug(this._id + ' - Entering _validateFileRequest: [' + parsedURL + ']');
 
 		// if the URL started with a separator then element 0 will be empty so remove it
 		if (parsedURL[0] === '') {
@@ -230,15 +232,15 @@ export default class URLValidate {
 
 		for (let element of parsedURL) {
 			if (element === '') {
-				this._logger.error('Empty element included in URL, all elements must contain a module');
+				this._logger.error(this._id + ' - Empty element included in URL, all elements must contain a module');
 				return false;
 			}
 			else if (element.indexOf('..') !== -1) {
-				this._logger.warn('No ".." allowed in filename');
+				this._logger.warn(this._id + ' - No ".." allowed in filename');
 				return false;
 			}
 		}
-		this._logger.debug('All elements in URL have a module');
+		this._logger.debug(this._id + ' - All elements in URL have a module');
 
 		if (utils.findStaticRequest(parsedURL, this._maps.outputOrderMap, this._config.requires, this._logger) !== -1) {
 			return false;
@@ -248,11 +250,11 @@ export default class URLValidate {
 		// any of the excludes for the current element.
 		for (let element of parsedURL) {
 			if (!this._validateVersion(element)) {
-				this._logger.error('Invalid version requested for ' + element);
+				this._logger.error(this._id + ' - Invalid version requested for ' + element);
 				return false;
 			}
 		}
-		this._logger.debug('All requested versions are valid');
+		this._logger.debug(this._id + ' - All requested versions are valid');
 
 		// Validate that none of the elements have been excluded except themselves
 		for (let element of parsedURL) {
@@ -261,12 +263,12 @@ export default class URLValidate {
 				abbr[0] += '-';
 			}
 			if (this._excludes.indexOf(abbr[0]) !== this._excludes.lastIndexOf(abbr[0])) {
-				this._logger.error('Excluded module included in request');
+				this._logger.error(this._id + ' - Excluded module included in request');
 				return false;
 			}
 		}
 
-		this._logger.debug('Validation Success');
+		this._logger.debug(this._id + ' - Validation Success');
 		return true;
 	}
 
@@ -276,7 +278,7 @@ export default class URLValidate {
 	 * @returns {boolean} returns a boolean value indicating if the URL has passed validation
 	 */
 	private async _validateURL(parsedURL: string[], filename: string): Promise<boolean> {
-		this._logger.debug('Validating URL');
+		this._logger.debug(this._id + ' - Validating URL');
 		let staticIndex = -1;
 		for (let staticExtension of this._config.staticFileExtensions) {
 			staticIndex = filename.indexOf(staticExtension);
@@ -286,11 +288,11 @@ export default class URLValidate {
 		}
 		// If there is then an image request has to be validated, otherwise validate a file request
 		if (staticIndex !== -1) {
-			this._logger.debug('Validating Static Request');
+			this._logger.debug(this._id + ' - Validating Static Request');
 			return await this._validateExtraRequest(parsedURL, filename);
 		}
 		else {
-			this._logger.debug('Validating File Request');
+			this._logger.debug(this._id + ' - Validating File Request');
 			return this._validateFileRequest(parsedURL);
 		}
 	}
@@ -301,12 +303,12 @@ export default class URLValidate {
 	 * @returns {boolean} returns a boolean value indicating if the version requested is valid
 	 */
 	private _validateVersion(parsedURL: string): boolean {
-		this._logger.debug('Entering _validateVersion: [' + parsedURL + ']');
+		this._logger.debug(this._id + ' - Entering _validateVersion: [' + parsedURL + ']');
 		for (let element of this._config.elements) {
 			// if the abbreviation of this element is included in the exclusion list dont bother with checking the versions
 			if (this._excludes.indexOf(element.abbr) === -1) {
 				for (let version of element.versions) {
-					this._logger.debug('_validateVersion2: [' + element.abbr + version + ']');
+					this._logger.debug(this._id + ' - _validateVersion2: [' + element.abbr + version + ']');
 
 					if (parsedURL === (element.abbr + version)) {
 						this._excludes = this._excludes.concat(element.abbr, element.excludes);

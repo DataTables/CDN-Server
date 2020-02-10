@@ -371,7 +371,8 @@ let cache = new Cache(null, logger, null);
 http.createServer(async function (req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
-	logger.info('New Request ' + req.url);
+	let id = (Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6)).toUpperCase();
+	logger.info(id + ' - New Request ' + req.url);
 	logger.access(req.url);
 
 	// If a signal is recieved to re-read the config file then wait until the next request
@@ -392,22 +393,22 @@ http.createServer(async function (req, res) {
 
 	let t = new Date();
 	let t0 = t.getTime();
-	let url = new URLValidate(config, logger, cache._maps);
+	let url = new URLValidate(config, logger, cache._maps, id);
 	let splitURL: string[] = req.url.split('?');
 
 	// Ensure a valid request type is being made and validate that the requested url is also valid
 	if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
 		res.writeHead(405);
-		logger.error('405 Bad Request. Types not permitted "POST", "PUT" and "DELETE". Type method attempted ' + req.method);
+		logger.error(id + ' - 405 Bad Request. Types not permitted "POST", "PUT" and "DELETE". Type method attempted ' + req.method);
 	}
 
 	// If the URL has a latest parameter run the following to find the latest version of the listed modules
 	else if (splitURL[0] === '/latest' && splitURL.length === 1 && !config.latestAll) {
 		res.writeHead(404, 'Error 404. Invalid URL.' + req.url);
-		logger.error('404 Invalid URL. latestAll not enabled but was requested.');
+		logger.error(id + ' - 404 Invalid URL. latestAll not enabled but was requested.');
 	}
 	else if (splitURL[0] === '/latest') {
-		logger.debug('Latest versions requested.');
+		logger.debug(id + ' - Latest versions requested.');
 
 		let skipValidation: boolean = false;
 		let findLatest: string;
@@ -425,12 +426,12 @@ http.createServer(async function (req, res) {
 		let latest = await url.validateLatest(findLatest, skipValidation);
 		if (!latest) {
 			res.writeHead(404, 'Error 404. Invalid URL.' + req.url);
-			logger.error('404 Invalid URL. Failed to find latest version(s) of the module(s) requested. ' + req.url);
+			logger.error(id + ' - 404 Invalid URL. Failed to find latest version(s) of the module(s) requested. ' + req.url);
 		}
 		else {
-			logger.debug('URL Valid.');
-			let meta = new MetaInformation(config, logger);
-			let bui = new BuildFile(cache, config, argum.debug, logger, cache._maps);
+			logger.debug(id + ' - URL Valid.');
+			let meta = new MetaInformation(config, logger, id);
+			let bui = new BuildFile(cache, config, argum.debug, logger, cache._maps, id);
 			let content: any[] = [];
 			let latestOptions: any[] = [];
 
@@ -439,7 +440,7 @@ http.createServer(async function (req, res) {
 				let contentAddition = await bui.buildFile(latest + config.fileNames[0] + extension);
 				if (!contentAddition) {
 					res.writeHead(500);
-					logger.error('500 Internal Server error. ' + req.url);
+					logger.error(id + ' - 500 Internal Server error. ' + req.url);
 					res.end();
 					return;
 				}
@@ -457,7 +458,7 @@ http.createServer(async function (req, res) {
 					)
 				)
 			);
-			logger.debug('Latest succesfully found and returned');
+			logger.debug(id + ' - Latest succesfully found and returned');
 		}
 	}
 	else if (await url.parseURL(splitURL[0])) {
@@ -465,31 +466,31 @@ http.createServer(async function (req, res) {
 			let parsedURL = splitURL[0].split(new RegExp('[' + config.separators.join('') + ']'));
 			splitURL[0] = url.hackSelect(parsedURL).join('/');
 		}
-		logger.debug('Requested file. Build commencing.');
+		logger.debug(id + ' - Requested file. Build commencing.');
 
 		// Build requested file
-		let bui = new BuildFile(cache, config, argum.debug, logger, cache._maps);
+		let bui = new BuildFile(cache, config, argum.debug, logger, cache._maps, id);
 		let content = await bui.buildFile(splitURL[0]);
 
 		if (content === false) {
 			res.writeHead(500);
-			logger.error('500 File not found when building file ' + req.url);
+			logger.error(id + ' - 500 File not found when building file ' + req.url);
 		}
 		else if (content === 404) {
 			res.writeHead(404);
-			logger.error('404 File not found when building file ' + req.url);
+			logger.error(id + ' - 404 File not found when building file ' + req.url);
 		}
 		else if (splitURL.indexOf('details') === 1 && typeof content === 'string') {
-			logger.debug('Getting Meta Info for build.');
-			let meta = new MetaInformation(config, logger);
+			logger.debug(id + ' - Getting Meta Info for build.');
+			let meta = new MetaInformation(config, logger, id);
 			res.writeHead(200, {
 				'Cache-Control': 'max-age=' + config.cacheDuration,
 			});
 			res.write(JSON.stringify(meta.getDetails(content, await bui.getInclusions(), t0)));
-			logger.debug('Success. Returning Build Details');
+			logger.debug(id + ' - Success. Returning Build Details');
 		}
 		else {
-			logger.debug('Standard file request');
+			logger.debug(id + ' - Standard file request');
 			// Find the file type that has been requested and the content type for http
 			let extension: string = fileExtension(splitURL[0]);
 			let type = mime.lookup(extension);
@@ -499,14 +500,14 @@ http.createServer(async function (req, res) {
 			});
 			// Return file
 			res.write(content);
-			logger.info('Success. Returning File.');
+			logger.info(id + ' - Success. Returning File.');
 		}
 	}
 	else {
 		res.statusCode = 404;
-		logger.error('404 Invalid URL ' + req.url);
+		logger.error(id + ' - 404 Invalid URL ' + req.url);
 	}
-	logger.info('Ending Request');
+	logger.info(id + ' - Ending Request');
 	res.end();
 }).listen(port);
 
