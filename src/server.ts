@@ -277,6 +277,15 @@ let defaults: IConfig = {
 	substitutions: {},
 };
 
+let elementDefault: IElements = {
+	abbr: '',
+	excludes: [],
+	fileIncludes: {},
+	fileNames: {},
+	moduleName: '',
+	outputOrder: 0
+};
+
 // See which port we should be using
 let port = argum.port;
 
@@ -382,6 +391,9 @@ http.createServer(async function(req, res) {
 		logger.debug('config Read' + argum.configLoc);
 
 		config = {...defaults, ...input};
+		for (let element of config.elements) {
+			element = {...elementDefault};
+		}
 
 		// DD-1267 - the value in the config isn't being reread when server is signalled.
 		config.latestAll = input.latestAll;

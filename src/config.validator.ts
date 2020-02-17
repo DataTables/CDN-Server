@@ -68,9 +68,6 @@ export const IConfigSchema = {
       },
       "required": [
         "abbr",
-        "excludes",
-        "fileIncludes",
-        "fileNames",
         "moduleName",
         "outputOrder"
       ],

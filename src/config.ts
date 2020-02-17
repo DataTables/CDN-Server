@@ -78,15 +78,15 @@ export interface IElements {
 	 * The abbreviation of any modules that are not permitted alongside this one should be noted here.
 	 * The abbreviation of this element is automatically excluded from other occurences in the URL.
 	 */
-	excludes: string[];
+	excludes?: string[];
 	/**
 	 *  Any entries into file Includes will be replaced in a forward match manner.
 	 */
-	fileIncludes: { [key: string]: string };
+	fileIncludes?: { [key: string]: string };
 	/**
 	 * The key in fileNames should be the file type of the given file names inside the corresponding array.
 	 */
-	fileNames: { [key: string]: string[] };
+	fileNames?: { [key: string]: string[] };
 	/**
 	 * The name of the target folder that holds the desired files for this module.
 	 */
