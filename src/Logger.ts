@@ -45,7 +45,7 @@ export default class Logger {
 		this._logger = winston.createLogger({
 			defaultMeta: { service: 'user-service'},
 			format: winston.format.json(),
-			level: 'silly',
+			level: loggerDetails.logLevel,
 		});
 		// Create another logger purely for the errors
 		this._errorLogger = winston.createLogger({

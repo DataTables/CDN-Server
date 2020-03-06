@@ -240,6 +240,7 @@ let argum = getopts(process.argv.slice(2), {
 		frequency: ['f', 'F'],
 		help: ['h', 'H'],
 		logfile: ['l', 'L'],
+		logLevel: ['logLevel'],
 		maxFiles: ['x', 'X'],
 		maxsize: ['s', 's'],
 		metrics: ['m', 'M'],
@@ -253,6 +254,7 @@ let argum = getopts(process.argv.slice(2), {
 		frequency: 'YYYY-MM-DD',
 		help: false,
 		logfile: false,
+		logLevel: 'silly',
 		maxFiles: 5,
 		maxsize: null,
 		metrics: false,
@@ -297,6 +299,7 @@ let loggerDetails = {
 	errorLogFile: argum.errorLogFile,
 	frequency: argum.frequency,
 	logfile: argum.logfile,
+	logLevel: argum.logLevel,
 	maxFiles: argum.maxFiles,
 	maxsize: argum.maxsize
 };
@@ -339,7 +342,7 @@ if (fail) {
 let logger = new Logger(loggerDetails);
 
 // If there are more options defined which are not defined then print the help and end server
-if (Object.keys(argum).length > 33) {
+if (Object.keys(argum).length > 34) {
 	logger.help();
 	process.exit(exitCodes.UnknownOptions);
 }
