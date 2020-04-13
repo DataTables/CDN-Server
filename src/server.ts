@@ -228,7 +228,8 @@ enum exitCodes {
 	AccessLogFile,
 	NoPackages,
 	BadConfig,
-	VersionsPresent
+	VersionsPresent,
+	PortInUse
 }
 
 let argum = getopts(process.argv.slice(2), {
@@ -380,7 +381,7 @@ let cache = new Cache(null, logger, null);
  * This is the server for requesting files to be built.
  * It validates the URL that it takes and builds the file before returning them to the user.
  */
-http.createServer(async function(req, res) {
+let server = http.createServer(async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
 	let id = (Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6)).toUpperCase();
@@ -543,5 +544,15 @@ process.on('uncaughtException', err => {
 	process.exit(exitCodes.Exception);
 });
 
-console.log('\x1b[32mINFO:\x1b[37m Server running on 0.0.0.0:' + port);
-logger.info('Server running on 0.0.0.0:' + port);
+server.once('error', function(err) {
+	if(err['code'] === 'EADDRINUSE') {
+		console.log('\x1b[31mERROR:\x1b[37m Port already in use - ' + port);
+		logger.error('Port already in use - ' + port);
+		process.exit(exitCodes.PortInUse);
+	}
+})
+
+server.once('listening', function(){
+	console.log('\x1b[32mINFO:\x1b[37m Server running on 0.0.0.0:' + port);
+	logger.info('Server running on 0.0.0.0:' + port);
+});
