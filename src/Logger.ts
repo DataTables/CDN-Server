@@ -89,7 +89,11 @@ export default class Logger {
 
 		// If the debugger option is enabled then set up a transport to the console
 		if (this._debugger) {
-			this._logger.add(new winston.transports.Console({format: myFormat}));
+			this._logger.add(new winston.transports.Console({format: myFormat, level: 'debug'}));
+		}
+		else {
+			// Anything of a warning level or above should be logged regardless of debugging
+			this._logger.add(new winston.transports.Console({format: myFormat, level: 'warn'}));
 		}
 
 		// If the logfile option is enabled then set up a transport to the logfile
@@ -125,11 +129,9 @@ export default class Logger {
 	}
 
 	public warn(message: string) {
-		if (this._debugger || this._logfile) {
-			// Prints `warn` in yellow plus a message in white
-			message = '\x1b[33mWARN:\x1b[37m ' + message;
-			this._logger.log({level: 'warn', message});
-		}
+		// Prints `warn` in yellow plus a message in white
+		message = '\x1b[33mWARN:\x1b[37m ' + message;
+		this._logger.log({level: 'warn', message});
 	}
 
 	public debug(message: string) {
@@ -144,10 +146,9 @@ export default class Logger {
 		let stamp = new Date().toISOString();
 
 		// Prints `error` in red plus a message in white
-		if (this._debugger || this._logfile) {
-			message = '\x1b[31mERROR:\x1b[37m ' + message;
-			this._logger.log({level: 'error', message, stamp});
-		}
+		message = '\x1b[31mERROR:\x1b[37m ' + message;
+		this._logger.log({level: 'error', message, stamp});
+
 		if (this._errorLogFile) {
 			this._errorLogger.log({level: 'error', message, stamp});
 		}
