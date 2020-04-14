@@ -306,6 +306,19 @@ export default class URLValidate {
 	 */
 	private _validateVersion(parsedURL: string): boolean {
 		this._logger.debug(this._id + ' - Entering _validateVersion: [' + parsedURL + ']');
+
+		// First check that this element has not already been ruled out
+		let parsedsplit = parsedURL.split('-'); 
+		let parsedabbr = parsedsplit.length === 1 ?
+			parsedsplit[0] :
+			parsedsplit[0] + '-';
+
+		if (this._excludes.indexOf(parsedabbr) !== -1) {
+			this._logger.error(`Clashing libraries requested: ${parsedURL} is ruled out by previously included libraries.`);
+			return false;
+		}
+
+		// Then validate the version and add to excludes if it is found
 		for (let element of this._config.elements) {
 			// if the abbreviation of this element is included in the exclusion list dont bother with checking the versions
 			if (this._excludes.indexOf(element.abbr) === -1) {
