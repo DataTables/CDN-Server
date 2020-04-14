@@ -212,6 +212,9 @@ export default class BuildFile {
 			this._logger.error(this._id + ' - File unable to be built');
 			return false;
 		}
+		else if (typeof file === 'number') {
+			return file;
+		}
 		else if (typeof file === 'string') {
 			this._logger.debug(this._id + ' - File built succesfully, replacing macros');
 			let substitutions = this._config.substitutions;
@@ -338,7 +341,7 @@ export default class BuildFile {
 		// If there is no content then the header would be returned by itself - instead return an error
 		if (fileContent.length === 0) {
 			this._logger.error(this._id + ' - File to be returned is empty before header');
-			return false;
+			return 400;
 		}
 		else {
 			// Return the finished product

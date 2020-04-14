@@ -456,12 +456,30 @@ let server = http.createServer(async function(req, res) {
 			// For every filetype build the file and push to the array for hashing purposes
 			for (let extension of config.fileExtensions) {
 				let contentAddition = await bui.buildFile(latest + config.fileNames[0] + extension);
+
 				if (!contentAddition) {
 					res.writeHead(500);
 					logger.error(id + ' - 500 Internal Server error. ' + req.url);
 					res.end();
 					return;
 				}
+				else if (typeof contentAddition === 'number'){
+					res.writeHead(contentAddition);
+
+					if(contentAddition === 400){
+						logger.error(id + ' - ' + contentAddition.toString() + ' Error Bad Request. ' + req.url);
+					}
+					else if (contentAddition === 404) {
+						logger.error(id + ' - ' + contentAddition + ' Error Not Found. ' + req.url);
+					}
+					else {
+						logger.error(id + ' - ' + contentAddition + ' Error. ' + req.url);
+					}
+
+					res.end();
+					return;
+				}
+
 				content.push(contentAddition);
 				latestOptions.push(latest + config.fileNames[0] + extension);
 			}
@@ -497,6 +515,10 @@ let server = http.createServer(async function(req, res) {
 		else if (content === 404) {
 			res.writeHead(404);
 			logger.error(id + ' - 404 File not found when building file ' + req.url);
+		}
+		else if (content === 400) {
+			res.writeHead(400);
+			logger.error(id + ' - 400 Bad request when building file ' + req.url);
 		}
 		else if (splitURL.indexOf('details') === 1 && typeof content === 'string') {
 			logger.debug(id + ' - Getting Meta Info for build.');
