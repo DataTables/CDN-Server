@@ -74,7 +74,7 @@ start_server() {
 	# Needs some config for the server to start so just copy in from one test
 	cp test/scripts/no.requires/config.json $CONFFILE
 
-	node ./dist/server.js -p $DT_CDN_SERVER_PORT --configLoc $CONFFILE &
+	node ./dist/server.js -p $DT_CDN_SERVER_PORT --configLoc $CONFFILE > /dev/null 2>&1 &
 	sleep 2
 
 	# Get the PID of the server
