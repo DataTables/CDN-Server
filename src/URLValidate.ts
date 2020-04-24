@@ -308,15 +308,21 @@ export default class URLValidate {
 		this._logger.debug(this._id + ' - Entering _validateVersion: [' + parsedURL + ']');
 
 		// First check that this element has not already been ruled out
-		// let parsedsplit = parsedURL.split('-'); 
-		// let parsedabbr = parsedsplit.length === 1 ?
-		// 	parsedsplit[0] :
-		// 	parsedsplit[0] + '-';
+		let parsedsplit = parsedURL.split('-');
+		let parsedabbr;
 
-		// if (this._excludes.indexOf(parsedabbr) !== -1) {
-		// 	this._logger.error(`Clashing libraries requested: ${parsedURL} is ruled out by previously included libraries.`);
-		// 	return false;
-		// }
+		if(parsedsplit.length === 1){
+			parsedabbr = parsedsplit[0];
+		}
+		else {
+			parsedsplit.pop();
+			parsedabbr = parsedsplit.join('-') + '-';
+		}
+
+		if (this._excludes.indexOf(parsedabbr) !== -1) {
+			this._logger.error(`Clashing libraries requested: ${parsedURL} is ruled out by previously included libraries.`);
+			return false;
+		}
 
 		// Then validate the version and add to excludes if it is found
 		for (let element of this._config.elements) {
