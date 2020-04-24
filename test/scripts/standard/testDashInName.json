@@ -19,6 +19,12 @@
 		"url" : "snf/en/d-dash-4.0.0/test.js",
 		"response": "200",
 		"outfile" : "outDoubleDashEnJs.txt"
+	},
+	{
+		"description": "two elements with the same dashed suffix",
+		"url" : "snf/en/d-dash-4.0.0/d-second-3.0.0/test.js",
+		"response": "200",
+		"outfile" : "outDoubleDashTwice.txt"
 	}
 
 ]

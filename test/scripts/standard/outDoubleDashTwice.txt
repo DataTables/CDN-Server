@@ -1,0 +1,16 @@
+extensionsURL >snf/en/d-dash-4.0.0/d-second-3.0.0<
+extensionsList >Product Dash 4.0.0, Product Dash2 3.0.0<
+source >"snf/en/d-dash-4.0.0/d-second-3.0.0"<
+testString >test string<
+./ProductDash-4.0.0/productdash.styleNoFiles.en.js
+
+
+./ProductDash-4.0.0/productdash.js
+
+
+./ProductDash2-3.0.0/productdash.styleNoFiles.en.js
+
+
+./ProductDash2-3.0.0/productdash.js
+
+

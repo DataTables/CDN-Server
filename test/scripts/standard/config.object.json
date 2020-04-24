@@ -127,6 +127,20 @@
             "moduleName": "Product Dash",
             "outputOrder": 15
         },
+        "d-second-": {
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["productdash2"],
+                "js": [
+					"?productdash2.{styling}.{locale}",
+					"productdash2"
+				]
+            },
+            "folderName": "ProductDash2",
+            "moduleName": "Product Dash2",
+            "outputOrder": 15
+        },
         "ea-": {
             "excludes": [""],
             "fileIncludes": {},
