@@ -1,0 +1,11 @@
+[
+	{
+		"comment": "Set of tests to ensure three letter acronyms"
+	},
+	{
+		"description": "get the tla",
+		"url": "snf/x-y-z-2.0.1/x-y-y-2.0.1/test.js",
+		"response": "200",
+		"outfile": "outTLA.txt"
+	}
+]

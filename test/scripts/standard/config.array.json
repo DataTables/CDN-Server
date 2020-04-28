@@ -186,6 +186,30 @@
             "folderName": "Images",
             "moduleName": "Images Test",
             "outputOrder": 60
+        },
+        {
+            "abbr": "x-y-z-",
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["xyz"],
+                "js": ["xyz"]
+            },
+            "folderName": "XYZ",
+            "moduleName": "XYZ",
+            "outputOrder": 30
+        },
+        {
+            "abbr": "x-y-y-",
+            "excludes": [],
+            "fileIncludes": {},
+            "fileNames": {
+                "css": ["xyy"],
+                "js": ["xyy"]
+            },
+            "folderName": "XYY",
+            "moduleName": "XYY",
+            "outputOrder": 30
         }
     ]
 }

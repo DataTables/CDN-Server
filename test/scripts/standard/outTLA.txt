@@ -1,0 +1,10 @@
+extensionsURL >snf/x-y-z-2.0.1/x-y-y-2.0.1<
+extensionsList >XYZ 2.0.1, XYY 2.0.1<
+source >"snf/x-y-z-2.0.1/x-y-y-2.0.1"<
+testString >test string<
+./XYZ-2.0.1/xyz.js
+
+
+./XYY-2.0.1/xyy.js
+
+
