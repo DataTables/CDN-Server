@@ -247,9 +247,22 @@ export default class BuildFile {
 			let matches = file.match(sourceMapReg);
 
 			if (matches !== null) {
-				this._logger.debug(this._id + ' - Replacing Source Maps.');
+				this._logger.debug(this._id + ' - Replacing CSS Source Maps.');
 
 				for (let match of matches) {
+					file = file.replace(match, '');
+				}
+			}
+
+			// Find all of the matching strings for source maps in js as given by the
+			// below regex, then replace with empty strings
+			let sourceMapJSReg = new RegExp(/\s\/\/\#.*/, 'g');
+			let jsMatches = file.match(sourceMapJSReg);
+
+			if(jsMatches !== null) {
+				this._logger.debug(this._id + ' - Replacing JS Source Maps.');
+				
+				for (let match of jsMatches) {
 					file = file.replace(match, '');
 				}
 			}
