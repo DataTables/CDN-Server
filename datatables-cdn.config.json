@@ -650,6 +650,23 @@
 			"moduleName": "Scroller",
 			"outputOrder": 40
 		}, {
+                        "abbr": "sb-",
+                        "description" : "This element includes the SearchBuilder extension files.",
+                        "excludes": [],
+                        "fileIncludes": {},
+                        "fileNames": {
+                                "css": [
+                                        "css/searchBuilder.{styling}"
+                                ],
+                                "js": [
+                                        "js/dataTables.searchBuilder",
+                                        "?js/searchBuilder.{styling}"
+                                ]
+                        },
+                        "folderName": "SearchBuilder",
+                        "moduleName": "SearchBuilder",
+                        "outputOrder": 40
+                }, {
                         "abbr": "sp-",
                         "description" : "This element includes the SearchPane extension files.",
                         "excludes": [],
