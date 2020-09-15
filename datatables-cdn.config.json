@@ -650,6 +650,23 @@
 			"moduleName": "Scroller",
 			"outputOrder": 40
 		}, {
+                        "abbr": "sp-",
+                        "description" : "This element includes the SearchPane extension files.",
+                        "excludes": [],
+                        "fileIncludes": {},
+                        "fileNames": {
+                                "css": [
+                                        "css/searchPanes.{styling}"
+                                ],
+                                "js": [
+                                        "js/dataTables.searchPanes",
+                                        "?js/searchPanes.{styling}"
+                                ]
+                        },
+                        "folderName": "SearchPanes",
+                        "moduleName": "SearchPanes",
+                        "outputOrder": 40
+                }, {
 			"abbr": "sl-",
 			"description" : "This element includes the Select extension files.",
 			"excludes": [],
