@@ -7,7 +7,8 @@ export const ajv = new Ajv.default({
   allErrors: true,
   coerceTypes: false,
   unicode: true,
-  useDefaults: true
+  useDefaults: true,
+  strict: false,
 });
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
