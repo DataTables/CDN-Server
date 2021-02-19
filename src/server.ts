@@ -307,9 +307,9 @@ let loggerDetails = {
 
 let watcher: FSWatcher; // directory to watch for new packages
 
-if (argum.metrics) {
-	require('appmetrics-dash').monitor();
-}
+// if (argum.metrics) {
+// 	require('appmetrics-dash').monitor();
+// }
 
 // Validation that the config is valid
 readConfig();
