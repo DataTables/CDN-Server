@@ -329,7 +329,6 @@ export default class URLValidate {
 			// if the abbreviation of this element is included in the exclusion list dont bother with checking the versions
 			if (this._excludes.indexOf(element.abbr) === -1) {
 				for (let version of element.versions) {
-					this._logger.debug(this._id + ' - _validateVersion2: [' + element.abbr + version + ']');
 
 					if (parsedURL === (element.abbr + version)) {
 						this._excludes = this._excludes.concat(element.abbr, element.excludes);

@@ -1,4 +1,5 @@
 import { IConfig } from './config';
+import * as ssri from 'ssri';
 
 const hash = require('hash.js');
 
@@ -7,7 +8,7 @@ const hash = require('hash.js');
  */
 interface IDetails {
 	fileSize: number;
-	hash: string;
+	sri: object;
 	includedFiles: string[];
 	returnTime: number;
 }
@@ -72,7 +73,7 @@ export default class MetaInformation {
 		this._logger.debug(this._id + ' - Call for details succesful.');
 		return {
 			fileSize: content.length,
-			hash: 'sha256-' + hash.sha256().update(content).digest('hex'),
+			sri:{"256": ssri.fromData(content, {algorithms:['sha256']})},
 			includedFiles: inclusion,
 			returnTime: new Date().getTime() - t0,
 		};
