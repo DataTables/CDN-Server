@@ -1,1 +1,1 @@
-{"fileSize":229,"hash":"sha256-2de0932da68c68cf59df14c0fb8bdf365dd8fcd8a41ad55de65342f5845b722e","includedFiles":["ProductA-1.0.0/js/ProductA.styleNoFiles.js","ProductA-1.0.0/js/productA.js"],}
+{"fileSize":229,"sri":{"256":"sha256-LeCTLaaMaM9Z3xTA+4vfNl3Y/NikGtVd5lNC9YRbci4="},"includedFiles":["ProductA-1.0.0/js/ProductA.styleNoFiles.js","ProductA-1.0.0/js/productA.js"],}

@@ -1,1 +1,1 @@
-{"fileSize":476,"hash":"sha256-6b6ffa8eae653451d224de9b861d22d4a66f29744700cbf1b0d26a3c4531064b","includedFiles":["SourceMapping-2.0.1/sourcemapping.js","ProductA-1.0.0/js/ProductA.styleNoFiles.js","ProductA-1.0.0/js/productA.js","ExtA-10.0.0/js/exta.js","ExtA-10.0.0/js/exta.styleNoFiles.js"],}
+{"fileSize":476,"sri":{"256":"sha256-a2/6jq5lNFHSJN6bhh0i1KZvKXRHAMvxsNJqPEUxBks="},"includedFiles":["SourceMapping-2.0.1/sourcemapping.js","ProductA-1.0.0/js/ProductA.styleNoFiles.js","ProductA-1.0.0/js/productA.js","ExtA-10.0.0/js/exta.js","ExtA-10.0.0/js/exta.styleNoFiles.js"],}

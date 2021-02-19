@@ -20,10 +20,10 @@
 		"outfile" : "outDetailsOne.txt"
 	},
 	{
-        "description": "details query with one product",
-        "url" : "snf/pa-1.0.0/test.min.js?details",
-        "response": "500"
-    },
+		"description": "details query with one product",
+		"url" : "snf/pa-1.0.0/test.min.js?details",
+		"response": "500"
+	},
 	{
 		"description": "details query with many products",
 		"url" : "snf/pa-1.0.0/ea-10.0.0/sm-2.0.1/test.js?details",

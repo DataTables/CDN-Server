@@ -1,1 +1,1 @@
-{"fileSize":136,"hash":"sha256-4a797c8101ce1c769029c760a6384d5b3d97a604a36b4e0294aee4b0efecdfa7","includedFiles":["ProductC-3.0.0/js/productC.js"],}
+{"fileSize":136,"sri":{"256":"sha256-Snl8gQHOHHaQKcdgpjhNWz2XpgSja04ClK7ksO/s36c="},"includedFiles":["ProductC-3.0.0/js/productC.js"],}
