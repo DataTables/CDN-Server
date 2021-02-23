@@ -173,6 +173,7 @@ export default class Logger {
 	-e	errorLogFile: prints the error messages to a file as specified (FILE MUST BE SPECIFIED)
 	-l	logfile: prints the debug lines to a file as specified (FILE MUST BE SPECIFIED)
 	-m	metrics: allows the server to be monitored using the appmetrics-dash
+	-n	nowatch: disable default behaviour of watching directories for release of new packages
 	-c	configLoc: allows the server to be run with a custom config file at a location as specified
 	-s	maxsize: sets the maximum size of the log files. Uses default of null if not specified.
 	-f	frequency: sets the frequency of which the log files are to be rotated. This is a string which is layed out in the format of a date.

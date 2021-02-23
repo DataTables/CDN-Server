@@ -127,6 +127,12 @@ function checkVersionsPresent() {
  * Create a watch on the file system in case files change
  */
 function watchDirectory() {
+	// nothing to do if not watching
+	if (loggerDetails.nowatch) {
+		logger.debug('Not watching directories');
+		return;
+	}
+
 	// remove previous watch if one present
 	if (watcher !== undefined) {
 		logger.debug('Clearing watch');
@@ -245,6 +251,7 @@ let argum = getopts(process.argv.slice(2), {
 		maxFiles: ['x', 'X'],
 		maxsize: ['s', 's'],
 		metrics: ['m', 'M'],
+		nowatch: ['n', 'N'],
 		port: ['p', 'P'],
 	},
 	default: {
@@ -259,6 +266,7 @@ let argum = getopts(process.argv.slice(2), {
 		maxFiles: 5,
 		maxsize: null,
 		metrics: false,
+		nowatch: false,
 		port: 8080,
 	}
 });
@@ -302,7 +310,8 @@ let loggerDetails = {
 	logfile: argum.logfile,
 	logLevel: argum.logLevel,
 	maxFiles: argum.maxFiles,
-	maxsize: argum.maxsize
+	maxsize: argum.maxsize,
+	nowatch: argum.nowatch
 };
 
 let watcher: FSWatcher; // directory to watch for new packages
@@ -343,7 +352,9 @@ if (fail) {
 let logger = new Logger(loggerDetails);
 
 // If there are more options defined which are not defined then print the help and end server
-if (Object.keys(argum).length > 34) {
+if (Object.keys(argum).length > 37) {
+	// Not sure of the value of this test but leaving in in case I'm missing something (COLIN)
+	console.log('\x1b[31mERROR:\x1b[37m Unexpected command-line option. Ending.');
 	logger.help();
 	process.exit(exitCodes.UnknownOptions);
 }
