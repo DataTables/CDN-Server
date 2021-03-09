@@ -531,6 +531,22 @@
 			"moduleName": "ColReorder",
 			"outputOrder": 40
 		}, {
+			"abbr": "date-",
+			"description" : "DateTime picker.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/dataTables.dateTime"
+				],
+				"js": [
+					"js/dataTables.dateTime"
+				]
+			},
+			"folderName": "Buttons",
+			"moduleName": "Buttons",
+			"outputOrder": 40
+		}, {
 			"abbr": "fc-",
 			"description" : "This element includes the FixedColumns extension files.",
 			"excludes": [],
