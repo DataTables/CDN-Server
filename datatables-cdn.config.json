@@ -543,8 +543,8 @@
 					"js/dataTables.dateTime"
 				]
 			},
-			"folderName": "Buttons",
-			"moduleName": "Buttons",
+			"folderName": "DateTime",
+			"moduleName": "DateTime",
 			"outputOrder": 40
 		}, {
 			"abbr": "fc-",
