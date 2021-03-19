@@ -490,6 +490,11 @@ export default class BuildFile {
 			}
 		}
 
+		// Need to also replace any BOMs that are present in the file
+		if(typeof fileAddition === "string") {
+			fileAddition = fileAddition.replace(/\uFEFF/g, '');
+		}
+
 		return fileAddition;
 	}
 
