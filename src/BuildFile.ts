@@ -491,6 +491,7 @@ export default class BuildFile {
 		}
 
 		// Need to also replace any BOMs that are present in the file
+		// Most JS engines use utf-16 rather than utf-8, hense the utf-16 replacement
 		if(typeof fileAddition === "string") {
 			fileAddition = fileAddition.replace(/\uFEFF/g, '');
 		}
