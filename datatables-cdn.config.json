@@ -72,6 +72,51 @@
 			"moduleName": "SemanticUI",
 			"outputOrder": 20
 		}, {
+			"abbr": "bm",
+			"description" : "This element includes the Bulma styling.",
+			"excludes": [
+				"dt",
+				"se",
+				"se-",
+				"bs5",
+				"bs4",
+				"bs4-",
+				"bs",
+				"bs-",
+				"zf",
+				"zf-",
+				"ju",
+				"ju-"
+			],
+			"fileIncludes": {
+				"styling": "bootstrap5"
+			},
+			"fileNames": {},
+			"moduleName": "Bootstrap-5",
+			"outputOrder": 20
+		}, {
+			"abbr": "bs5",
+			"description" : "This element includes the bootstrap5 styling.",
+			"excludes": [
+				"dt",
+				"se",
+				"se-",
+				"bs4",
+				"bs4-",
+				"bs",
+				"bs-",
+				"zf",
+				"zf-",
+				"ju",
+				"ju-"
+			],
+			"fileIncludes": {
+				"styling": "bootstrap5"
+			},
+			"fileNames": {},
+			"moduleName": "Bootstrap-5",
+			"outputOrder": 20
+		}, {
 			"abbr": "bs4",
 			"description" : "This element includes the bootstrap4 styling.",
 			"excludes": [
