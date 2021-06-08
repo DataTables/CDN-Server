@@ -89,10 +89,10 @@
 				"ju-"
 			],
 			"fileIncludes": {
-				"styling": "bootstrap5"
+				"styling": "bulma"
 			},
 			"fileNames": {},
-			"moduleName": "Bootstrap-5",
+			"moduleName": "Bulma",
 			"outputOrder": 20
 		}, {
 			"abbr": "bs5",
