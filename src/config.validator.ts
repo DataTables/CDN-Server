@@ -6,7 +6,6 @@ import { IConfig } from './config';
 export const ajv = new Ajv.default({
   allErrors: true,
   coerceTypes: false,
-  unicode: true,
   useDefaults: true,
   strict: false,
 });

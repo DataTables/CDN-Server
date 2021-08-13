@@ -1,8 +1,6 @@
 import { IConfig } from './config';
 import * as ssri from 'ssri';
 
-const hash = require('hash.js');
-
 /**
  * The Interface which defines the format of the data that is returned when the details of a build are requested.
  */
@@ -20,26 +18,8 @@ interface IDetails {
 interface ILatest {
 	url: string;
 	filenames: string[];
-	files: IFiles;
+	modules: {[name: string]: string};
 	includedFiles: boolean | string[];
-}
-
-/**
- * The interface which defines the format of the files object within the ILatest Interface.
- * This holds the file types objects.
- */
-interface IFiles {
-	css: ITypes;
-	js: ITypes;
-}
-
-/**
- * The interface which defines the format of the css and js objects withing the IFiles interface.
- *   This holds the hashes of the files.
- */
-interface ITypes {
-	debug: string;
-	min: string;
 }
 
 /**
@@ -89,20 +69,17 @@ export default class MetaInformation {
 	 * @param filenameIn The name of the file which is in question
 	 */
 	public getLatest(content: any[], includedFiles: boolean | string[], URLIn: string): ILatest {
-		this._logger.debug(this._id + ' - Call for latest succesful.');
 		return {
 			filenames: this._config.fileNames,
-			files: {
-				css: {
-					debug: 'sha256-' + hash.sha256().update(content[this._config.fileExtensions.indexOf('.css')]).digest('hex'),
-					min: 'sha256-' + hash.sha256().update(content[this._config.fileExtensions.indexOf('.min.css')]).digest('hex')
-				},
-				js: {
-					debug: 'sha256-' + hash.sha256().update(content[this._config.fileExtensions.indexOf('.js')]).digest('hex'),
-					min: 'sha256-' + hash.sha256().update(content[this._config.fileExtensions.indexOf('.min.js')]).digest('hex')
-				}
-			},
 			includedFiles,
+			modules: URLIn.split('/').reduce((acc, cur) => {
+				let a = cur.split('-');
+
+				return {
+					...acc,
+					[a[0]]: a[1]
+				}
+			}, {}),
 			url: URLIn,
 		};
 	}
