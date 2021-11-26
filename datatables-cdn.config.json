@@ -711,40 +711,40 @@
 			"moduleName": "Scroller",
 			"outputOrder": 40
 		}, {
-                        "abbr": "sb-",
-                        "description" : "This element includes the SearchBuilder extension files.",
-                        "excludes": [],
-                        "fileIncludes": {},
-                        "fileNames": {
-                                "css": [
-                                        "css/searchBuilder.{styling}"
-                                ],
-                                "js": [
-                                        "js/dataTables.searchBuilder",
-                                        "?js/searchBuilder.{styling}"
-                                ]
-                        },
-                        "folderName": "SearchBuilder",
-                        "moduleName": "SearchBuilder",
-                        "outputOrder": 40
-                }, {
-                        "abbr": "sp-",
-                        "description" : "This element includes the SearchPane extension files.",
-                        "excludes": [],
-                        "fileIncludes": {},
-                        "fileNames": {
-                                "css": [
-                                        "css/searchPanes.{styling}"
-                                ],
-                                "js": [
-                                        "js/dataTables.searchPanes",
-                                        "?js/searchPanes.{styling}"
-                                ]
-                        },
-                        "folderName": "SearchPanes",
-                        "moduleName": "SearchPanes",
-                        "outputOrder": 40
-                }, {
+			"abbr": "sb-",
+			"description" : "This element includes the SearchBuilder extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+					"css": [
+							"css/searchBuilder.{styling}"
+					],
+					"js": [
+							"js/dataTables.searchBuilder",
+							"?js/searchBuilder.{styling}"
+					]
+			},
+			"folderName": "SearchBuilder",
+			"moduleName": "SearchBuilder",
+			"outputOrder": 40
+		}, {
+			"abbr": "sp-",
+			"description" : "This element includes the SearchPane extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+					"css": [
+							"css/searchPanes.{styling}"
+					],
+					"js": [
+							"js/dataTables.searchPanes",
+							"?js/searchPanes.{styling}"
+					]
+			},
+			"folderName": "SearchPanes",
+			"moduleName": "SearchPanes",
+			"outputOrder": 40
+		}, {
 			"abbr": "sl-",
 			"description" : "This element includes the Select extension files.",
 			"excludes": [],
@@ -760,6 +760,23 @@
 			},
 			"folderName": "Select",
 			"moduleName": "Select",
+			"outputOrder": 40
+		}, {
+			"abbr": "sr-",
+			"description" : "This element includes the StateRestore extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+					"css": [
+							"css/stateRestore.{styling}"
+					],
+					"js": [
+							"js/dataTables.stateRestore",
+							"?js/stateRestore.{styling}"
+					]
+			},
+			"folderName": "StateRestore",
+			"moduleName": "StateRestore",
 			"outputOrder": 40
 		}, {
 			"abbr": "b-colvis-",
