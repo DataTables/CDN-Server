@@ -262,7 +262,7 @@ let argum = getopts(process.argv.slice(2), {
 		frequency: 'YYYY-MM-DD',
 		help: false,
 		logfile: false,
-		logLevel: 'silly',
+		logLevel: 'error',
 		maxFiles: 5,
 		maxsize: null,
 		metrics: false,

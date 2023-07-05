@@ -93,7 +93,7 @@ export default class Logger {
 		}
 		else {
 			// Anything of a warning level or above should be logged regardless of debugging
-			this._logger.add(new winston.transports.Console({format: myFormat, level: 'warn'}));
+			this._logger.add(new winston.transports.Console({format: myFormat, level: loggerDetails.logLevel}));
 		}
 
 		// If the logfile option is enabled then set up a transport to the logfile
@@ -131,7 +131,7 @@ export default class Logger {
 	public warn(message: string) {
 		// Prints `warn` in yellow plus a message in white
 		message = '\x1b[33mWARN:\x1b[37m ' + message;
-		this._logger.log({level: 'warn', message});
+		this._logger.warn(message);
 	}
 
 	public debug(message: string) {
