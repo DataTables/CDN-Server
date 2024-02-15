@@ -517,7 +517,8 @@
 					"css/dataTables.{styling}"
 				],
 				"js": [
-					"js/jquery.dataTables",
+					"?js/dataTables",
+					"?js/jquery.dataTables",
 					"?js/dataTables.{styling}"
 				]
 			},
