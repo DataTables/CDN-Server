@@ -545,6 +545,12 @@ let server = http.createServer(async function(req, res) {
 			// Find the file type that has been requested and the content type for http
 			let extension: string = fileExtension(splitURL[0]);
 			let type = mime.lookup(extension);
+
+			// Update for latest standards
+			if (type === 'application/javascript') {
+                                type = 'text/javascript';
+                        }
+
 			res.writeHead(200, {
 				'Cache-Control': 'max-age=' + config.cacheDuration,
 				'Content-Type': type + '; charset=utf-8',
