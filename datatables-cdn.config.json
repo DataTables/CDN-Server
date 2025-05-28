@@ -560,6 +560,23 @@
 			"moduleName": "Buttons",
 			"outputOrder": 40
 		}, {
+			"abbr": "cc-",
+			"description" : "This element includes the ColumnControl extension files.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/columnControl.{styling}"
+				],
+				"js": [
+					"js/dataTables.columnControl",
+					"?js/columnControl.{styling}"
+				]
+			},
+			"folderName": "ColumnControl",
+			"moduleName": "ColumnControl",
+			"outputOrder": 40
+		}, {
 			"abbr": "cr-",
 			"description" : "This element includes the ColReorder extension files.",
 			"excludes": [],
