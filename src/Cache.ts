@@ -22,7 +22,9 @@ export default class Cache {
 	}
 
 	/**
-	 * This method resets the cache so that if the value of its max length is changed then it adjusts itself to this length
+	 * This method resets the cache so that if the value of its max length is
+	 * changed then it adjusts itself to this length
+	 *
 	 * @param _configIn The external _config which is to be read in
 	 */
 	public resetCache(_cacheSize, config): void {
@@ -37,13 +39,21 @@ export default class Cache {
 	}
 
 	/**
-	 * Searches the cache for the file passed in, if present it returns true if not false
+	 * Searches the cache for the file passed in, if present it returns true if
+	 * not false
+	 *
 	 * @param filename The name of the file to search the cache for
-	 * @returns {boolean | string} Returns the file if it is found and false if it is not
+	 * @returns {boolean | string} Returns the file if it is found and false if
+	 * it is not
 	 */
-	public searchCache(filename: string, id: string): boolean | string | Buffer {
+	public searchCache(
+		filename: string,
+		id: string
+	): boolean | string | Buffer {
 		if (this._cacheMap.has(filename)) {
-			this._logger.debug(id + ' - File is present in cache, returning file.');
+			this._logger.debug(
+				id + ' - File is present in cache, returning file.'
+			);
 			return this._cacheMap.get(filename);
 		}
 		else {
@@ -54,35 +64,56 @@ export default class Cache {
 
 	/**
 	 * Updates the cache to include the filename and content being passed in.
+	 *
 	 * @param filename Filename which is currently being added to the cache
-	 * @param fileContent The content of the file that is currently being added to the cache
+	 * @param fileContent The content of the file that is currently being added
+	 * to the cache
 	 */
-	public updateCache(filename: string, fileContent: string | Buffer, refresh: boolean, id: string): void {
-		this._logger.debug(id + ' - ' + (refresh ? 'Refresh' : 'Update') + ' Cache Request');
+	public updateCache(
+		filename: string,
+		fileContent: string | Buffer,
+		refresh: boolean,
+		id: string
+	): void {
+		this._logger.debug(
+			id + ' - ' + (refresh ? 'Refresh' : 'Update') + ' Cache Request'
+		);
 
-		// If the _cacheMap is approaching the limit size then delete the first element in the list
+		// If the _cacheMap is approaching the limit size then delete the first
+		// element in the list
 		if (this._cacheMap.size >= this._cacheSize) {
 			this._logger.debug(id + ' - Cache at size limit, removing content');
 			this._cacheMap.delete(this._cacheList[0]);
 			this._cacheList.splice(0, 1);
 		}
 
-		// If the filename is not present in the cache then add it and the content to the map
+		// If the filename is not present in the cache then add it and the
+		// content to the map
 		if (!this._cacheMap.has(filename)) {
-			this._logger.debug(id + ' - File is not yet present in Cache, adding to map');
+			this._logger.debug(
+				id + ' - File is not yet present in Cache, adding to map'
+			);
 			this._cacheMap.set(filename, fileContent);
 		}
 
 		// Add the filename to the end of the _cacheList
 		this._cacheList.push(filename);
-		this._logger.debug(id + ' - ' + (refresh ? 'Refresh filing in' : 'Adding file to') + ' Cache ' + filename);
+		this._logger.debug(
+			id +
+				' - ' +
+				(refresh ? 'Refresh filing in' : 'Adding file to') +
+				' Cache ' +
+				filename
+		);
 	}
 
 	/**
-	 * Creates all of the maps that are used throughout the operation of the server
+	 * Creates all of the maps that are used throughout the operation of the
+	 * server
 	 */
 	public createMaps(): void {
-		// declare all of the maps that will be used throughout the operation of the server
+		// declare all of the maps that will be used throughout the operation of
+		// the server
 		let outputOrderMap = new Map<string, number>();
 		let folderNameMap = new Map<string, string>();
 		let moduleNameMap = new Map<string, string>();
@@ -97,7 +128,8 @@ export default class Cache {
 			let fileKeys = Object.keys(element.fileNames);
 			let fileValues: string[][] = Object.values(element.fileNames);
 
-			// This is the map between the file type and the array of files to be built
+			// This is the map between the file type and the array of files to
+			// be built
 			let tempMap = new Map<string, string[]>();
 
 			for (let j = 0; j < fileKeys.length; j++) {
@@ -108,7 +140,8 @@ export default class Cache {
 				fileNameMap.set(element.abbr, tempMap);
 			}
 
-			// Only create mapping if the includes contains at least one property
+			// Only create mapping if the includes contains at least one
+			// property
 			if (Object.keys(element.fileIncludes).length > 0) {
 				includesMap.set(element.abbr, element.fileIncludes);
 			}
@@ -119,7 +152,7 @@ export default class Cache {
 			folderNameMap,
 			includesMap,
 			moduleNameMap,
-			outputOrderMap,
+			outputOrderMap
 		};
 	}
 }

@@ -2,15 +2,17 @@ import Logger from './Logger';
 
 /**
  * Finds the point at which the static request begins
+ *
  * @param parsedURL the inputURL of which the cut point is to be found
  */
 export function findStaticRequest(
 	parsedURL: string[],
 	maps: Map<string, number>,
 	requires: number[],
-	logger: Logger): number {
-
-	// iterate through the URL and extract the order for each element, adding to orderList
+	logger: Logger
+): number {
+	// iterate through the URL and extract the order for each element, adding to
+	// orderList
 	let orderList: number[] = [];
 	let requireList: number[];
 
@@ -40,10 +42,12 @@ export function findStaticRequest(
 			}
 		}
 
-		// Check that the elements of the URL are in the correct order
-		// Order list can be undefined if an unknown element is requested from the map
+		// Check that the elements of the URL are in the correct order Order
+		// list can be undefined if an unknown element is requested from the map
 		if (orderList[j] === undefined) {
-			logger.error(this._id + ' - Unknown module ' + parsedURL[j] + ' specified.');
+			logger.error(
+				this._id + ' - Unknown module ' + parsedURL[j] + ' specified.'
+			);
 			return j;
 		}
 	}
@@ -52,10 +56,16 @@ export function findStaticRequest(
 
 	if (requires !== undefined) {
 		if (requireList.length > 0) {
-			logger.error(this._id + ' - Not all of the required Modules have been included. Still requires: ' + requireList);
+			logger.error(
+				this._id +
+					' - Not all of the required Modules have been included. Still requires: ' +
+					requireList
+			);
 			return 0;
 		}
-		logger.debug(this._id + ' - All of the required modules have been included.');
+		logger.debug(
+			this._id + ' - All of the required modules have been included.'
+		);
 	}
 
 	return -1;

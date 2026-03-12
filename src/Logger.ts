@@ -2,7 +2,6 @@
 // require('winston-daily-rotate-file');
 
 export default class Logger {
-
 	private _debugger: boolean = false;
 	private _logfile: boolean | string = false;
 	private _errorLogFile: boolean | string = false;
@@ -22,81 +21,105 @@ export default class Logger {
 		require('winston-daily-rotate-file');
 
 		// Defined the custom format for the logger
-		const myFormat = winston.format.printf(({level, message, label, timestamp}) => {
-			return `${message}`;
-		});
+		const myFormat = winston.format.printf(
+			({ level, message, label, timestamp }) => {
+				return `${message}`;
+			}
+		);
 		this._debugger = loggerDetails.debug;
 
-		// Define whether logging is to take place or not.
-		//  This will only happen if the value of loggerDetails.logfile/loggerDetails.errorLogFile
-		//   is a string detailing the location for the logfile/errorLogFile
-		this._logfile = typeof loggerDetails.logfile !== 'boolean' ? true : false;
-		this._errorLogFile = typeof loggerDetails.errorLogFile !== 'boolean' ? true : false;
-		this._accessLogFile = typeof loggerDetails.accesLogFile !== 'boolean' ? true : false;
+		// Define whether logging is to take place or not. This will only happen
+		// if the value of loggerDetails.logfile/loggerDetails.errorLogFile is a
+		// string detailing the location for the logfile/errorLogFile
+		this._logfile =
+			typeof loggerDetails.logfile !== 'boolean' ? true : false;
+		this._errorLogFile =
+			typeof loggerDetails.errorLogFile !== 'boolean' ? true : false;
+		this._accessLogFile =
+			typeof loggerDetails.accesLogFile !== 'boolean' ? true : false;
 
-		// Define the location of the logfile and errorLogFile based on the input parameter
-		this._logLocation = typeof loggerDetails.logfile !== 'boolean' ? loggerDetails.logfile : '.hidden.log';
-		this._errorLogLocation = typeof loggerDetails.errorLogFile !== 'boolean'
-			? loggerDetails.errorLogFile
-			: '.hidden.log';
-		this._accessLogLocation = typeof loggerDetails.accessLogFile !== 'boolean'
-			? loggerDetails.accessLogFile
-			: '.hidden.log';
+		// Define the location of the logfile and errorLogFile based on the
+		// input parameter
+		this._logLocation =
+			typeof loggerDetails.logfile !== 'boolean'
+				? loggerDetails.logfile
+				: '.hidden.log';
+		this._errorLogLocation =
+			typeof loggerDetails.errorLogFile !== 'boolean'
+				? loggerDetails.errorLogFile
+				: '.hidden.log';
+		this._accessLogLocation =
+			typeof loggerDetails.accessLogFile !== 'boolean'
+				? loggerDetails.accessLogFile
+				: '.hidden.log';
 		this._logger = winston.createLogger({
-			defaultMeta: { service: 'user-service'},
+			defaultMeta: { service: 'user-service' },
 			format: winston.format.json(),
-			level: loggerDetails.logLevel,
+			level: loggerDetails.logLevel
 		});
 		// Create another logger purely for the errors
 		this._errorLogger = winston.createLogger({
-			defaultMeta: { service: 'user-service'},
+			defaultMeta: { service: 'user-service' },
 			format: winston.format.json(),
-			level: 'silly',
+			level: 'silly'
 		});
 		this._accessLogger = winston.createLogger({
-			defaultMeta: { service: 'user-service'},
+			defaultMeta: { service: 'user-service' },
 			format: winston.format.json(),
-			level: 'silly',
+			level: 'silly'
 		});
 
 		this._maxSize = loggerDetails.maxsize;
 		this._maxFiles = loggerDetails.maxFiles;
 		this._frequency = loggerDetails.frequency;
 
-		let transportError = new (winston.transports.DailyRotateFile)({
+		let transportError = new winston.transports.DailyRotateFile({
 			auditFile: '/tmp/tempCDNErrorLogs.json',
 			datePattern: this._frequency,
 			filename: this._errorLogLocation,
 			maxFiles: this._maxFiles,
-			maxSize: this._maxSize,
+			maxSize: this._maxSize
 		});
 
-		let transportAccess = new (winston.transports.DailyRotateFile)({
+		let transportAccess = new winston.transports.DailyRotateFile({
 			auditFile: '/tmp/tempCDNAccessLogs.json',
 			datePattern: this._frequency,
 			filename: this._accessLogLocation,
 			maxFiles: this._maxFiles,
-			maxSize: this._maxSize,
+			maxSize: this._maxSize
 		});
 
-		let transport = new (winston.transports.DailyRotateFile)({
+		let transport = new winston.transports.DailyRotateFile({
 			auditFile: '/tmp/tempCDNLogs.json',
 			datePattern: this._frequency,
 			filename: this._logLocation,
 			maxFiles: this._maxFiles,
-			maxSize: this._maxSize,
+			maxSize: this._maxSize
 		});
 
-		// If the debugger option is enabled then set up a transport to the console
+		// If the debugger option is enabled then set up a transport to the
+		// console
 		if (this._debugger) {
-			this._logger.add(new winston.transports.Console({format: myFormat, level: 'debug'}));
+			this._logger.add(
+				new winston.transports.Console({
+					format: myFormat,
+					level: 'debug'
+				})
+			);
 		}
 		else {
-			// Anything of a warning level or above should be logged regardless of debugging
-			this._logger.add(new winston.transports.Console({format: myFormat, level: loggerDetails.logLevel}));
+			// Anything of a warning level or above should be logged regardless
+			// of debugging
+			this._logger.add(
+				new winston.transports.Console({
+					format: myFormat,
+					level: loggerDetails.logLevel
+				})
+			);
 		}
 
-		// If the logfile option is enabled then set up a transport to the logfile
+		// If the logfile option is enabled then set up a transport to the
+		// logfile
 		if (this._logfile && !fail) {
 			this._logger.add(transport);
 			this.info('Max log file size set to ' + this._maxSize);
@@ -115,7 +138,9 @@ export default class Logger {
 		if (this._accessLogFile && !fail) {
 			this._accessLogger.add(transportAccess);
 			this.info('Max access log file size set to ' + this._maxSize);
-			this.info('Max number of access log files set to ' + this._maxFiles);
+			this.info(
+				'Max number of access log files set to ' + this._maxFiles
+			);
 			this.info('Frequency of rotation set to ' + this._frequency);
 		}
 	}
@@ -124,7 +149,7 @@ export default class Logger {
 		if (this._debugger || this._logfile) {
 			// Prints `info` in green plus a message in white
 			message = '\x1b[32mINFO:\x1b[37m ' + message;
-			this._logger.log({level: 'info', message});
+			this._logger.log({ level: 'info', message });
 		}
 	}
 
@@ -138,7 +163,7 @@ export default class Logger {
 		if (this._debugger || this._logfile) {
 			// Prints `debug` in blue plus a message in white
 			message = '\x1b[34mDEBUG:\x1b[37m ' + message;
-			this._logger.log({level: 'debug', message});
+			this._logger.log({ level: 'debug', message });
 		}
 	}
 
@@ -147,10 +172,10 @@ export default class Logger {
 
 		// Prints `error` in red plus a message in white
 		message = '\x1b[31mERROR:\x1b[37m ' + message;
-		this._logger.log({level: 'error', message, stamp});
+		this._logger.log({ level: 'error', message, stamp });
 
 		if (this._errorLogFile) {
-			this._errorLogger.log({level: 'error', message, stamp});
+			this._errorLogger.log({ level: 'error', message, stamp });
 		}
 	}
 
@@ -165,8 +190,7 @@ export default class Logger {
 	}
 
 	public help() {
-		let message =
-`The following options are available when running the server:
+		let message = `The following options are available when running the server:
 	-h	help: info on how to run the server
 	-a	accessLogFile: prints a message containing the requested URL to a file as specified (FILE MUST BE SPECIFIED)
 	-d	debug: prints debug messages to the console when enabled
@@ -187,6 +211,6 @@ There are also a number of predefined npm commands
 	\`npm run build\`    builds the server
 	\`npm run server\`   runs the server
 	\`npm run debug\`    runs the server with debug enabled`;
-		this._logger.log({level: 'info', message});
+		this._logger.log({ level: 'info', message });
 	}
 }
