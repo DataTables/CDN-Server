@@ -6,8 +6,8 @@
   "scripts": {
     "test": "bash test/run_tests.sh",
     "start": "node dist/server.js",
-    "build": "npm install && tsc ./src/*.ts --outDir ./dist/",
-    "buildNoInstall": "tsc ./src/*.ts --outDir ./dist/",
+    "build": "npm install && tsc",
+    "buildNoInstall": "tsc",
     "all": "npm run build && npm run server",
     "debug": "node dist/server.js -d"
   },
@@ -23,21 +23,19 @@
   "homepage": "https://github.com/DataTables/CDN-Server#readme",
   "dependencies": {
     "@mojotech/json-type-validation": "^3.1.0",
-    "@types/node": "^12.0.7",
+    "@types/node": "^25.5.0",
     "file-extension": "^4.0.5",
-    "file-type": "^16.5.4",
-    "getopts": "^2.2.4",
+    "file-type": "^21.3.1",
+    "getopts": "^2.3.0",
     "line-by-line": "^0.1.6",
-    "mime-types": "^2.1.24",
+    "mime-types": "^3.0.2",
     "perf_hooks": "0.0.1",
     "semver-compare": "^1.0.0",
-    "ssri": "^8.0.1",
-    "ts-interface-checker": "^0.1.8",
-    "tslint": "^5.17.0",
-    "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.5.1",
-    "typescript-json-validator": "^2.3.1",
-    "winston": "^3.9.0",
-    "winston-daily-rotate-file": "^4.1.0"
+    "ssri": "^13.0.1",
+    "ts-interface-checker": "^1.0.2",
+    "typescript": "^5.9.3",
+    "typescript-json-validator": "^2.4.2",
+    "winston": "^3.19.0",
+    "winston-daily-rotate-file": "^5.0.0"
   }
 }

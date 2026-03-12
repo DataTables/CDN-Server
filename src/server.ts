@@ -6,14 +6,12 @@ import * as mime from 'mime-types';
 import * as cmp from 'semver-compare';
 import * as util from 'util';
 
-import { fstat, FSWatcher, readdirSync, readFile, statSync, watch } from 'fs';
+import { FSWatcher, readdirSync, readFile, statSync, watch } from 'fs';
 import { join } from 'path';
 import BuildFile from './BuildFile';
 import Cache from './Cache';
 import { IConfig, IElements } from './config';
 
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
-import { stringify } from 'querystring';
 import validate from './config.validator';
 import Logger from './Logger';
 import MetaInformation from './MetaInformation';
