@@ -26,6 +26,7 @@ interface IIncludes {
 
 const fileExists = util.promisify(fs.readFile);
 const folderExists = util.promisify(fs.readdir);
+
 /**
  * This class will return a file that contains all of the modules listed in the
  * filePath.
@@ -80,7 +81,8 @@ export default class BuildFile {
 	): Promise<boolean | string | number | Buffer> {
 		this._logger.debug(this._id + ' - Starting Build File');
 
-		// Split URL into useful chunks and remove the first element if it is empty.
+		// Split URL into useful chunks and remove the first element if it is
+		// empty.
 		let parsedURL: string[] = filePath.split(
 			new RegExp('[' + this._config.separators.join('') + ']')
 		);
@@ -167,59 +169,33 @@ export default class BuildFile {
 		for (let i = 0; i < parsedURL.length; i++) {
 			let folderName: string;
 			let fileName: Map<string, string[]>;
-			let vers: string;
+			// let vers: string;
 			let order: number;
-			let strParsed: string[] = parsedURL[i].split('-');
+			let moduleParts = utils.moduleAbbrAndVersion(parsedURL[i]);
+			let version = moduleParts.version;
+			let abbr = moduleParts.abbr;
 
-			// If the URL includes a version add a '-' to the abbreviation as in
-			// config, otherwise no version is associated with this element so
-			// push an empty string
-			if (strParsed.length > 1) {
-				this._logger.debug(this._id + ' - Version included in module');
-				strParsed[0] += '-';
-				vers = strParsed[strParsed.length - 1];
-
-				// If the URL splits to 3 or more it must be a Sub-Extension, so
-				// add the second part of the abbreviation
-				if (strParsed.length > 2) {
-					for (let j = 1; j < strParsed.length - 1; j++) {
-						strParsed[0] += strParsed[j];
-						strParsed[0] += '-';
-					}
-				}
-			}
-			else {
-				this._logger.debug(
-					this._id + ' - Version not included in module'
-				);
-				vers = '';
-			}
-
-			order = this._maps.outputOrderMap.get(strParsed[0]);
-			folderName = this._maps.folderNameMap.get(strParsed[0]);
-			this._logger.debug(
-				this._id + ' - Creating list of extensions for ' + strParsed
-			);
+			order = this._maps.outputOrderMap.get(abbr);
+			folderName = this._maps.folderNameMap.get(abbr);
 
 			// Create the string to replace the `{extensionsList}` macro in the
 			// built file as defined in config
-			if (strParsed.length > 1 && i < parsedURL.length - 1) {
+			if (abbr.split('-').length > 1 && i < parsedURL.length - 1) {
 				this._logger.debug(
 					this._id +
 						' - Adding to extensionsList ' +
-						this._maps.moduleNameMap.get(strParsed[0])
+						this._maps.moduleNameMap.get(abbr)
 				);
+
 				extensionsListArray.push(
-					this._maps.moduleNameMap.get(strParsed[0]) +
-						' ' +
-						strParsed[strParsed.length - 1]
+					this._maps.moduleNameMap.get(abbr) + ' ' + version
 				);
 			}
 
 			// It is necessary to create a new copy of the map that does not
 			// reference the old one otherwise changes made later will affect
 			// future builds
-			fileName = this._maps.fileNameMap.get(strParsed[0]);
+			fileName = this._maps.fileNameMap.get(abbr);
 			let newMap = new Map<string, string[]>();
 
 			if (fileName !== undefined) {
@@ -235,17 +211,17 @@ export default class BuildFile {
 				fileNameMap: newMap,
 				folderName,
 				order,
-				version: vers
+				version: version
 			});
 
-			// If the string has styling or similar that need to be included with it
-			// then this is where they are added to the includes list.
-			if (this._maps.includesMap.get(strParsed[0]) !== undefined) {
+			// If the string has styling or similar that need to be included
+			// with it then this is where they are added to the includes list.
+			if (this._maps.includesMap.get(abbr) !== undefined) {
 				let keys: string[] = Object.keys(
-					this._maps.includesMap.get(strParsed[0])
+					this._maps.includesMap.get(abbr)
 				);
 				let vals: string[] = Object.values(
-					this._maps.includesMap.get(strParsed[0])
+					this._maps.includesMap.get(abbr)
 				);
 
 				for (let j = 0; j < keys.length; j++) {
@@ -283,9 +259,11 @@ export default class BuildFile {
 		}
 		else if (typeof file === 'string') {
 			this._logger.debug(
-				this._id + ' - File built succesfully, replacing macros'
+				this._id + ' - File built successfully, replacing macros'
 			);
+
 			let substitutions = this._config.substitutions;
+
 			for (let substitution of Object.keys(substitutions)) {
 				if (substitution === '_extensionsList') {
 					while (file.indexOf(substitutions._extensionsList) !== -1) {
@@ -384,14 +362,16 @@ export default class BuildFile {
 		parsedDetails: IDetails[],
 		includesList: IIncludes
 	): Promise<string | boolean | number> {
-		// Assigns _build message from the config file to a variable which will be appended to the top of the file
+		// Assigns _build message from the config file to a variable which will
+		// be appended to the top of the file
 		let fileHeader: string = this._config.headerContent;
 		let fileContent: string = '';
 
 		// Set minify to the correct value dependant on parameters
 		let minify: string = min ? '.min' : '';
 
-		// Folders are not prefixed by a '.', therefore if there is one included in the type ignore it
+		// Folders are not prefixed by a '.', therefore if there is one included
+		// in the type ignore it
 		let folder: string = extension.replace('.', '');
 
 		// Work through URL adding all of the files for each element
@@ -408,7 +388,8 @@ export default class BuildFile {
 				let fileNameArray: string[] =
 					parsedDetails[i].fileNameMap.get(folder);
 
-				// Replace Macros defined in includes with the corresponding value
+				// Replace Macros defined in includes with the corresponding
+				// value
 				for (let name of fileNameArray) {
 					let updatestring: string = name;
 
@@ -443,7 +424,8 @@ export default class BuildFile {
 						parsedURL
 					);
 
-					// If '500' is returned then a server error has occured so return false
+					// If '500' is returned then a server error has occurred so
+					// return false
 					if (fileAddition !== false) {
 						// Add the new addition to the final file
 						fileContent += fileAddition;
@@ -455,7 +437,8 @@ export default class BuildFile {
 			}
 		}
 
-		// If there is no content then the header would be returned by itself - instead return an error
+		// If there is no content then the header would be returned by itself -
+		// instead return an error
 		if (fileContent.length === 0) {
 			this._logger.error(
 				this._id + ' - File to be returned is empty before header'
@@ -733,17 +716,11 @@ export default class BuildFile {
 
 		// Sort the array based on the buildOrders of the elements
 		parsedURL.sort((a, b) => {
-			let abbrA: string[] = a.split('-');
-			let abbrB: string[] = b.split('-');
-
-			let abA: string;
-			let abB: string;
-
-			abA = abbrA.length > 1 ? abbrA[0] + '-' : abbrA[0];
-			abB = abbrB.length > -1 ? abbrB[0] + '-' : abbrB[0];
-
+			let abA = utils.moduleAbbrAndVersion(a).abbr;
+			let abB = utils.moduleAbbrAndVersion(b).abbr;
 			let ordA = this._maps.outputOrderMap.get(abA);
 			let ordB = this._maps.outputOrderMap.get(abB);
+
 			if (ordA > ordB) {
 				return 1;
 			}
@@ -760,7 +737,9 @@ export default class BuildFile {
 				return 0;
 			}
 		});
+
 		parsedURL.push(filename);
+
 		return parsedURL;
 	}
 }

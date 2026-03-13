@@ -1,0 +1,10 @@
+extensionsURL >snf/pa-1.0.1-alpha.1<
+extensionsList >ProductA 1.0.1-alpha.1<
+source >"snf/pa-1.0.1-alpha.1"<
+testString >test string<
+./ProductA-1.0.1-alpha.1/js/ProductA.styleNoFiles.js
+
+
+./ProductA-1.0.1-alpha.1/js/productA.js
+
+

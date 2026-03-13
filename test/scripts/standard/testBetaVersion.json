@@ -1,0 +1,29 @@
+[
+	{
+		"comment": "Check the correct handling of alpha / beta semver strings"
+	},
+	{
+		"description": "Beta version string",
+		"url": "snf/pd-4.0.0-beta/test.css",
+		"response": "200",
+		"outfile": "outBetaVersionOnlyBeta.txt"
+	},
+	{
+		"description": "Beta 1 version string",
+		"url": "snf/pd-4.0.0-beta.1/test.css",
+		"response": "200",
+		"outfile": "outBetaVersionOnlyBeta1.txt"
+	},
+	{
+		"description": "Release mixed with beta version string",
+		"url": "snf/d-dash-4.0.0/pd-4.0.0-beta.1/test.css",
+		"response": "200",
+		"outfile": "outBetaMixed.txt"
+	},
+	{
+		"description": "Alpha version string",
+		"url": "snf/pa-1.0.1-alpha.1/test.js",
+		"response": "200",
+		"outfile": "outAlphaOnly.txt"
+	}
+]

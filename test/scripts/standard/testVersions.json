@@ -25,5 +25,11 @@
 		"url": "snf/pa-1.0.1/test.js",
 		"response": "200",
 		"outfile": "outVersionTwoJs.txt"
+	},
+	{
+		"description": "large patch version",
+		"url": "snf/pb-2.0.12/test.js",
+		"response": "200",
+		"outfile": "outVersionLargePatch.txt"
 	}
 ]

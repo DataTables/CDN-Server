@@ -1,0 +1,7 @@
+extensionsURL >snf/pd-4.0.0-beta<
+extensionsList >ProductD 4.0.0-beta<
+source >"snf/pd-4.0.0-beta"<
+testString >test string<
+./ProductD-4.0.0-beta/productd.css
+
+

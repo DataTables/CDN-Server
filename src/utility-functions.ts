@@ -1,6 +1,28 @@
 import Logger from './Logger';
 
 /**
+ * Split a url module part into the name and version
+ *
+ * @param input URL parts
+ * @returns Version and name
+ */
+export function moduleAbbrAndVersion(input: string) {
+	let parts = input.match(/\-(\d+\.\d+\.\d+(\-\w+(\.\d+)?)?)/);
+
+	return parts
+		? {
+				name: input.replace(parts[0], ''),
+				abbr: input.replace(parts[1], ''),
+				version: parts[1]
+		  }
+		: {
+				name: input,
+				abbr: input,
+				version: ''
+		  };
+}
+
+/**
  * Finds the point at which the static request begins
  *
  * @param parsedURL the inputURL of which the cut point is to be found
@@ -17,17 +39,9 @@ export function findStaticRequest(
 	let requireList: number[];
 
 	for (let element of parsedURL) {
-		let str: string[] = element.split('-');
-		if (str.length > 2) {
-			str[0] += '-';
-			for (let k = 1; k < str.length - 1; k++) {
-				str[0] += str[k] + '-';
-			}
-		}
-		else if (str.length > 1) {
-			str[0] += '-';
-		}
-		orderList.push(maps.get(str[0]));
+		let parts = moduleAbbrAndVersion(element);
+
+		orderList.push(maps.get(parts.abbr));
 	}
 
 	// validate Order, Abbreviation and requirements list.

@@ -1,0 +1,10 @@
+extensionsURL >snf/d-dash-4.0.0/pd-4.0.0-beta.1<
+extensionsList >Product Dash 4.0.0, ProductD 4.0.0-beta.1<
+source >"snf/d-dash-4.0.0/pd-4.0.0-beta.1"<
+testString >test string<
+./ProductDash-4.0.0/productdash.css
+
+
+./ProductD-4.0.0-beta.1/productd.css
+
+

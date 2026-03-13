@@ -88,7 +88,7 @@ start_server() {
 signal_server() {
 	printf "Signalling server [%s] to use config for %s\n" $PID $1
 	cp $1 $CONFFILE
-	kill -SIGUSR1 $PID
+	kill -USR1 $PID
 
 	sleep 2
 }

@@ -417,27 +417,20 @@ export default class URLValidate {
 		);
 
 		// First check that this element has not already been ruled out
-		let parsedsplit = parsedURL.split('-');
-		let parsedabbr;
+		let parts = utils.moduleAbbrAndVersion(parsedURL);
 
-		if (parsedsplit.length === 1) {
-			parsedabbr = parsedsplit[0];
-		}
-		else {
-			parsedsplit.pop();
-			parsedabbr = parsedsplit.join('-') + '-';
-		}
-
-		if (this._excludes.indexOf(parsedabbr) !== -1) {
+		if (this._excludes.indexOf(parts.abbr) !== -1) {
 			this._logger.error(
-				`Clashing libraries requested: ${parsedURL} is ruled out by previously included libraries.`
+				`Clashing libraries requested: ${parsedURL} is ruled out by ` +
+					`previously included libraries.`
 			);
 			return false;
 		}
 
 		// Then validate the version and add to excludes if it is found
 		for (let element of this._config.elements) {
-			// if the abbreviation of this element is included in the exclusion list dont bother with checking the versions
+			// if the abbreviation of this element is included in the exclusion
+			// list don't bother with checking the versions
 			if (this._excludes.indexOf(element.abbr) === -1) {
 				for (let version of element.versions) {
 					if (parsedURL === element.abbr + version) {
@@ -448,6 +441,7 @@ export default class URLValidate {
 						return true;
 					}
 				}
+
 				if (
 					parsedURL === element.abbr &&
 					parsedURL.split('-').length === 1

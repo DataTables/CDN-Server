@@ -1,0 +1,7 @@
+extensionsURL >snf/pb-2.0.12<
+extensionsList >ProductB 2.0.12<
+source >"snf/pb-2.0.12"<
+testString >test string<
+./ProductB-2.0.12/productb.js
+
+

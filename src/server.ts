@@ -16,6 +16,7 @@ import validate from './config.validator';
 import Logger from './Logger';
 import MetaInformation from './MetaInformation';
 import URLValidate from './URLValidate';
+import { moduleAbbrAndVersion } from './utility-functions';
 
 /**
  * Updates the in-memory config with versions found in packagesDir
@@ -42,17 +43,17 @@ function updateVersions(element: string, versions: string[]): void {
  * Checks directory found in packagesDir is a-x.y.z compliant
  */
 function validateDirectory(dir: string): string[] {
-	if (dir.length === 0) return undefined;
+	if (dir.length === 0) {
+		return;
+	}
 
-	let hyphen: number = dir.lastIndexOf('-');
-	if (hyphen < 1 || hyphen > dir.length - 5) return undefined;
+	let parts = moduleAbbrAndVersion(dir);
 
-	let element: string = dir.slice(0, hyphen);
-	let version: string = dir.slice(hyphen + 1);
+	if (!parts.version) {
+		return;
+	}
 
-	if (version.match(/^\d+(\.\d+){2}$/g) === null) return undefined;
-
-	return [element, version];
+	return [parts.name, parts.version];
 }
 
 /**
@@ -91,6 +92,7 @@ function getPackagesDirectoryContents() {
 
 	for (dir of dirs) {
 		let thisElement = validateDirectory(dir);
+
 		if (thisElement === undefined) {
 			// Must be at least a-x.y.z
 			logger.debug('Skipping directory [' + dir + ']');
@@ -112,7 +114,7 @@ function getPackagesDirectoryContents() {
 
 	updateVersions(currentElement, versions);
 
-	// Set the versions of unseen elements to an empy array (saves handling
+	// Set the versions of unseen elements to an empty array (saves handling
 	// undefined all over the code)
 	setMissingVersions();
 }
