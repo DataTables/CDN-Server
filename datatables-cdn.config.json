@@ -594,6 +594,23 @@
 			"moduleName": "ColReorder",
 			"outputOrder": 40
 		}, {
+			"abbr": "cv-",
+			"description" : "CardView extension",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/cardView.{styling}"
+				],
+				"js": [
+					"js/dataTables.cardView",
+					"?js/cardView.{styling}"
+				]
+			},
+			"folderName": "CardView",
+			"moduleName": "CardView",
+			"outputOrder": 40
+		}, {
 			"abbr": "date-",
 			"description" : "DateTime picker.",
 			"excludes": [],
@@ -608,6 +625,23 @@
 			},
 			"folderName": "DateTime",
 			"moduleName": "DateTime",
+			"outputOrder": 40
+		}, {
+			"abbr": "e-",
+			"description" : "Editor extension",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"css": [
+					"css/editor.{styling}"
+				],
+				"js": [
+					"js/dataTables.editor",
+					"?js/editor.{styling}"
+				]
+			},
+			"folderName": "Editor",
+			"moduleName": "Editor",
 			"outputOrder": 40
 		}, {
 			"abbr": "fc-",
