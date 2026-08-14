@@ -5,6 +5,19 @@
 	"cacheSize": 100,
 	"elements": [
 		{
+			"abbr": "kv-",
+			"description" : "Key verification Shim for non-secure connections.",
+			"excludes": [],
+			"fileIncludes": {},
+			"fileNames": {
+				"js": [
+					"index"
+				]
+			},
+			"folderName": "KeyVerificationShim",
+			"moduleName": "KeyVerificationShim",
+			"outputOrder": 10
+		}, {
 		"abbr": "dt",
 		"description" : "This element includes the datatables styling.",
 		"excludes": [
