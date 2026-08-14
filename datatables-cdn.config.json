@@ -14,8 +14,8 @@
 					"index"
 				]
 			},
-			"folderName": "KeyVerificationShim",
-			"moduleName": "KeyVerificationShim",
+			"folderName": "KeyValidatorShim",
+			"moduleName": "KeyValidatorShim",
 			"outputOrder": 10
 		}, {
 		"abbr": "dt",
